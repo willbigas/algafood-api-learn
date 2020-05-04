@@ -12,7 +12,9 @@
     <artifactId>algafood-api-learn</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>algafood-api-learn</name>
-    <description>Exercicios de fixação e aprendizado do Spring Frameworks no Curso/Treinamento de ESR (Especialista Spring Boot) da algaworks</description>
+    <description>Exercicios de fixação e aprendizado do Spring Frameworks no Curso/Treinamento de ESR (Especialista
+        Spring Boot) da algaworks
+    </description>
 
     <properties>
         <java.version>14</java.version>
@@ -22,6 +24,15 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
