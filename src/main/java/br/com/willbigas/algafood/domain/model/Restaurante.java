@@ -1,43 +1,29 @@
 package br.com.willbigas.algafood.domain.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Restaurante {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
 
+    @Column(nullable = false)
     private String nome;
 
+    @Column(nullable = false)
     private BigDecimal taxaFrete;
 
-    public Long getId() {
-        return id;
-    }
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Cozinha cozinha;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public BigDecimal getTaxaFrete() {
-        return taxaFrete;
-    }
-
-    public void setTaxaFrete(BigDecimal taxaFrete) {
-        this.taxaFrete = taxaFrete;
-    }
 }
