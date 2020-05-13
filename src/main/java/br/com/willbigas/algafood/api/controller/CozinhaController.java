@@ -3,13 +3,13 @@ package br.com.willbigas.algafood.api.controller;
 import br.com.willbigas.algafood.api.model.CozinhasXmlWrapper;
 import br.com.willbigas.algafood.domain.model.Cozinha;
 import br.com.willbigas.algafood.domain.repository.CozinhaRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,17 +33,50 @@ public class CozinhaController {
     @GetMapping("/{id}")
     public ResponseEntity<Cozinha> buscar(@PathVariable Long id) {
         Cozinha cozinha = cozinhaRepository.buscar(id);
-//        return ResponseEntity.status(HttpStatus.OK).body(cozinha);
 
-        return ResponseEntity.ok(cozinha);
+        if (cozinha != null) return ResponseEntity.ok(cozinha);
 
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add(HttpHeaders.LOCATION, "http://api.algafood.local:8080/cozinhas");
-//
-//        return ResponseEntity
-//                .status(HttpStatus.FOUND)
-//                .headers(headers)
-//                .build();
+        return ResponseEntity.notFound().build();
+
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Cozinha adicionar(@RequestBody Cozinha cozinha) {
+        return cozinhaRepository.salvar(cozinha);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Cozinha> atualizar(@PathVariable Long id, @RequestBody Cozinha cozinha) {
+        Cozinha cozinhaBuscada = cozinhaRepository.buscar(id);
+
+        if (cozinhaBuscada != null) {
+            BeanUtils.copyProperties(cozinha, cozinhaBuscada, "id"); // faz a copia das entidades
+            cozinhaRepository.salvar(cozinhaBuscada);
+            return ResponseEntity.ok(cozinhaBuscada);
+        }
+
+        return ResponseEntity.notFound().build();
+
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Cozinha> remover(@PathVariable Long id) {
+
+        try {
+
+            Cozinha cozinha = cozinhaRepository.buscar(id);
+            if (cozinha != null) {
+                cozinhaRepository.remover(cozinha);
+                return ResponseEntity.noContent().build();
+            }
+
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
+
+        return ResponseEntity.notFound().build();
 
     }
 }
