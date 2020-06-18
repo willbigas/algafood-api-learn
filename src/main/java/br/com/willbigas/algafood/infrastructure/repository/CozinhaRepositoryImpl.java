@@ -2,6 +2,7 @@ package br.com.willbigas.algafood.infrastructure.repository;
 
 import br.com.willbigas.algafood.domain.model.Cozinha;
 import br.com.willbigas.algafood.domain.repository.CozinhaRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,8 +31,12 @@ public class CozinhaRepositoryImpl  implements CozinhaRepository {
     }
 
     @Transactional
-    public void remover(Cozinha cozinha) {
-        cozinha = buscar(cozinha.getId());
+    public void remover(Long id) {
+        Cozinha cozinha = buscar(id);
+        if (cozinha == null) {
+            throw new EmptyResultDataAccessException(1);
+        }
+
         manager.remove(cozinha);
     }
 }
