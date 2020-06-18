@@ -1,6 +1,5 @@
 package br.com.willbigas.algafood.api.controller;
 
-import br.com.willbigas.algafood.api.model.CozinhasXmlWrapper;
 import br.com.willbigas.algafood.domain.exception.EntidadeEmUsoException;
 import br.com.willbigas.algafood.domain.exception.EntidadeNaoEncontradaException;
 import br.com.willbigas.algafood.domain.model.Cozinha;
@@ -29,11 +28,6 @@ public class CozinhaController {
         return cozinhaRepository.listar();
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
-    public CozinhasXmlWrapper listarXml() {
-        return new CozinhasXmlWrapper(cozinhaRepository.listar());
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<Cozinha> buscar(@PathVariable Long id) {
         Cozinha cozinha = cozinhaRepository.buscar(id);
@@ -56,7 +50,7 @@ public class CozinhaController {
 
         if (cozinhaBuscada != null) {
             BeanUtils.copyProperties(cozinha, cozinhaBuscada, "id"); // faz a copia das entidades
-            cozinhaRepository.salvar(cozinhaBuscada);
+            cadastroCozinhaService.salvar(cozinhaBuscada);
             return ResponseEntity.ok(cozinhaBuscada);
         }
 
