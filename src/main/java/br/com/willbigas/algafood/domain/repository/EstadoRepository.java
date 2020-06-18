@@ -13,6 +13,6 @@ public interface EstadoRepository {
 
     Estado salvar(Estado permissao);
 
-    void remover(Estado permissao);
+    void remover(Long id);
 
 }
