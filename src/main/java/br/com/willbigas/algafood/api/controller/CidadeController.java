@@ -3,7 +3,6 @@ package br.com.willbigas.algafood.api.controller;
 import br.com.willbigas.algafood.domain.exception.EntidadeEmUsoException;
 import br.com.willbigas.algafood.domain.exception.EntidadeNaoEncontradaException;
 import br.com.willbigas.algafood.domain.model.Cidade;
-import br.com.willbigas.algafood.domain.model.Estado;
 import br.com.willbigas.algafood.domain.repository.CidadeRepository;
 import br.com.willbigas.algafood.domain.service.CadastroCidadeService;
 import org.springframework.beans.BeanUtils;
@@ -13,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/cidades")
@@ -25,14 +25,14 @@ public class CidadeController {
 
     @GetMapping
     public List<Cidade> listar() {
-        return cidadeRepository.listar();
+        return cidadeRepository.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Cidade> buscar(@PathVariable Long id) {
-        Cidade cidade = cidadeRepository.buscar(id);
+        Optional<Cidade> cidade = cidadeRepository.findById(id);
 
-        if (cidade != null) return ResponseEntity.ok(cidade);
+        if (cidade.isPresent()) return ResponseEntity.ok(cidade.get());
 
         return ResponseEntity.notFound().build();
 
@@ -50,14 +50,14 @@ public class CidadeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Cidade cidade) {
-        Cidade cidadeBuscada = cidadeRepository.buscar(id);
-        if (cidadeBuscada == null) {
+        Optional<Cidade> cidadeBuscada = cidadeRepository.findById(id);
+        if (cidadeBuscada.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
         try {
-            BeanUtils.copyProperties(cidade, cidadeBuscada, "id"); // faz a copia das entidades
-            cadastroCidadeService.salvar(cidadeBuscada);
+            BeanUtils.copyProperties(cidade, cidadeBuscada.get(), "id"); // faz a copia das entidades
+            cadastroCidadeService.salvar(cidadeBuscada.get());
             return ResponseEntity.ok(cidadeBuscada);
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
