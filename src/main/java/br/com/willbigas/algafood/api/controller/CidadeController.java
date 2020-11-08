@@ -51,7 +51,7 @@ public class CidadeController {
     @PutMapping("/{id}")
     public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Cidade cidade) {
         Optional<Cidade> cidadeBuscada = cidadeRepository.findById(id);
-        if (cidadeBuscada.isEmpty()) {
+        if (!cidadeBuscada.isPresent()) {
             return ResponseEntity.notFound().build();
         }
 

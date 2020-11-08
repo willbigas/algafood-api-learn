@@ -51,7 +51,7 @@ public class EstadoController {
     @PutMapping("/{id}")
     public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Estado estado) {
         Optional<Estado> estadoBuscado = estadoRepository.findById(id);
-        if (estadoBuscado.isEmpty()) {
+        if (!estadoBuscado.isPresent()) {
             return ResponseEntity.notFound().build();
         }
 

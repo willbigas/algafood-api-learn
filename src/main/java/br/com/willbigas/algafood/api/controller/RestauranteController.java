@@ -55,7 +55,7 @@ public class RestauranteController {
     @PutMapping("/{id}")
     public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Restaurante restaurante) {
         Optional<Restaurante> restauranteBuscado = restauranteRepository.findById(id);
-        if (restauranteBuscado.isEmpty()) {
+        if (!restauranteBuscado.isPresent()) {
             return ResponseEntity.notFound().build();
         }
 
@@ -72,7 +72,7 @@ public class RestauranteController {
     public ResponseEntity<?> atualizarParcial(@PathVariable Long id, @RequestBody Map<String, Object> campos) {
         Optional<Restaurante> restauranteBuscado = restauranteRepository.findById(id);
 
-        if (restauranteBuscado.isEmpty()) {
+        if (!restauranteBuscado.isPresent()) {
             return ResponseEntity.notFound().build();
         }
 
