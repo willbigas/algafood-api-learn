@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface RestauranteRepository extends JpaRepository<Restaurante, Long> {
+public interface RestauranteRepository extends JpaRepository<Restaurante, Long> , RestauranteRepositoryQueries{
 
     List<Restaurante> findByTaxaFreteBetween(BigDecimal taxaInicial , BigDecimal taxaFinal);
 
@@ -26,6 +26,5 @@ public interface RestauranteRepository extends JpaRepository<Restaurante, Long> 
 
     int countByCozinhaId(Long cozinha);
 
-    List<Restaurante> find(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal);
 
 }
