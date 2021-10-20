@@ -2,6 +2,7 @@ package br.com.willbigas.algafood.infrastructure.repository;
 
 import br.com.willbigas.algafood.domain.model.Restaurante;
 import br.com.willbigas.algafood.domain.repository.RestauranteRepositoryQueries;
+import org.apache.tomcat.jni.Local;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -13,6 +14,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,8 +47,8 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
             predicates.add(builder.lessThanOrEqualTo(root.get("taxaFrete"), taxaFreteFinal));
         }
 
-
         criteria.where(predicates.toArray(new Predicate[0]));
+
 
         TypedQuery<Restaurante> query = manager.createQuery(criteria);
 
