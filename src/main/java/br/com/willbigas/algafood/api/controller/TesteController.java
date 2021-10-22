@@ -4,6 +4,8 @@ import br.com.willbigas.algafood.domain.model.Cozinha;
 import br.com.willbigas.algafood.domain.model.Restaurante;
 import br.com.willbigas.algafood.domain.repository.CozinhaRepository;
 import br.com.willbigas.algafood.domain.repository.RestauranteRepository;
+import br.com.willbigas.algafood.infrastructure.repository.spec.RestauranteComFreteGratisSpec;
+import br.com.willbigas.algafood.infrastructure.repository.spec.RestauranteComNomeSemelhanteSpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -71,7 +73,7 @@ public class TesteController {
 
     @GetMapping("/restaurantes/com-frete-gratis")
     public List<Restaurante> restaurantesComFreteGratis(String nome) {
-        var comFreteGratis = new RestauranteComFreteGratisSpecification();
+        var comFreteGratis = new RestauranteComFreteGratisSpec();
         var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
         return restauranteRepository.findAll(comFreteGratis.and(comNomeSemelhante));
     }
