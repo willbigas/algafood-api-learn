@@ -1,10 +1,13 @@
 package br.com.willbigas.algafood.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @JsonRootName("cozinha")
 @Data
@@ -16,6 +19,10 @@ public class Cozinha {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "cozinha")
+    private List<Restaurante> restaurantes = new ArrayList<>();
 
     public Cozinha() {
     }
@@ -37,5 +44,13 @@ public class Cozinha {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public List<Restaurante> getRestaurantes() {
+        return restaurantes;
+    }
+
+    public void setRestaurantes(List<Restaurante> restaurantes) {
+        this.restaurantes = restaurantes;
     }
 }
