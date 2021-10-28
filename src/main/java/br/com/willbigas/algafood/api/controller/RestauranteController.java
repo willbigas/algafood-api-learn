@@ -60,7 +60,7 @@ public class RestauranteController {
         }
 
         try {
-            BeanUtils.copyProperties(restaurante, restauranteBuscado.get(), "id", "formasPagamento", "endereco", "dataCadastro"); // faz a copia das entidades
+            BeanUtils.copyProperties(restaurante, restauranteBuscado.get(), "id", "formasPagamento", "endereco", "dataCadastro", "produtos"); // faz a copia das entidades
             cadastroRestauranteService.salvar(restauranteBuscado.get());
             return ResponseEntity.ok(restauranteBuscado);
         } catch (EntidadeNaoEncontradaException e) {
