@@ -29,17 +29,6 @@ public class RestauranteController {
 
     @GetMapping
     public List<Restaurante> listar() {
-        List<Restaurante> restaurantes = restauranteRepository.findAll();
-
-        System.out.println(restaurantes.get(0).getNome());
-        restaurantes.get(0).getFormasPagamento().forEach(System.out::println);
-
-        System.out.println(restaurantes.get(1).getNome());
-        restaurantes.get(1).getFormasPagamento().forEach(System.out::println);
-
-        System.out.println(restaurantes.get(0).getNome());
-        restaurantes.get(0).getFormasPagamento().forEach(System.out::println);
-
         return restauranteRepository.findAll();
     }
 
