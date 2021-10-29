@@ -54,7 +54,7 @@ public class Restaurante  implements Serializable {
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produtos;
 
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "restaurante_forma_pagamento" ,
                 joinColumns = @JoinColumn(name = "restaurante_id"),
