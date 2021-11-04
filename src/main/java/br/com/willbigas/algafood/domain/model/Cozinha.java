@@ -1,7 +1,6 @@
 package br.com.willbigas.algafood.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -19,6 +18,8 @@ public class Cozinha implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
+
+    private String descricao;
 
     @JsonIgnore
     @OneToMany(mappedBy = "cozinha")
