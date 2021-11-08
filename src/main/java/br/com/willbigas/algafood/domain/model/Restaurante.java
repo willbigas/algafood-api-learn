@@ -30,7 +30,7 @@ public class Restaurante  implements Serializable {
     @Column(name = "taxa_frete" , nullable = false)
     private BigDecimal taxaFrete;
 
-    //@JsonIgnore
+//    @JsonIgnore
     @JsonIgnoreProperties({"hibernateLazyInitializer"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cozinha_id" , nullable = false)
@@ -54,7 +54,7 @@ public class Restaurante  implements Serializable {
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produtos;
 
-//    @JsonIgnore
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "restaurante_forma_pagamento" ,
                 joinColumns = @JoinColumn(name = "restaurante_id"),

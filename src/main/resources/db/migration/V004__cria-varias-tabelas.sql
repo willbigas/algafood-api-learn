@@ -4,7 +4,7 @@ create table forma_pagamento
     descricao varchar(60) not null,
     primary key (id)
 ) engine = InnoDB
-  default charset = utf8mb4;
+  default charset = utf8;
 
 create table grupo
 (
@@ -13,7 +13,7 @@ create table grupo
 
     primary key (id)
 ) engine = InnoDB
-  default charset = utf8mb4;
+  default charset = utf8;
 
 create table grupo_permissao
 (
@@ -22,7 +22,7 @@ create table grupo_permissao
 
     primary key (grupo_id, permissao_id)
 ) engine = InnoDB
-  default charset = utf8mb4;
+  default charset = utf8;
 
 create table permissao
 (
@@ -32,7 +32,7 @@ create table permissao
 
     primary key (id)
 ) engine = InnoDB
-  default charset = utf8mb4;
+  default charset = utf8;
 
 create table produto
 (
@@ -45,7 +45,7 @@ create table produto
 
     primary key (id)
 ) engine = InnoDB
-  default charset = utf8mb4;
+  default charset = utf8;
 
 create table restaurante
 (
@@ -65,7 +65,7 @@ create table restaurante
 
     primary key (id)
 ) engine = InnoDB
-  default charset = utf8mb4;
+  default charset = utf8;
 
 create table restaurante_forma_pagamento
 (
@@ -74,7 +74,7 @@ create table restaurante_forma_pagamento
 
     primary key (restaurante_id, forma_pagamento_id)
 ) engine = InnoDB
-  default charset = utf8mb4;
+  default charset = utf8;
 
 create table usuario
 (
@@ -86,7 +86,7 @@ create table usuario
 
     primary key (id)
 ) engine = InnoDB
-  default charset = utf8mb4;
+  default charset = utf8;
 
 create table usuario_grupo
 (
@@ -95,7 +95,7 @@ create table usuario_grupo
 
     primary key (usuario_id, grupo_id)
 ) engine = InnoDB
-  default charset = utf8mb4;
+  default charset = utf8;
 
 
 

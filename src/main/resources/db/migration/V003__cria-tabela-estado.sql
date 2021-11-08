@@ -5,7 +5,7 @@ create table estado
 
     primary key (id)
 ) engine = InnoDB
-  default charset = utf8mb4;
+  default charset = utf8;
 
 insert into estado (nome) select distinct nome_estado from cidade;
 
