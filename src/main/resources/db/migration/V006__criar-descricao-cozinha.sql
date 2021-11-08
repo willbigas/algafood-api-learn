@@ -1,0 +1,1 @@
+ALTER TABLE cozinha ADD COLUMN `descricao` VARCHAR(80) NULL;
