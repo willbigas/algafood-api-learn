@@ -29,13 +29,8 @@ public class EstadoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Estado> buscar(@PathVariable Long id) {
-        Optional<Estado> estado = estadoRepository.findById(id);
-
-        if (estado.isPresent()) return ResponseEntity.ok(estado.get());
-
-        return ResponseEntity.notFound().build();
-
+    public Estado buscar(@PathVariable Long id) {
+        return cadastroEstadoService.buscarOuFalhar(id);
     }
 
     @PostMapping
@@ -49,31 +44,15 @@ public class EstadoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Estado estado) {
-        Optional<Estado> estadoBuscado = estadoRepository.findById(id);
-        if (!estadoBuscado.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        try {
-            BeanUtils.copyProperties(estado, estadoBuscado.get(), "id"); // faz a copia das entidades
-            cadastroEstadoService.salvar(estadoBuscado.get());
-            return ResponseEntity.ok(estadoBuscado);
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public Estado  atualizar(@PathVariable Long id, @RequestBody Estado estado) {
+        Estado estadoAtual = cadastroEstadoService.buscarOuFalhar(id);
+        BeanUtils.copyProperties(estado, estadoAtual, "id");
+        return cadastroEstadoService.salvar(estadoAtual);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Estado> remover(@PathVariable Long id) {
-
-        try {
-            cadastroEstadoService.excluir(id);
-            return ResponseEntity.noContent().build();
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.notFound().build();
-        } catch (EntidadeEmUsoException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void remover(@PathVariable Long id) {
+        cadastroEstadoService.excluir(id);
     }
 }

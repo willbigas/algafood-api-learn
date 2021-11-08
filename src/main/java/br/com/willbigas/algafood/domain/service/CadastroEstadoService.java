@@ -18,6 +18,12 @@ public class CadastroEstadoService {
     @Autowired
     private EstadoRepository estadoRepository;
 
+    private static final String MSG_ESTADO_EM_USO  =
+            "Estado de código %d não pode ser removido, pois está em uso";
+
+    private static final String MSG_ESTADO_NAO_ENCONTRADO =
+            "Não existe um cadastro de estado com código %d";
+
     public Estado salvar(Estado estado) {
         return estadoRepository.save(estado);
     }
@@ -26,9 +32,15 @@ public class CadastroEstadoService {
         try {
             estadoRepository.deleteById(estadoID);
         } catch (EmptyResultDataAccessException e) {
-            throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de estado com código %d ", estadoID));
+            throw new EntidadeNaoEncontradaException(String.format(MSG_ESTADO_NAO_ENCONTRADO, estadoID));
         } catch (DataIntegrityViolationException e) {
-            throw new EntidadeEmUsoException(String.format("Estado de código %d não pode ser removida, pois está em uso", estadoID));
+            throw new EntidadeEmUsoException(String.format(MSG_ESTADO_EM_USO, estadoID));
         }
+    }
+
+    public Estado buscarOuFalhar(Long id) {
+        return estadoRepository.findById(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                        String.format(MSG_ESTADO_NAO_ENCONTRADO, id)));
     }
 }
