@@ -1,7 +1,7 @@
 package br.com.willbigas.algafood.api.controller;
 
-import br.com.willbigas.algafood.domain.exception.EntidadeEmUsoException;
 import br.com.willbigas.algafood.domain.exception.EntidadeNaoEncontradaException;
+import br.com.willbigas.algafood.domain.exception.NegocioException;
 import br.com.willbigas.algafood.domain.model.Cidade;
 import br.com.willbigas.algafood.domain.repository.CidadeRepository;
 import br.com.willbigas.algafood.domain.service.CadastroCidadeService;
@@ -36,14 +36,22 @@ public class CidadeController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Cidade adicionar(@RequestBody Cidade cidade) {
-        return cadastroCidadeService.salvar(cidade);
+        try {
+            return cadastroCidadeService.salvar(cidade);
+        } catch (EntidadeNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
     public Cidade atualizar(@PathVariable Long id, @RequestBody Cidade cidade) {
         Cidade cidadeAtual = cadastroCidadeService.buscarOuFalhar(id);
         BeanUtils.copyProperties(cidade, cidadeAtual, "id");
-        return cadastroCidadeService.salvar(cidadeAtual);
+        try {
+            return cadastroCidadeService.salvar(cidadeAtual);
+        } catch (EntidadeNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
