@@ -2,6 +2,7 @@ package br.com.willbigas.algafood.domain.service;
 
 import br.com.willbigas.algafood.domain.exception.EntidadeEmUsoException;
 import br.com.willbigas.algafood.domain.exception.EntidadeNaoEncontradaException;
+import br.com.willbigas.algafood.domain.exception.RestauranteNaoEncontradoException;
 import br.com.willbigas.algafood.domain.model.Cozinha;
 import br.com.willbigas.algafood.domain.model.Restaurante;
 import br.com.willbigas.algafood.domain.repository.CozinhaRepository;
@@ -25,7 +26,7 @@ public class CadastroRestauranteService {
     public Restaurante salvar(Restaurante restaurante) {
         Long cozinhaId = restaurante.getCozinha().getId();
         Cozinha cozinha = cozinhaRepository.findById(cozinhaId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(String.format("Não existe cadastro de cozinha com o código %d", cozinhaId)));
+                .orElseThrow(() -> new RestauranteNaoEncontradoException(String.format("Não existe cadastro de cozinha com o código %d", cozinhaId)));
 
         restaurante.setCozinha(cozinha);
         return restauranteRepository.save(restaurante);
@@ -35,7 +36,7 @@ public class CadastroRestauranteService {
         try {
             restauranteRepository.deleteById(restauranteID);
         } catch (EmptyResultDataAccessException e) {
-            throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de cozinha com código %d ", restauranteID));
+            throw new RestauranteNaoEncontradoException(String.format("Não existe um cadastro de cozinha com código %d ", restauranteID));
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(String.format("Cozinha de código %d não pode ser removida, pois está em uso", restauranteID));
         }
@@ -43,7 +44,7 @@ public class CadastroRestauranteService {
 
     public Restaurante buscarOuFalhar(Long restauranteId) {
         return restauranteRepository.findById(restauranteId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                .orElseThrow(() -> new RestauranteNaoEncontradoException(
                         String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, restauranteId)));
     }
 }

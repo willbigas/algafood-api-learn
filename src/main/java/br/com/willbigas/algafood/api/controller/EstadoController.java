@@ -2,6 +2,7 @@ package br.com.willbigas.algafood.api.controller;
 
 import br.com.willbigas.algafood.domain.exception.EntidadeEmUsoException;
 import br.com.willbigas.algafood.domain.exception.EntidadeNaoEncontradaException;
+import br.com.willbigas.algafood.domain.exception.EstadoNaoEncontradoException;
 import br.com.willbigas.algafood.domain.model.Estado;
 import br.com.willbigas.algafood.domain.repository.EstadoRepository;
 import br.com.willbigas.algafood.domain.service.CadastroEstadoService;
@@ -38,7 +39,7 @@ public class EstadoController {
         try {
             estado = cadastroEstadoService.salvar(estado);
             return ResponseEntity.status(HttpStatus.CREATED).body(estado);
-        } catch (EntidadeNaoEncontradaException e) {
+        } catch (EstadoNaoEncontradoException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

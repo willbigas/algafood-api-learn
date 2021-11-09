@@ -1,5 +1,6 @@
 package br.com.willbigas.algafood.domain.service;
 
+import br.com.willbigas.algafood.domain.exception.CozinhaNaoEncontradoException;
 import br.com.willbigas.algafood.domain.exception.EntidadeEmUsoException;
 import br.com.willbigas.algafood.domain.exception.EntidadeNaoEncontradaException;
 import br.com.willbigas.algafood.domain.model.Cozinha;
@@ -29,7 +30,7 @@ public class CadastroCozinhaService {
         try {
             cozinhaRepository.deleteById(cozinhaId);
         } catch (EmptyResultDataAccessException e) {
-            throw new EntidadeNaoEncontradaException(String.format(MSG_COZINHA_NAO_ENCONTRADA, cozinhaId));
+            throw new CozinhaNaoEncontradoException(String.format(MSG_COZINHA_NAO_ENCONTRADA, cozinhaId));
         } catch (DataIntegrityViolationException | InvalidDataAccessResourceUsageException e) {
             throw new EntidadeEmUsoException(String.format(MSG_COZINHA_EM_USO, cozinhaId));
         }
@@ -37,6 +38,6 @@ public class CadastroCozinhaService {
 
     public Cozinha buscarOuFalhar(Long id) {
         return cozinhaRepository.findById(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(String.format(MSG_COZINHA_NAO_ENCONTRADA, id)));
+                .orElseThrow(() -> new CozinhaNaoEncontradoException(String.format(MSG_COZINHA_NAO_ENCONTRADA, id)));
     }
 }
