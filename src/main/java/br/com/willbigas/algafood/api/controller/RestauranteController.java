@@ -1,5 +1,7 @@
 package br.com.willbigas.algafood.api.controller;
 
+import br.com.willbigas.algafood.domain.exception.EntidadeNaoEncontradaException;
+import br.com.willbigas.algafood.domain.exception.NegocioException;
 import br.com.willbigas.algafood.domain.model.Restaurante;
 import br.com.willbigas.algafood.domain.repository.RestauranteRepository;
 import br.com.willbigas.algafood.domain.service.CadastroRestauranteService;
@@ -37,7 +39,11 @@ public class RestauranteController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Restaurante adicionar(@RequestBody Restaurante restaurante) {
-        return cadastroRestauranteService.salvar(restaurante);
+        try {
+            return cadastroRestauranteService.salvar(restaurante);
+        } catch (EntidadeNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
@@ -45,7 +51,13 @@ public class RestauranteController {
         Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(id);
         BeanUtils.copyProperties(restaurante, restauranteAtual,
                 "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
-        return cadastroRestauranteService.salvar(restauranteAtual);
+
+        try {
+            return cadastroRestauranteService.salvar(restauranteAtual);
+        } catch (EntidadeNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage());
+        }
+
     }
 
     @PatchMapping("/{id}")
