@@ -1,5 +1,6 @@
 package br.com.willbigas.algafood.api.exceptionhandler;
 
+import br.com.willbigas.algafood.domain.exception.EntidadeEmUsoException;
 import br.com.willbigas.algafood.domain.exception.EntidadeNaoEncontradaException;
 import br.com.willbigas.algafood.domain.exception.NegocioException;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,16 @@ public class ApiExceptionHandler {
                 .dataHora(LocalDateTime.now())
                 .mensagem("O tipo de mídia não é aceito").build();
         return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+                .body(problema);
+    }
+
+    @ExceptionHandler(EntidadeEmUsoException.class)
+    public ResponseEntity<?> tratarEntidadeEmUsoException(EntidadeEmUsoException e) {
+        Problema problema = Problema.builder()
+                .dataHora(LocalDateTime.now())
+                .mensagem(e.getMessage()).build();
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(problema);
     }
 
