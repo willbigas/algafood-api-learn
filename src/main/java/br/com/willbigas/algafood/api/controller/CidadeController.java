@@ -1,6 +1,7 @@
 package br.com.willbigas.algafood.api.controller;
 
 import br.com.willbigas.algafood.domain.exception.EntidadeNaoEncontradaException;
+import br.com.willbigas.algafood.domain.exception.EstadoNaoEncontradoException;
 import br.com.willbigas.algafood.domain.exception.NegocioException;
 import br.com.willbigas.algafood.domain.model.Cidade;
 import br.com.willbigas.algafood.domain.repository.CidadeRepository;
@@ -38,8 +39,8 @@ public class CidadeController {
     public Cidade adicionar(@RequestBody Cidade cidade) {
         try {
             return cadastroCidadeService.salvar(cidade);
-        } catch (EntidadeNaoEncontradaException e) {
-            throw new NegocioException(e.getMessage());
+        } catch (EstadoNaoEncontradoException e) {
+            throw new NegocioException(e.getMessage() , e);
         }
     }
 
@@ -49,8 +50,8 @@ public class CidadeController {
         BeanUtils.copyProperties(cidade, cidadeAtual, "id");
         try {
             return cadastroCidadeService.salvar(cidadeAtual);
-        } catch (EntidadeNaoEncontradaException e) {
-            throw new NegocioException(e.getMessage());
+        } catch (EstadoNaoEncontradoException e) {
+            throw new NegocioException(e.getMessage() , e);
         }
     }
 
