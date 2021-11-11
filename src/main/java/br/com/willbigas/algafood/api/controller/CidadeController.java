@@ -1,7 +1,5 @@
 package br.com.willbigas.algafood.api.controller;
 
-import br.com.willbigas.algafood.api.exceptionhandler.Problema;
-import br.com.willbigas.algafood.domain.exception.EntidadeNaoEncontradaException;
 import br.com.willbigas.algafood.domain.exception.EstadoNaoEncontradoException;
 import br.com.willbigas.algafood.domain.exception.NegocioException;
 import br.com.willbigas.algafood.domain.model.Cidade;
@@ -10,10 +8,8 @@ import br.com.willbigas.algafood.domain.service.CadastroCidadeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
