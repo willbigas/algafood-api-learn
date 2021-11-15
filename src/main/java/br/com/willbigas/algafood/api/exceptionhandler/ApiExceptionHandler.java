@@ -6,6 +6,7 @@ import br.com.willbigas.algafood.domain.exception.NegocioException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -15,6 +16,16 @@ import java.time.LocalDateTime;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+        ProblemType problemType = ProblemType.MENSAGEM_IMCOMPREENSIVEL;
+        String detail = "O corpo da requisição está inválido, Verifique erro de sintaxe.";
+        Problem problem = createProblemBuilder(status, problemType, detail).build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+    }
 
     @ExceptionHandler(EntidadeNaoEncontradaException.class)
     public ResponseEntity<?> handleEntidadeNaoEncontradaException(EntidadeNaoEncontradaException e, WebRequest request) {
@@ -32,19 +43,23 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(NegocioException.class)
-    public ResponseEntity<?> handleNegocioException(NegocioException e) {
-        Problem problem = Problem.builder()
-                .title(e.getMessage()).build();
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problem);
+    public ResponseEntity<?> handleNegocioException(NegocioException e, WebRequest request) {
+
+        Problem problem = createProblemBuilder(HttpStatus.BAD_REQUEST , ProblemType.ERRO_NEGOCIO, e.getMessage()).build();
+
+        return handleExceptionInternal(e, problem, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler(EntidadeEmUsoException.class)
-    public ResponseEntity<?> handleEntidadeEmUsoException(EntidadeEmUsoException e) {
-        Problem problem = Problem.builder()
-                .title(e.getMessage()).build();
+    public ResponseEntity<?> handleEntidadeEmUsoException(EntidadeEmUsoException e , WebRequest request) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        ProblemType problemType = ProblemType.ENTIDADE_EM_USO;
+        String detail = e.getMessage();
 
-        return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(problem);
+        Problem problem = createProblemBuilder(status, problemType, detail).build();
+
+        return handleExceptionInternal(e, problem, new HttpHeaders(), status, request);
+
     }
 
     @Override
