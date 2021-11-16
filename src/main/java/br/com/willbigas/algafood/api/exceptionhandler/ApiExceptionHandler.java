@@ -108,7 +108,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         String detail = String.format("A propriedade '%s' não existe. "
                 + "Corrija ou remova essa propriedade e tente novamente.", path);
 
-        Problem problem = createProblemBuilder(status, problemType, detail).build();
+        Problem problem = createProblemBuilder(status, problemType, detail)
+                .userMessage("Ocorreu um erro interno inesperado no sistema. "
+                        + "Tente novamente e se o problema persistir, entre em contato "
+                        + "com o administrador do sistema.")
+                .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
