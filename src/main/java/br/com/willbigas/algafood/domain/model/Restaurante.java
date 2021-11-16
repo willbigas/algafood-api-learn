@@ -8,7 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -25,10 +25,14 @@ public class Restaurante  implements Serializable {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @NotNull
+//    @NotNull
+//    @NotEmpty
+    @NotBlank
     @Column(nullable = false)
     private String nome;
 
+//    @DecimalMin("1")
+    @PositiveOrZero
     @Column(name = "taxa_frete" , nullable = false)
     private BigDecimal taxaFrete;
 
