@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -37,6 +38,8 @@ public class Restaurante  implements Serializable {
     private BigDecimal taxaFrete;
 
 //    @JsonIgnore
+    @Valid
+    @NotNull
     @JsonIgnoreProperties({"hibernateLazyInitializer"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cozinha_id" , nullable = false)
