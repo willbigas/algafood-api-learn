@@ -1,5 +1,6 @@
 package br.com.willbigas.algafood.domain.model;
 
+import br.com.willbigas.algafood.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
@@ -28,18 +29,18 @@ public class Restaurante  implements Serializable {
 
 //    @NotNull
 //    @NotEmpty
-    @NotBlank
+    @NotBlank(groups = Groups.CadastroRestaurante.class)
     @Column(nullable = false)
     private String nome;
 
 //    @DecimalMin("1")
-    @PositiveOrZero
+    @PositiveOrZero(groups = Groups.CadastroRestaurante.class)
     @Column(name = "taxa_frete" , nullable = false)
     private BigDecimal taxaFrete;
 
 //    @JsonIgnore
     @Valid
-    @NotNull
+    @NotNull(groups = Groups.CadastroRestaurante.class)
     @JsonIgnoreProperties({"hibernateLazyInitializer"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cozinha_id" , nullable = false)

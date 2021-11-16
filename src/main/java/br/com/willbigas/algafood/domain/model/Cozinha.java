@@ -1,5 +1,6 @@
 package br.com.willbigas.algafood.domain.model;
 
+import br.com.willbigas.algafood.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,7 +16,7 @@ import java.util.List;
 @Entity
 public class Cozinha implements Serializable {
 
-    @NotNull
+    @NotNull(groups = Groups.CadastroRestaurante.class)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
