@@ -1,6 +1,6 @@
 package br.com.willbigas.algafood.domain.model;
 
-import br.com.willbigas.algafood.Groups;
+import br.com.willbigas.algafood.core.validation.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;

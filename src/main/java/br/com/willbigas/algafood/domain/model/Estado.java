@@ -1,6 +1,6 @@
 package br.com.willbigas.algafood.domain.model;
 
-import br.com.willbigas.algafood.Groups;
+import br.com.willbigas.algafood.core.validation.Groups;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

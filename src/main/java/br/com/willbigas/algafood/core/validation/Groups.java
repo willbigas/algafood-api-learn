@@ -1,4 +1,4 @@
-package br.com.willbigas.algafood;
+package br.com.willbigas.algafood.core.validation;
 
 public interface Groups {
 
