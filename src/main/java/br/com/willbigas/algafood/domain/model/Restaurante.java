@@ -1,6 +1,8 @@
 package br.com.willbigas.algafood.domain.model;
 
 import br.com.willbigas.algafood.core.validation.Groups;
+import br.com.willbigas.algafood.core.validation.Multiplo;
+import br.com.willbigas.algafood.core.validation.TaxaFrete;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
@@ -36,8 +38,9 @@ public class Restaurante  implements Serializable {
     private String nome;
 
 //    @DecimalMin("1")
-    @PositiveOrZero
+    @TaxaFrete
     @Column(name = "taxa_frete" , nullable = false)
+    @Multiplo(numero = 5)
     private BigDecimal taxaFrete;
 
 //    @JsonIgnore
