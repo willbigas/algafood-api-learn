@@ -1,5 +1,6 @@
 package br.com.willbigas.algafood.api.controller;
 
+import br.com.willbigas.algafood.core.validation.ValidacaoException;
 import br.com.willbigas.algafood.domain.exception.EntidadeNaoEncontradaException;
 import br.com.willbigas.algafood.domain.exception.NegocioException;
 import br.com.willbigas.algafood.domain.model.Restaurante;
@@ -14,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +33,9 @@ public class RestauranteController {
     private RestauranteRepository restauranteRepository;
     @Autowired
     private CadastroRestauranteService cadastroRestauranteService;
+
+    @Autowired
+    private SmartValidator validator;
 
     @GetMapping
     public List<Restaurante> listar() {
@@ -70,7 +76,17 @@ public class RestauranteController {
     public Restaurante atualizarParcial(@PathVariable Long id, @RequestBody Map<String, Object> campos, HttpServletRequest request) {
         Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(id);
         merge(campos, restauranteAtual , request);
+        validate(restauranteAtual , "restaurante");
         return atualizar(id, restauranteAtual);
+    }
+
+    private void validate(Restaurante restaurante , String objectName) {
+        BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante , objectName);
+        validator.validate(restaurante, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            throw new ValidacaoException(bindingResult);
+        }
     }
 
     private void merge(@RequestBody Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest request) {
