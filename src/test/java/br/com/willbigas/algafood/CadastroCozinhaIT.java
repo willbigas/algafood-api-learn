@@ -1,49 +1,35 @@
 package br.com.willbigas.algafood;
 
-import br.com.willbigas.algafood.domain.model.Cozinha;
-import br.com.willbigas.algafood.domain.service.CadastroCozinhaService;
-import org.junit.jupiter.api.Assertions;
+import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static io.restassured.RestAssured.*;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CadastroCozinhaIT {
 
-    @Autowired
-    private CadastroCozinhaService cadastroCozinha;
-
-
-    @Test
-    public void testarCadastroDeCozinhaComSucesso() {
-        // cenário
-        Cozinha novaCozinha = new Cozinha();
-        novaCozinha.setNome("Chinesa");
-
-        // acao
-        novaCozinha = cadastroCozinha.salvar(novaCozinha);
-
-        // validacao
-
-        assertThat(novaCozinha).isNotNull();
-        assertThat(novaCozinha.getId()).isNotNull();
-    }
+    @LocalServerPort
+    private int port;
 
     @Test
-    public void testarCadastroCozinhaSemNome() {
-        Cozinha novaCozinha = new Cozinha();
-        novaCozinha.setNome(null);
+    public void deveRetornarStatus200_QuandoConsultarCozinhas() {
+        enableLoggingOfRequestAndResponseIfValidationFails();
 
-        DataIntegrityViolationException constraintViolationException = Assertions.assertThrows(DataIntegrityViolationException.class, () -> {
-            cadastroCozinha.salvar(novaCozinha);
-        });
-        assertThat(constraintViolationException).isNotNull();
+        given()
+                .basePath("/cozinhas")
+                .port(port)
+                .accept(ContentType.JSON)
+              .when()
+                .get()
+                .then()
+                .statusCode(HttpStatus.OK.value());
     }
+
 
 }
