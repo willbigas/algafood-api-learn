@@ -2,17 +2,13 @@ package br.com.willbigas.algafood.domain.service;
 
 import br.com.willbigas.algafood.domain.exception.CidadeNaoEncontradoException;
 import br.com.willbigas.algafood.domain.exception.EntidadeEmUsoException;
-import br.com.willbigas.algafood.domain.exception.EntidadeNaoEncontradaException;
 import br.com.willbigas.algafood.domain.model.Cidade;
-import br.com.willbigas.algafood.domain.model.Cozinha;
 import br.com.willbigas.algafood.domain.model.Estado;
-import br.com.willbigas.algafood.domain.model.Restaurante;
 import br.com.willbigas.algafood.domain.repository.CidadeRepository;
-import br.com.willbigas.algafood.domain.repository.EstadoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CadastroCidadeService {
@@ -23,13 +19,15 @@ public class CadastroCidadeService {
     private static final String MSG_CIDADE_NAO_ENCONTRADA
             = "Não existe um cadastro de cidade com código %d";
 
-    @Autowired
-    private CidadeRepository cidadeRepository;
-    @Autowired
-    private EstadoRepository estadoRepository;
-    @Autowired
-    private CadastroEstadoService cadastroEstadoService;
+    private final CidadeRepository cidadeRepository;
+    private final CadastroEstadoService cadastroEstadoService;
 
+    public CadastroCidadeService(CidadeRepository cidadeRepository, CadastroEstadoService cadastroEstadoService) {
+        this.cidadeRepository = cidadeRepository;
+        this.cadastroEstadoService = cadastroEstadoService;
+    }
+
+    @Transactional
     public Cidade salvar(Cidade cidade) {
         Long estadoId = cidade.getEstado().getId();
         Estado estado = cadastroEstadoService.buscarOuFalhar(estadoId);
@@ -37,6 +35,7 @@ public class CadastroCidadeService {
         return cidadeRepository.save(cidade);
     }
 
+    @Transactional
     public void excluir(Long cidadeID) {
         try {
             cidadeRepository.deleteById(cidadeID);
