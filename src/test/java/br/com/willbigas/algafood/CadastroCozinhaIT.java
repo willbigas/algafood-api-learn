@@ -1,6 +1,8 @@
 package br.com.willbigas.algafood;
 
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,13 +22,17 @@ class CadastroCozinhaIT {
     @LocalServerPort
     private int port;
 
+    @BeforeEach
+    public void beforeEach() {
+        enableLoggingOfRequestAndResponseIfValidationFails();
+        RestAssured.basePath = "/cozinhas";
+        RestAssured.port = port;
+
+    }
+
     @Test
     public void deveRetornarStatus200_QuandoConsultarCozinhas() {
-        enableLoggingOfRequestAndResponseIfValidationFails();
-
         given()
-                .basePath("/cozinhas")
-                .port(port)
                 .accept(ContentType.JSON)
                 .when()
                 .get()
@@ -37,17 +43,13 @@ class CadastroCozinhaIT {
 
     @Test
     public void deveConter9Cozinhas_QuandoConsultarCozinhas() {
-        enableLoggingOfRequestAndResponseIfValidationFails();
-
-                given()
-                    .basePath("/cozinhas")
-                    .port(port)
-                    .accept(ContentType.JSON)
+        given()
+                .accept(ContentType.JSON)
                 .when()
-                    .get()
+                .get()
                 .then()
-                    .body("", hasSize(9))
-                    .body("nome", hasItems("Indiana", "Tailandesa"));
+                .body("", hasSize(9))
+                .body("nome", hasItems("Indiana", "Tailandesa"));
     }
 
 
