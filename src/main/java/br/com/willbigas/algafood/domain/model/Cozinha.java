@@ -31,6 +31,10 @@ public class Cozinha implements Serializable {
     public Cozinha() {
     }
 
+    public Cozinha(String nome) {
+        this.nome = nome;
+    }
+
     @Column(nullable = false)
     private String nome;
 
