@@ -14,7 +14,11 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.util.StreamUtils;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
@@ -26,19 +30,29 @@ import static org.hamcrest.Matchers.*;
 @TestPropertySource("/application-test.properties")
 class CadastroCozinhaIT {
 
-    @LocalServerPort
-    private int port;
-
     @Autowired
     private DatabaseCleaner databaseCleaner;
 
     @Autowired
     private CozinhaRepository cozinhaRepository;
 
+    @LocalServerPort
+    private int port;
+
+    private static final Cozinha cozinhaAmericana = new Cozinha("Americana");
+    private static final Cozinha cozinhaTailandesa = new Cozinha("Tailandesa");
+
+    private static final List<Cozinha> cozinhas = List.of(cozinhaAmericana, cozinhaTailandesa);
+
+    public static final String PATH_COZINHAS = "/cozinhas";
+
+    public static final int COZINHA_ID_EXISTENTE = 2;
+    public static final int COZINHA_ID_INEXISTENTE = 100;
+
     @BeforeEach
     public void beforeEach() {
         enableLoggingOfRequestAndResponseIfValidationFails();
-        RestAssured.basePath = "/cozinhas";
+        RestAssured.basePath = PATH_COZINHAS;
         RestAssured.port = port;
 
         databaseCleaner.clearTables();
@@ -63,14 +77,14 @@ class CadastroCozinhaIT {
                 .when()
                 .get()
                 .then()
-                .body("", hasSize(2))
-                .body("nome", hasItems("Tailandesa", "Americana"));
+                .body("", hasSize(cozinhas.size()))
+                .body("nome", hasItems(cozinhaAmericana.getNome(), cozinhaTailandesa.getNome()));
     }
 
     @Test
     public void deveRetornarStatus201_QuandoCadastrarCozinha() {
         given()
-                .body("{ \"nome\": \"Chinesa\" }")
+                .body(getContentFromResource("/content.json"))
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .when()
@@ -82,19 +96,19 @@ class CadastroCozinhaIT {
     @Test
     public void deveRetornarRespostaEStatusCorretosQuandoConsultarCozinhaExistente() {
         given()
-                .pathParam("cozinhaId" , 2)
+                .pathParam("cozinhaId", COZINHA_ID_EXISTENTE)
                 .accept(ContentType.JSON)
                 .when()
                 .get("/{cozinhaId}")
                 .then()
                 .statusCode(HttpStatus.OK.value())
-                .body("nome", equalTo("Americana"));
+                .body("nome", equalTo(cozinhaTailandesa.getNome()));
     }
 
     @Test
     public void deveRetornarStatus404QuandoConsultarCozinhaInexistente() {
         given()
-                .pathParam("cozinhaId" , 100)
+                .pathParam("cozinhaId", COZINHA_ID_INEXISTENTE)
                 .accept(ContentType.JSON)
                 .when()
                 .get("/{cozinhaId}")
@@ -103,9 +117,16 @@ class CadastroCozinhaIT {
     }
 
     private void prepararDados() {
-        List<Cozinha> cozinhas = List.of(new Cozinha("Tailandesa"), new Cozinha("Americana"));
         cozinhaRepository.saveAll(cozinhas);
     }
 
+    public String getContentFromResource(String resourceName) {
+        try {
+            InputStream stream = this.getClass().getResourceAsStream(resourceName);
+            return StreamUtils.copyToString(stream, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }
