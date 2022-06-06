@@ -49,8 +49,8 @@ public class Restaurante  implements Serializable {
     @Valid
     @ConvertGroup(from = Default.class , to = Groups.CozinhaId.class)
     @NotNull
-    @JsonIgnoreProperties({"hibernateLazyInitializer"})
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = "nome" , allowGetters = true)
+    @ManyToOne
     @JoinColumn(name = "cozinha_id" , nullable = false)
     private Cozinha cozinha;
 
