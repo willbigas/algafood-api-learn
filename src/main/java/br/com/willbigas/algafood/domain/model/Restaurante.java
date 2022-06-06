@@ -4,8 +4,6 @@ import br.com.willbigas.algafood.core.validation.Groups;
 import br.com.willbigas.algafood.core.validation.Multiplo;
 import br.com.willbigas.algafood.core.validation.TaxaFrete;
 import br.com.willbigas.algafood.core.validation.ValorZeroIncluiDescricao;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,7 +11,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 import java.io.Serializable;
@@ -33,29 +32,23 @@ public class Restaurante  implements Serializable {
     @EqualsAndHashCode.Include
     private Long id;
 
-//    @NotNull
-//    @NotEmpty
     @NotBlank
     @Column(nullable = false)
     private String nome;
 
-//    @DecimalMin("1")
     @TaxaFrete
     @Column(name = "taxa_frete" , nullable = false)
     @Multiplo(numero = 5)
     private BigDecimal taxaFrete;
 
-//    @JsonIgnore
     @Valid
     @ConvertGroup(from = Default.class , to = Groups.CozinhaId.class)
     @NotNull
-    @JsonIgnoreProperties(value = "nome" , allowGetters = true)
     @ManyToOne
     @JoinColumn(name = "cozinha_id" , nullable = false)
     private Cozinha cozinha;
 
     @Embedded
-    @JsonIgnore
     private Endereco endereco;
 
     @CreationTimestamp
@@ -66,11 +59,9 @@ public class Restaurante  implements Serializable {
     @Column(nullable = false , columnDefinition = "datetime")
     private LocalDateTime dataAtualizacao;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produtos;
 
-    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "restaurante_forma_pagamento" ,
                 joinColumns = @JoinColumn(name = "restaurante_id"),
