@@ -26,7 +26,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -89,7 +89,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         Problem problem = createProblemBuilder(status, problemType, detail)
                 .userMessage("Um ou mais campos estão inválidos. faça o preenchimento correto e tente novamente")
-                .timestamp(LocalDateTime.now())
+                .timestamp(OffsetDateTime.now())
                 .objects(problemObjects)
                 .build();
 
@@ -260,13 +260,13 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         if (body == null) {
             body = Problem.builder()
                     .title(status.getReasonPhrase())
-                    .timestamp(LocalDateTime.now())
+                    .timestamp(OffsetDateTime.now())
                     .status(status.value())
                     .build();
         } else if (body instanceof String) {
             body = Problem.builder()
                     .title((String) body)
-                    .timestamp(LocalDateTime.now())
+                    .timestamp(OffsetDateTime.now())
                     .status(status.value())
                     .build();
         }
@@ -279,7 +279,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .status(status.value())
                 .type(problemType.getUri())
                 .title(problemType.getTitle())
-                .timestamp(LocalDateTime.now())
+                .timestamp(OffsetDateTime.now())
                 .detail(detail);
     }
 
