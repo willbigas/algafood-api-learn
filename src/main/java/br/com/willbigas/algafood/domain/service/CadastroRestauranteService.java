@@ -40,6 +40,7 @@ public class CadastroRestauranteService {
     public void excluir(Long restauranteID) {
         try {
             restauranteRepository.deleteById(restauranteID);
+            restauranteRepository.flush();
         } catch (EmptyResultDataAccessException e) {
             throw new RestauranteNaoEncontradoException(String.format("Não existe um cadastro de cozinha com código %d ", restauranteID));
         } catch (DataIntegrityViolationException e) {
