@@ -1,6 +1,7 @@
 package br.com.willbigas.algafood.api.assembler;
 
 import br.com.willbigas.algafood.api.model.input.RestauranteInput;
+import br.com.willbigas.algafood.domain.model.Cidade;
 import br.com.willbigas.algafood.domain.model.Restaurante;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,11 @@ public class RestauranteInputDisassembler {
     }
 
     public void copyToDomainObject(RestauranteInput restauranteInput , Restaurante restaurante) {
+
+        if (restaurante.getEndereco() != null) {
+            restaurante.getEndereco().setCidade(new Cidade());
+        }
+
         modelMapper.map(restauranteInput , restaurante);
     }
 

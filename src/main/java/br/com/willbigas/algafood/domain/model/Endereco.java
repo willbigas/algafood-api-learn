@@ -28,7 +28,7 @@ public class Endereco implements Serializable {
     @JoinColumn(name = "endereco_cidade_id")
     private Cidade cidade;
 
-
-
-
+    public String getNomeEstadoDaCidade() {
+        return cidade.getEstado().getNome();
+    }
 }

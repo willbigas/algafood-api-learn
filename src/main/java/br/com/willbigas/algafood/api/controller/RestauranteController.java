@@ -132,7 +132,17 @@ public class RestauranteController {
         cadastroRestauranteService.excluir(id);
     }
 
-   
+    @PutMapping("/{id}/ativo")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void ativar(@PathVariable Long id) {
+        cadastroRestauranteService.ativar(id);
+    }
+
+    @DeleteMapping("/{id}/ativo")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void inativar(@PathVariable Long id) {
+        cadastroRestauranteService.inativar(id);
+    }
 
     private RestauranteInput toInputObject(Restaurante restaurante) {
         RestauranteInput input = new RestauranteInput();
@@ -146,15 +156,4 @@ public class RestauranteController {
         return input;
     }
 
-    @PutMapping("/{id}/ativo")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void ativar(@PathVariable Long id) {
-        cadastroRestauranteService.ativar(id);
-    }
-
-    @DeleteMapping("/{id}/ativo")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void inativar(@PathVariable Long id) {
-        cadastroRestauranteService.inativar(id);
-    }
 }

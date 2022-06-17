@@ -14,4 +14,5 @@ public class RestauranteModel {
     private String nome;
     private Boolean ativo;
     private CozinhaModel cozinha;
+    private EnderecoModel endereco;
 }

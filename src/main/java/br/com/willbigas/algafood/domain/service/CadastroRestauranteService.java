@@ -2,6 +2,7 @@ package br.com.willbigas.algafood.domain.service;
 
 import br.com.willbigas.algafood.domain.exception.EntidadeEmUsoException;
 import br.com.willbigas.algafood.domain.exception.RestauranteNaoEncontradoException;
+import br.com.willbigas.algafood.domain.model.Cidade;
 import br.com.willbigas.algafood.domain.model.Cozinha;
 import br.com.willbigas.algafood.domain.model.Restaurante;
 import br.com.willbigas.algafood.domain.repository.CozinhaRepository;
@@ -16,23 +17,30 @@ public class CadastroRestauranteService {
 
     private final RestauranteRepository restauranteRepository;
     private final CozinhaRepository cozinhaRepository;
+    private final CadastroCidadeService cadastroCidadeService;
 
     private static final String MSG_RESTAURANTE_NAO_ENCONTRADO
             = "Não existe um cadastro de restaurante com código %d";
 
-    public CadastroRestauranteService(RestauranteRepository restauranteRepository, CozinhaRepository cozinhaRepository) {
+    public CadastroRestauranteService(RestauranteRepository restauranteRepository, CozinhaRepository cozinhaRepository , CadastroCidadeService cadastroCidadeService) {
         this.restauranteRepository = restauranteRepository;
         this.cozinhaRepository = cozinhaRepository;
+        this.cadastroCidadeService = cadastroCidadeService;
     }
 
 
     @Transactional
     public Restaurante salvar(Restaurante restaurante) {
         Long cozinhaId = restaurante.getCozinha().getId();
+        Long cidadeId = restaurante.getEndereco().getCidade().getId();
+
         Cozinha cozinha = cozinhaRepository.findById(cozinhaId)
                 .orElseThrow(() -> new RestauranteNaoEncontradoException(String.format("Não existe cadastro de cozinha com o código %d", cozinhaId)));
 
+        Cidade cidade = cadastroCidadeService.buscarOuFalhar(cidadeId);
+
         restaurante.setCozinha(cozinha);
+        restaurante.getEndereco().setCidade(cidade);
         return restauranteRepository.save(restaurante);
     }
 
