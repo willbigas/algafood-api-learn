@@ -132,6 +132,8 @@ public class RestauranteController {
         cadastroRestauranteService.excluir(id);
     }
 
+   
+
     private RestauranteInput toInputObject(Restaurante restaurante) {
         RestauranteInput input = new RestauranteInput();
         input.setNome(restaurante.getNome());
@@ -142,5 +144,17 @@ public class RestauranteController {
         input.setCozinha(cozinha);
 
         return input;
+    }
+
+    @PutMapping("/{id}/ativo")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void ativar(@PathVariable Long id) {
+        cadastroRestauranteService.ativar(id);
+    }
+
+    @DeleteMapping("/{id}/ativo")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void inativar(@PathVariable Long id) {
+        cadastroRestauranteService.inativar(id);
     }
 }
