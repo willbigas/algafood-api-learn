@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public class CustomJPARepositoryImpl<T , ID> extends SimpleJpaRepository<T , ID> implements CustomJPARepository<T , ID> {
 
-    private EntityManager manager;
+    private final EntityManager manager;
 
     public CustomJPARepositoryImpl(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
         super(entityInformation, entityManager);
@@ -26,4 +26,11 @@ public class CustomJPARepositoryImpl<T , ID> extends SimpleJpaRepository<T , ID>
 
         return Optional.ofNullable(entity);
     }
+
+    @Override
+    public void detach(T entity) {
+        manager.detach(entity);
+    }
+
+
 }
