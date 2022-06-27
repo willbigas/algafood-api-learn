@@ -1,7 +1,7 @@
 package br.com.willbigas.algafood.api.controller;
 
-import br.com.willbigas.algafood.api.assembler.RestauranteInputConverter;
-import br.com.willbigas.algafood.api.assembler.RestauranteModelConverter;
+import br.com.willbigas.algafood.api.converter.RestauranteInputConverter;
+import br.com.willbigas.algafood.api.converter.RestauranteModelConverter;
 import br.com.willbigas.algafood.api.model.RestauranteModel;
 import br.com.willbigas.algafood.api.model.input.CozinhaIdInput;
 import br.com.willbigas.algafood.api.model.input.RestauranteInput;

@@ -1,4 +1,4 @@
-package br.com.willbigas.algafood.api.assembler;
+package br.com.willbigas.algafood.api.converter;
 
 import br.com.willbigas.algafood.api.model.input.RestauranteInput;
 import br.com.willbigas.algafood.domain.model.Cidade;

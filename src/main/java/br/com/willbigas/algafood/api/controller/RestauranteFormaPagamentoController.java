@@ -1,6 +1,6 @@
 package br.com.willbigas.algafood.api.controller;
 
-import br.com.willbigas.algafood.api.assembler.FormaPagamentoConverter;
+import br.com.willbigas.algafood.api.converter.FormaPagamentoConverter;
 import br.com.willbigas.algafood.api.model.FormaPagamentoModel;
 import br.com.willbigas.algafood.domain.model.Restaurante;
 import br.com.willbigas.algafood.domain.service.RestauranteService;
