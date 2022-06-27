@@ -4,11 +4,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class FormaPagamento {
+public class FormaPagamento implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

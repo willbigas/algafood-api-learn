@@ -1,11 +1,9 @@
 package br.com.willbigas.algafood.api.controller;
 
-import br.com.willbigas.algafood.domain.exception.EntidadeEmUsoException;
-import br.com.willbigas.algafood.domain.exception.EntidadeNaoEncontradaException;
 import br.com.willbigas.algafood.domain.exception.EstadoNaoEncontradoException;
 import br.com.willbigas.algafood.domain.model.Estado;
 import br.com.willbigas.algafood.domain.repository.EstadoRepository;
-import br.com.willbigas.algafood.domain.service.CadastroEstadoService;
+import br.com.willbigas.algafood.domain.service.EstadoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/estados")
@@ -23,7 +20,7 @@ public class EstadoController {
     @Autowired
     private EstadoRepository estadoRepository;
     @Autowired
-    private CadastroEstadoService cadastroEstadoService;
+    private EstadoService estadoService;
 
     @GetMapping
     public List<Estado> listar() {
@@ -32,13 +29,13 @@ public class EstadoController {
 
     @GetMapping("/{id}")
     public Estado buscar(@PathVariable Long id) {
-        return cadastroEstadoService.buscarOuFalhar(id);
+        return estadoService.buscarOuFalhar(id);
     }
 
     @PostMapping
     public ResponseEntity<?> adicionar(@RequestBody @Valid Estado estado) {
         try {
-            estado = cadastroEstadoService.salvar(estado);
+            estado = estadoService.salvar(estado);
             return ResponseEntity.status(HttpStatus.CREATED).body(estado);
         } catch (EstadoNaoEncontradoException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -47,14 +44,14 @@ public class EstadoController {
 
     @PutMapping("/{id}")
     public Estado  atualizar(@PathVariable Long id, @RequestBody @Valid Estado estado) {
-        Estado estadoAtual = cadastroEstadoService.buscarOuFalhar(id);
+        Estado estadoAtual = estadoService.buscarOuFalhar(id);
         BeanUtils.copyProperties(estado, estadoAtual, "id");
-        return cadastroEstadoService.salvar(estadoAtual);
+        return estadoService.salvar(estadoAtual);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long id) {
-        cadastroEstadoService.excluir(id);
+        estadoService.excluir(id);
     }
 }

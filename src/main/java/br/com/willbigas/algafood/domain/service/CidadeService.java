@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class CadastroCidadeService {
+public class CidadeService {
 
     private static final String MSG_CIDADE_EM_USO
             = "Cidade de código %d não pode ser removida, pois está em uso";
@@ -20,17 +20,17 @@ public class CadastroCidadeService {
             = "Não existe um cadastro de cidade com código %d";
 
     private final CidadeRepository cidadeRepository;
-    private final CadastroEstadoService cadastroEstadoService;
+    private final EstadoService estadoService;
 
-    public CadastroCidadeService(CidadeRepository cidadeRepository, CadastroEstadoService cadastroEstadoService) {
+    public CidadeService(CidadeRepository cidadeRepository, EstadoService estadoService) {
         this.cidadeRepository = cidadeRepository;
-        this.cadastroEstadoService = cadastroEstadoService;
+        this.estadoService = estadoService;
     }
 
     @Transactional
     public Cidade salvar(Cidade cidade) {
         Long estadoId = cidade.getEstado().getId();
-        Estado estado = cadastroEstadoService.buscarOuFalhar(estadoId);
+        Estado estado = estadoService.buscarOuFalhar(estadoId);
         cidade.setEstado(estado);
         return cidadeRepository.save(cidade);
     }

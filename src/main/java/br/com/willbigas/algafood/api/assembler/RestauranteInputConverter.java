@@ -7,11 +7,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RestauranteInputDisassembler {
+public class RestauranteInputConverter {
 
     private final ModelMapper modelMapper;
 
-    public RestauranteInputDisassembler(ModelMapper modelMapper) {
+    public RestauranteInputConverter(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
 

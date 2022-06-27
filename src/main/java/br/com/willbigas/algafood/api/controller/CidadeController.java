@@ -4,7 +4,7 @@ import br.com.willbigas.algafood.domain.exception.EstadoNaoEncontradoException;
 import br.com.willbigas.algafood.domain.exception.NegocioException;
 import br.com.willbigas.algafood.domain.model.Cidade;
 import br.com.willbigas.algafood.domain.repository.CidadeRepository;
-import br.com.willbigas.algafood.domain.service.CadastroCidadeService;
+import br.com.willbigas.algafood.domain.service.CidadeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +17,11 @@ import java.util.List;
 public class CidadeController {
 
     private final CidadeRepository cidadeRepository;
-    private final CadastroCidadeService cadastroCidadeService;
+    private final CidadeService cidadeService;
 
-    public CidadeController(CidadeRepository cidadeRepository, CadastroCidadeService cadastroCidadeService) {
+    public CidadeController(CidadeRepository cidadeRepository, CidadeService cidadeService) {
         this.cidadeRepository = cidadeRepository;
-        this.cadastroCidadeService = cadastroCidadeService;
+        this.cidadeService = cidadeService;
     }
 
     @GetMapping
@@ -31,14 +31,14 @@ public class CidadeController {
 
     @GetMapping("/{id}")
     public Cidade buscar(@PathVariable Long id) {
-        return cadastroCidadeService.buscarOuFalhar(id);
+        return cidadeService.buscarOuFalhar(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Cidade adicionar(@RequestBody @Valid Cidade cidade) {
         try {
-            return cadastroCidadeService.salvar(cidade);
+            return cidadeService.salvar(cidade);
         } catch (EstadoNaoEncontradoException e) {
             throw new NegocioException(e.getMessage() , e);
         }
@@ -46,10 +46,10 @@ public class CidadeController {
 
     @PutMapping("/{id}")
     public Cidade atualizar(@PathVariable Long id, @RequestBody @Valid Cidade cidade) {
-        Cidade cidadeAtual = cadastroCidadeService.buscarOuFalhar(id);
+        Cidade cidadeAtual = cidadeService.buscarOuFalhar(id);
         BeanUtils.copyProperties(cidade, cidadeAtual, "id");
         try {
-            return cadastroCidadeService.salvar(cidadeAtual);
+            return cidadeService.salvar(cidadeAtual);
         } catch (EstadoNaoEncontradoException e) {
             throw new NegocioException(e.getMessage() , e);
         }
@@ -58,7 +58,7 @@ public class CidadeController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long id) {
-        cadastroCidadeService.excluir(id);
+        cidadeService.excluir(id);
     }
 
 }

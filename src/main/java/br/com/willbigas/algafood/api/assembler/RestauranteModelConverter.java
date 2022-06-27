@@ -9,11 +9,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class RestauranteModelAssembler {
+public class RestauranteModelConverter {
+
 
     private final ModelMapper modelMapper;
 
-    public RestauranteModelAssembler(ModelMapper modelMapper) {
+    public RestauranteModelConverter(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
 

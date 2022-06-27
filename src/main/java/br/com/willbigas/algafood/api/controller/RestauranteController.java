@@ -1,7 +1,7 @@
 package br.com.willbigas.algafood.api.controller;
 
-import br.com.willbigas.algafood.api.assembler.RestauranteInputDisassembler;
-import br.com.willbigas.algafood.api.assembler.RestauranteModelAssembler;
+import br.com.willbigas.algafood.api.assembler.RestauranteInputConverter;
+import br.com.willbigas.algafood.api.assembler.RestauranteModelConverter;
 import br.com.willbigas.algafood.api.model.RestauranteModel;
 import br.com.willbigas.algafood.api.model.input.CozinhaIdInput;
 import br.com.willbigas.algafood.api.model.input.RestauranteInput;
@@ -10,7 +10,7 @@ import br.com.willbigas.algafood.domain.exception.EntidadeNaoEncontradaException
 import br.com.willbigas.algafood.domain.exception.NegocioException;
 import br.com.willbigas.algafood.domain.model.Restaurante;
 import br.com.willbigas.algafood.domain.repository.RestauranteRepository;
-import br.com.willbigas.algafood.domain.service.CadastroRestauranteService;
+import br.com.willbigas.algafood.domain.service.RestauranteService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -34,29 +34,29 @@ import java.util.Map;
 public class RestauranteController {
 
     private final RestauranteRepository restauranteRepository;
-    private final CadastroRestauranteService cadastroRestauranteService;
+    private final RestauranteService restauranteService;
     private final SmartValidator validator;
-    private final RestauranteModelAssembler restauranteModelAssembler;
-    private final RestauranteInputDisassembler restauranteInputDisassembler;
+    private final RestauranteModelConverter restauranteModelConverter;
+    private final RestauranteInputConverter restauranteInputConverter;
 
     @Autowired
-    public RestauranteController(RestauranteRepository restauranteRepository, CadastroRestauranteService cadastroRestauranteService, SmartValidator validator, RestauranteModelAssembler assembler , RestauranteInputDisassembler disassembler) {
+    public RestauranteController(RestauranteRepository restauranteRepository, RestauranteService restauranteService, SmartValidator validator, RestauranteModelConverter assembler , RestauranteInputConverter disassembler) {
         this.restauranteRepository = restauranteRepository;
-        this.cadastroRestauranteService = cadastroRestauranteService;
+        this.restauranteService = restauranteService;
         this.validator = validator;
-        this.restauranteModelAssembler = assembler;
-        this.restauranteInputDisassembler = disassembler;
+        this.restauranteModelConverter = assembler;
+        this.restauranteInputConverter = disassembler;
     }
 
     @GetMapping
     public List<RestauranteModel> listar() {
-        return restauranteModelAssembler.toCollectionModel(restauranteRepository.findAll());
+        return restauranteModelConverter.toCollectionModel(restauranteRepository.findAll());
     }
 
     @GetMapping("/{id}")
     public RestauranteModel buscar(@PathVariable Long id) {
-        Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(id);
-        return restauranteModelAssembler.toModel(restaurante);
+        Restaurante restaurante = restauranteService.buscarOuFalhar(id);
+        return restauranteModelConverter.toModel(restaurante);
     }
 
     @PostMapping
@@ -64,8 +64,8 @@ public class RestauranteController {
     public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
         try {
 
-            Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
-            return restauranteModelAssembler.toModel(cadastroRestauranteService.salvar(restaurante));
+            Restaurante restaurante = restauranteInputConverter.toDomainObject(restauranteInput);
+            return restauranteModelConverter.toModel(restauranteService.salvar(restaurante));
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }
@@ -75,10 +75,10 @@ public class RestauranteController {
     public RestauranteModel atualizar(@PathVariable Long id, @RequestBody @Valid RestauranteInput restauranteInput) {
 
         try {
-            Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(id);
-            restauranteInputDisassembler.copyToDomainObject(restauranteInput , restauranteAtual);
+            Restaurante restauranteAtual = restauranteService.buscarOuFalhar(id);
+            restauranteInputConverter.copyToDomainObject(restauranteInput , restauranteAtual);
 
-            return restauranteModelAssembler.toModel(cadastroRestauranteService.salvar(restauranteAtual));
+            return restauranteModelConverter.toModel(restauranteService.salvar(restauranteAtual));
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }
@@ -87,7 +87,7 @@ public class RestauranteController {
 
     @PatchMapping("/{id}")
     public RestauranteModel atualizarParcial(@PathVariable Long id, @RequestBody Map<String, Object> campos, HttpServletRequest request) {
-        Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(id);
+        Restaurante restauranteAtual = restauranteService.buscarOuFalhar(id);
         merge(campos, restauranteAtual, request);
         validate(restauranteAtual, "restaurante");
         return atualizar(id, toInputObject(restauranteAtual));
@@ -129,19 +129,19 @@ public class RestauranteController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long id) {
-        cadastroRestauranteService.excluir(id);
+        restauranteService.excluir(id);
     }
 
     @PutMapping("/{id}/ativo")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void ativar(@PathVariable Long id) {
-        cadastroRestauranteService.ativar(id);
+        restauranteService.ativar(id);
     }
 
     @DeleteMapping("/{id}/ativo")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void inativar(@PathVariable Long id) {
-        cadastroRestauranteService.inativar(id);
+        restauranteService.inativar(id);
     }
 
     private RestauranteInput toInputObject(Restaurante restaurante) {
