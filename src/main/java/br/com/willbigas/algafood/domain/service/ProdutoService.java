@@ -9,6 +9,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class ProdutoService {
 
@@ -22,6 +24,10 @@ public class ProdutoService {
 
     public ProdutoService(ProdutoRepository produtoRepository) {
         this.produtoRepository = produtoRepository;
+    }
+
+    public List<Produto> findAll() {
+        return produtoRepository.findAll();
     }
 
     @Transactional

@@ -3,10 +3,7 @@ package br.com.willbigas.algafood.domain.service;
 import br.com.willbigas.algafood.domain.exception.CozinhaNaoEncontradaException;
 import br.com.willbigas.algafood.domain.exception.EntidadeEmUsoException;
 import br.com.willbigas.algafood.domain.exception.RestauranteNaoEncontradoException;
-import br.com.willbigas.algafood.domain.model.Cidade;
-import br.com.willbigas.algafood.domain.model.Cozinha;
-import br.com.willbigas.algafood.domain.model.FormaPagamento;
-import br.com.willbigas.algafood.domain.model.Restaurante;
+import br.com.willbigas.algafood.domain.model.*;
 import br.com.willbigas.algafood.domain.repository.CozinhaRepository;
 import br.com.willbigas.algafood.domain.repository.RestauranteRepository;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -21,15 +18,17 @@ public class RestauranteService {
     private final CozinhaRepository cozinhaRepository;
     private final CidadeService cidadeService;
     private final FormaPagamentoService formaPagamentoService;
+    private final ProdutoService produtoService;
 
     private static final String MSG_RESTAURANTE_NAO_ENCONTRADO
             = "Não existe um cadastro de restaurante com código %d";
 
-    public RestauranteService(RestauranteRepository restauranteRepository, CozinhaRepository cozinhaRepository , CidadeService cidadeService, FormaPagamentoService formaPagamentoService) {
+    public RestauranteService(RestauranteRepository restauranteRepository, CozinhaRepository cozinhaRepository , CidadeService cidadeService, FormaPagamentoService formaPagamentoService , ProdutoService produtoService) {
         this.restauranteRepository = restauranteRepository;
         this.cozinhaRepository = cozinhaRepository;
         this.cidadeService = cidadeService;
         this.formaPagamentoService = formaPagamentoService;
+        this.produtoService = produtoService;
     }
 
 
@@ -60,6 +59,12 @@ public class RestauranteService {
         }
     }
 
+    public Restaurante buscarOuFalhar(Long restauranteId) {
+        return restauranteRepository.findById(restauranteId)
+                .orElseThrow(() -> new RestauranteNaoEncontradoException(
+                        String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, restauranteId)));
+    }
+
     @Transactional
     public void ativar(Long idRestaurante) {
         buscarOuFalhar(idRestaurante).ativar();
@@ -84,9 +89,19 @@ public class RestauranteService {
         restaurante.removerFormaPagamento(formaPagamento);
     }
 
-    public Restaurante buscarOuFalhar(Long restauranteId) {
-        return restauranteRepository.findById(restauranteId)
-                .orElseThrow(() -> new RestauranteNaoEncontradoException(
-                        String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, restauranteId)));
+    @Transactional
+    public void associarProduto(Long idRestaurante , Long idProduto) {
+        Restaurante restaurante = buscarOuFalhar(idRestaurante);
+        Produto produto = produtoService.buscarOuFalhar(idProduto);
+        restaurante.adicionarProduto(produto);
     }
+
+    @Transactional
+    public void desassociarProduto(Long idRestaurante , Long idProduto) {
+        Restaurante restaurante = buscarOuFalhar(idRestaurante);
+        Produto produto = produtoService.buscarOuFalhar(idProduto);
+        restaurante.removerProduto(produto);
+    }
+
+
 }

@@ -14,11 +14,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@ValorZeroIncluiDescricao(valorField = "taxaFrete" , descricaoField = "nome" , descricaoObrigatoria = "Frete Grátis")
+@ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class Restaurante  implements Serializable {
+public class Restaurante implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,11 +28,11 @@ public class Restaurante  implements Serializable {
     @Column(nullable = false)
     private String nome;
 
-    @Column(name = "taxa_frete" , nullable = false)
+    @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
     @ManyToOne
-    @JoinColumn(name = "cozinha_id" , nullable = false)
+    @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
 
     @Embedded
@@ -41,20 +41,20 @@ public class Restaurante  implements Serializable {
     private Boolean ativo = Boolean.TRUE;
 
     @CreationTimestamp
-    @Column(nullable = false , columnDefinition = "datetime")
+    @Column(nullable = false, columnDefinition = "datetime")
     private OffsetDateTime dataCadastro;
 
     @UpdateTimestamp
-    @Column(nullable = false , columnDefinition = "datetime")
+    @Column(nullable = false, columnDefinition = "datetime")
     private OffsetDateTime dataAtualizacao;
 
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produtos;
 
     @ManyToMany
-    @JoinTable(name = "restaurante_forma_pagamento" ,
-                joinColumns = @JoinColumn(name = "restaurante_id"),
-                inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
+    @JoinTable(name = "restaurante_forma_pagamento",
+            joinColumns = @JoinColumn(name = "restaurante_id"),
+            inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
     private Set<FormaPagamento> formasPagamento = new HashSet<>();
 
     public Long getId() {
@@ -97,11 +97,19 @@ public class Restaurante  implements Serializable {
         setAtivo(false);
     }
 
-    public boolean adicionarFormaPagamento(FormaPagamento formaPagamento) {
-        return getFormasPagamento().add(formaPagamento);
+    public void adicionarFormaPagamento(FormaPagamento formaPagamento) {
+        getFormasPagamento().add(formaPagamento);
     }
 
-    public boolean removerFormaPagamento(FormaPagamento formaPagamento) {
-        return getFormasPagamento().remove(formaPagamento);
+    public void removerFormaPagamento(FormaPagamento formaPagamento) {
+        getFormasPagamento().remove(formaPagamento);
+    }
+
+    public void adicionarProduto(Produto produto) {
+        getProdutos().add(produto);
+    }
+
+    public void removerProduto(Produto produto) {
+        getProdutos().remove(produto);
     }
 }
