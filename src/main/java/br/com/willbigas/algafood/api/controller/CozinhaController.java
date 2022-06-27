@@ -4,7 +4,6 @@ import br.com.willbigas.algafood.domain.model.Cozinha;
 import br.com.willbigas.algafood.domain.repository.CozinhaRepository;
 import br.com.willbigas.algafood.domain.service.CozinhaService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,10 +14,13 @@ import java.util.List;
 @RequestMapping(value = "/cozinhas")
 public class CozinhaController {
 
-    @Autowired
-    private CozinhaRepository cozinhaRepository;
-    @Autowired
-    private CozinhaService cozinhaService;
+    private final CozinhaRepository cozinhaRepository;
+    private final CozinhaService cozinhaService;
+
+    public CozinhaController(CozinhaRepository cozinhaRepository, CozinhaService cozinhaService) {
+        this.cozinhaRepository = cozinhaRepository;
+        this.cozinhaService = cozinhaService;
+    }
 
     @GetMapping
     public List<Cozinha> listar() {

@@ -87,7 +87,7 @@ public class RestauranteController {
         Restaurante restauranteAtual = restauranteService.buscarOuFalhar(id);
         merge(campos, restauranteAtual, request);
         validate(restauranteAtual, "restaurante");
-        return atualizar(id, toInputObject(restauranteAtual));
+        return atualizar(id, toRequestDTO(restauranteAtual));
     }
 
     private void validate(Restaurante restaurante, String objectName) {
@@ -141,16 +141,16 @@ public class RestauranteController {
         restauranteService.inativar(id);
     }
 
-    private RestauranteRequestDTO toInputObject(Restaurante restaurante) {
-        RestauranteRequestDTO input = new RestauranteRequestDTO();
-        input.setNome(restaurante.getNome());
-        input.setTaxaFrete(restaurante.getTaxaFrete());
+    private RestauranteRequestDTO toRequestDTO(Restaurante restaurante) {
+        RestauranteRequestDTO requestDTO = new RestauranteRequestDTO();
+        requestDTO.setNome(restaurante.getNome());
+        requestDTO.setTaxaFrete(restaurante.getTaxaFrete());
 
         CozinhaIDRequestDTO cozinha = new CozinhaIDRequestDTO();
         cozinha.setId(restaurante.getCozinha().getId());
-        input.setCozinha(cozinha);
+        requestDTO.setCozinha(cozinha);
 
-        return input;
+        return requestDTO;
     }
 
 }

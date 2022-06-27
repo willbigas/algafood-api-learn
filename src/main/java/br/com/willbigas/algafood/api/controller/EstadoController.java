@@ -5,7 +5,6 @@ import br.com.willbigas.algafood.domain.model.Estado;
 import br.com.willbigas.algafood.domain.repository.EstadoRepository;
 import br.com.willbigas.algafood.domain.service.EstadoService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +16,13 @@ import java.util.List;
 @RequestMapping(value = "/estados")
 public class EstadoController {
 
-    @Autowired
-    private EstadoRepository estadoRepository;
-    @Autowired
-    private EstadoService estadoService;
+    private final EstadoRepository estadoRepository;
+    private final EstadoService estadoService;
+
+    public EstadoController(EstadoRepository estadoRepository, EstadoService estadoService) {
+        this.estadoRepository = estadoRepository;
+        this.estadoService = estadoService;
+    }
 
     @GetMapping
     public List<Estado> listar() {
