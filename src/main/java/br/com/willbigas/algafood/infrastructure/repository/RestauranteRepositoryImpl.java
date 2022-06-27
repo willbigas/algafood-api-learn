@@ -26,9 +26,9 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
     @PersistenceContext
     private EntityManager manager;
 
-    @Lazy
     private final RestauranteRepository restauranteRepository;
 
+    @Lazy
     public RestauranteRepositoryImpl(RestauranteRepository restauranteRepository) {
         this.restauranteRepository = restauranteRepository;
     }
