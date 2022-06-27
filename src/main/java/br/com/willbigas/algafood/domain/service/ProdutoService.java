@@ -18,7 +18,7 @@ public class ProdutoService {
             = "Produto de código %d não pode ser removido, pois está em uso";
 
     private static final String MSG_PRODUTO_NAO_ENCONTRADO
-            = "Não existe um cadastro de cidade com código %d";
+            = "Não existe um cadastro de produto com o código %d";
 
     private final ProdutoRepository produtoRepository;
 
