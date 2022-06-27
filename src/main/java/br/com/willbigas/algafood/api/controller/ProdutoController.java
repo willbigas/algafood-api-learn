@@ -1,12 +1,11 @@
 package br.com.willbigas.algafood.api.controller;
 
 import br.com.willbigas.algafood.api.mapper.ProdutoMapper;
+import br.com.willbigas.algafood.api.model.request.ProdutoRequestDTO;
 import br.com.willbigas.algafood.api.model.response.ProdutoResponseDTO;
+import br.com.willbigas.algafood.domain.model.Produto;
 import br.com.willbigas.algafood.domain.service.ProdutoService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,6 +21,12 @@ public class ProdutoController {
         this.produtoMapper = produtoMapper;
     }
 
+    @PostMapping
+    public ProdutoResponseDTO salvar(@RequestBody ProdutoRequestDTO produtoRequestDTO) {
+        Produto produto = produtoService.salvar(produtoMapper.toProduto(produtoRequestDTO));
+        return produtoMapper.toResponseDTO(produto);
+    }
+
     @GetMapping
     public List<ProdutoResponseDTO> listar() {
         return produtoMapper.toList(produtoService.findAll());
@@ -29,6 +34,6 @@ public class ProdutoController {
 
     @GetMapping("/{id}")
     public ProdutoResponseDTO buscar(@PathVariable Long id) {
-        return produtoMapper.toModel(produtoService.buscarOuFalhar(id));
+        return produtoMapper.toResponseDTO(produtoService.buscarOuFalhar(id));
     }
 }

@@ -1,5 +1,7 @@
 package br.com.willbigas.algafood.api.mapper;
 
+import br.com.willbigas.algafood.api.model.request.ProdutoRequestDTO;
+import br.com.willbigas.algafood.api.model.request.ProdutoRequestSimplificadoDTO;
 import br.com.willbigas.algafood.api.model.response.ProdutoResponseDTO;
 import br.com.willbigas.algafood.api.model.response.ProdutoResumidoResponseDTO;
 import br.com.willbigas.algafood.domain.model.Produto;
@@ -19,12 +21,24 @@ public class ProdutoMapper {
         this.modelMapper = modelMapper;
     }
 
-    public ProdutoResponseDTO toModel(Produto produto) {
+    public ProdutoResponseDTO toResponseDTO(Produto produto) {
         return modelMapper.map(produto , ProdutoResponseDTO.class);
     }
 
+    public ProdutoResponseDTO toResponseDTO(ProdutoRequestDTO produtoRequestDTO) {
+        return modelMapper.map(produtoRequestDTO , ProdutoResponseDTO.class);
+    }
+
+    public Produto toProduto(ProdutoRequestDTO produtoRequestDTO) {
+        return modelMapper.map(produtoRequestDTO, Produto.class);
+    }
+
+    public Produto toProduto(ProdutoRequestSimplificadoDTO produtoRequestSimplificadoDTO) {
+        return modelMapper.map(produtoRequestSimplificadoDTO, Produto.class);
+    }
+
     public List<ProdutoResponseDTO> toList(Collection<Produto> formaPagamentos) {
-        return formaPagamentos.stream().map(this::toModel)
+        return formaPagamentos.stream().map(this::toResponseDTO)
                 .collect(Collectors.toList());
     }
 

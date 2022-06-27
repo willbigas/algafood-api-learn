@@ -2,6 +2,7 @@ package br.com.willbigas.algafood.domain.service;
 
 import br.com.willbigas.algafood.domain.exception.CozinhaNaoEncontradaException;
 import br.com.willbigas.algafood.domain.exception.EntidadeEmUsoException;
+import br.com.willbigas.algafood.domain.exception.ProdutoNaoEncontradoException;
 import br.com.willbigas.algafood.domain.exception.RestauranteNaoEncontradoException;
 import br.com.willbigas.algafood.domain.model.*;
 import br.com.willbigas.algafood.domain.repository.CozinhaRepository;
@@ -23,7 +24,7 @@ public class RestauranteService {
     private static final String MSG_RESTAURANTE_NAO_ENCONTRADO
             = "Não existe um cadastro de restaurante com código %d";
 
-    public RestauranteService(RestauranteRepository restauranteRepository, CozinhaRepository cozinhaRepository , CidadeService cidadeService, FormaPagamentoService formaPagamentoService , ProdutoService produtoService) {
+    public RestauranteService(RestauranteRepository restauranteRepository, CozinhaRepository cozinhaRepository, CidadeService cidadeService, FormaPagamentoService formaPagamentoService, ProdutoService produtoService) {
         this.restauranteRepository = restauranteRepository;
         this.cozinhaRepository = cozinhaRepository;
         this.cidadeService = cidadeService;
@@ -48,59 +49,83 @@ public class RestauranteService {
     }
 
     @Transactional
-    public void excluir(Long restauranteID) {
+    public void excluir(Long idRestaurante) {
         try {
-            restauranteRepository.deleteById(restauranteID);
+            restauranteRepository.deleteById(idRestaurante);
             restauranteRepository.flush();
         } catch (EmptyResultDataAccessException e) {
-            throw new RestauranteNaoEncontradoException(String.format("Não existe um cadastro de cozinha com código %d ", restauranteID));
+            throw new RestauranteNaoEncontradoException(String.format("Não existe um cadastro de restaurante com código %d ", idRestaurante));
         } catch (DataIntegrityViolationException e) {
-            throw new EntidadeEmUsoException(String.format("Cozinha de código %d não pode ser removida, pois está em uso", restauranteID));
+            throw new EntidadeEmUsoException(String.format("Restaurante de código %d não pode ser removido, pois está em uso", idRestaurante));
         }
     }
 
-    public Restaurante buscarOuFalhar(Long restauranteId) {
-        return restauranteRepository.findById(restauranteId)
+    public Restaurante buscarOuFalhar(Long idRestaurante) {
+        return restauranteRepository.findById(idRestaurante)
                 .orElseThrow(() -> new RestauranteNaoEncontradoException(
-                        String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, restauranteId)));
+                        String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, idRestaurante)));
+    }
+
+    public Produto buscarProduto(Restaurante restaurante, Long idProduto) {
+        return restaurante.getProdutos().stream()
+                .filter(p -> p.getId().equals(idProduto))
+                .findFirst()
+                .orElseThrow(() -> new ProdutoNaoEncontradoException(String.format("Produto %d não encontrado no Restaurante %d ", idProduto, restaurante.getId())));
     }
 
     @Transactional
     public void ativar(Long idRestaurante) {
-        buscarOuFalhar(idRestaurante).ativar();
+        Restaurante restaurante = buscarOuFalhar(idRestaurante);
+        restaurante.ativar();
+        salvar(restaurante);
     }
 
     @Transactional
     public void inativar(Long idRestaurante) {
-        buscarOuFalhar(idRestaurante).inativar();
+        Restaurante restaurante = buscarOuFalhar(idRestaurante);
+        restaurante.inativar();
+        salvar(restaurante);
     }
 
     @Transactional
-    public void associarFormaPagamento(Long idRestaurante , Long idFormaPagamento) {
+    public void associarFormaPagamento(Long idRestaurante, Long idFormaPagamento) {
         Restaurante restaurante = buscarOuFalhar(idRestaurante);
         FormaPagamento formaPagamento = formaPagamentoService.buscarOuFalhar(idFormaPagamento);
         restaurante.adicionarFormaPagamento(formaPagamento);
+        salvar(restaurante);
     }
 
     @Transactional
-    public void desassociarFormaPagamento(Long idRestaurante , Long idFormaPagamento) {
+    public void desassociarFormaPagamento(Long idRestaurante, Long idFormaPagamento) {
         Restaurante restaurante = buscarOuFalhar(idRestaurante);
         FormaPagamento formaPagamento = formaPagamentoService.buscarOuFalhar(idFormaPagamento);
         restaurante.removerFormaPagamento(formaPagamento);
+        salvar(restaurante);
     }
 
     @Transactional
-    public void associarProduto(Long idRestaurante , Long idProduto) {
+    public void associarProduto(Long idRestaurante, Long idProduto) {
         Restaurante restaurante = buscarOuFalhar(idRestaurante);
         Produto produto = produtoService.buscarOuFalhar(idProduto);
+        produto.setRestaurante(restaurante);
         restaurante.adicionarProduto(produto);
+        salvar(restaurante);
     }
 
     @Transactional
-    public void desassociarProduto(Long idRestaurante , Long idProduto) {
+    public void desassociarProduto(Long idRestaurante, Long idProduto) {
         Restaurante restaurante = buscarOuFalhar(idRestaurante);
         Produto produto = produtoService.buscarOuFalhar(idProduto);
         restaurante.removerProduto(produto);
+        salvar(restaurante);
+    }
+
+    @Transactional
+    public Restaurante adicionarProduto(Restaurante restaurante, Produto produto) {
+        produto.setRestaurante(restaurante);
+        produto = produtoService.salvar(produto);
+        restaurante.getProdutos().add(produto);
+        return restaurante;
     }
 
 

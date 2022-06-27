@@ -11,7 +11,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
@@ -48,46 +47,14 @@ public class Restaurante implements Serializable {
     @Column(nullable = false, columnDefinition = "datetime")
     private OffsetDateTime dataAtualizacao;
 
-    @OneToMany(mappedBy = "restaurante")
-    private List<Produto> produtos;
+    @OneToMany(mappedBy = "restaurante" , fetch = FetchType.LAZY)
+    private Set<Produto> produtos;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "restaurante_forma_pagamento",
             joinColumns = @JoinColumn(name = "restaurante_id"),
             inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
     private Set<FormaPagamento> formasPagamento = new HashSet<>();
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public BigDecimal getTaxaFrete() {
-        return taxaFrete;
-    }
-
-    public void setTaxaFrete(BigDecimal taxaFrete) {
-        this.taxaFrete = taxaFrete;
-    }
-
-    public Cozinha getCozinha() {
-        return cozinha;
-    }
-
-    public void setCozinha(Cozinha cozinha) {
-        this.cozinha = cozinha;
-    }
 
     public void ativar() {
         setAtivo(true);
@@ -98,18 +65,18 @@ public class Restaurante implements Serializable {
     }
 
     public void adicionarFormaPagamento(FormaPagamento formaPagamento) {
-        getFormasPagamento().add(formaPagamento);
+        this.getFormasPagamento().add(formaPagamento);
     }
 
     public void removerFormaPagamento(FormaPagamento formaPagamento) {
-        getFormasPagamento().remove(formaPagamento);
+        this.getFormasPagamento().remove(formaPagamento);
     }
 
     public void adicionarProduto(Produto produto) {
-        getProdutos().add(produto);
+        this.getProdutos().add(produto);
     }
 
     public void removerProduto(Produto produto) {
-        getProdutos().remove(produto);
+        this.getProdutos().remove(produto);
     }
 }

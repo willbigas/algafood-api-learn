@@ -3,6 +3,7 @@ package br.com.willbigas.algafood.domain.service;
 import br.com.willbigas.algafood.domain.exception.EntidadeEmUsoException;
 import br.com.willbigas.algafood.domain.exception.ProdutoNaoEncontradoException;
 import br.com.willbigas.algafood.domain.model.Produto;
+import br.com.willbigas.algafood.domain.model.Restaurante;
 import br.com.willbigas.algafood.domain.repository.ProdutoRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -45,6 +46,13 @@ public class ProdutoService {
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(String.format(MSG_PRODUTO_EM_USO, idProduto));
         }
+    }
+
+    @Transactional
+    public Produto adicionarRestaurante(Produto produto , Restaurante restaurante) {
+        produto.setRestaurante(restaurante);
+        produto = salvar(produto);
+        return produto;
     }
 
     public Produto buscarOuFalhar(Long idProduto) {
