@@ -1,4 +1,4 @@
-package br.com.willbigas.algafood.api.model.input;
+package br.com.willbigas.algafood.api.model.request;
 
 
 import lombok.Getter;
@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 
 @Setter
 @Getter
-public class EnderecoInput {
+public class EnderecoRequestDTO {
 
     @NotBlank
     private String cep;
@@ -28,5 +28,5 @@ public class EnderecoInput {
 
     @Valid
     @NotNull
-    private CidadeIdInput cidade;
+    private CidadeIDRequestDTO cidade;
 }

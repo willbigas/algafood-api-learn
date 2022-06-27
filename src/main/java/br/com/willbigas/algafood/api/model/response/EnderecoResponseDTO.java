@@ -1,11 +1,11 @@
-package br.com.willbigas.algafood.api.model;
+package br.com.willbigas.algafood.api.model.response;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
-public class EnderecoModel {
+public class EnderecoResponseDTO {
 
     private String cep;
 
@@ -17,7 +17,7 @@ public class EnderecoModel {
 
     private String bairro;
 
-    private CidadeResumoModel cidade;
+    private CidadeResumidaResponseDTO cidade;
 
     public void setNomeEstadoDaCidade(String nome) {
         cidade.setEstado(nome);

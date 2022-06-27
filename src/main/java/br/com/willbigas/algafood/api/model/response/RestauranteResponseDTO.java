@@ -1,4 +1,4 @@
-package br.com.willbigas.algafood.api.model;
+package br.com.willbigas.algafood.api.model.response;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,12 +7,12 @@ import java.math.BigDecimal;
 
 @Setter
 @Getter
-public class RestauranteModel {
+public class RestauranteResponseDTO {
 
     private Long id;
     private BigDecimal precoFrete;
     private String nome;
     private Boolean ativo;
-    private CozinhaModel cozinha;
-    private EnderecoModel endereco;
+    private CozinhaResponseDTO cozinha;
+    private EnderecoResponseDTO endereco;
 }

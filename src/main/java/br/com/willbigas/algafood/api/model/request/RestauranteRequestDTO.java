@@ -1,4 +1,4 @@
-package br.com.willbigas.algafood.api.model.input;
+package br.com.willbigas.algafood.api.model.request;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 
 @Setter
 @Getter
-public class RestauranteInput {
+public class RestauranteRequestDTO {
 
     @NotBlank
     private String nome;
@@ -22,11 +22,11 @@ public class RestauranteInput {
 
     @Valid
     @NotNull
-    private CozinhaIdInput cozinha;
+    private CozinhaIDRequestDTO cozinha;
 
     @Valid
     @NotNull
-    private EnderecoInput endereco;
+    private EnderecoRequestDTO endereco;
 
 
 }

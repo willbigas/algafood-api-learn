@@ -1,11 +1,11 @@
-package br.com.willbigas.algafood.api.model;
+package br.com.willbigas.algafood.api.model.response;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class CidadeResumoModel {
+public class CidadeResumidaResponseDTO {
 
     private Long id;
     private String nome;

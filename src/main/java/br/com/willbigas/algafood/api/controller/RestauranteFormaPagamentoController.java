@@ -1,7 +1,7 @@
 package br.com.willbigas.algafood.api.controller;
 
 import br.com.willbigas.algafood.api.mapper.FormaPagamentoMapper;
-import br.com.willbigas.algafood.api.model.FormaPagamentoModel;
+import br.com.willbigas.algafood.api.model.response.FormaPagamentoResponseDTO;
 import br.com.willbigas.algafood.domain.model.Restaurante;
 import br.com.willbigas.algafood.domain.service.RestauranteService;
 import org.springframework.http.HttpStatus;
@@ -22,7 +22,7 @@ public class RestauranteFormaPagamentoController {
     }
 
     @GetMapping
-    public List<FormaPagamentoModel> listar(@PathVariable Long idRestaurante) {
+    public List<FormaPagamentoResponseDTO> listar(@PathVariable Long idRestaurante) {
         Restaurante restaurante = restauranteService.buscarOuFalhar(idRestaurante);
         return formaPagamentoMapper.toList(restaurante.getFormasPagamento());
     }

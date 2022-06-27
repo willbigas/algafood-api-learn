@@ -1,4 +1,4 @@
-package br.com.willbigas.algafood.api.model;
+package br.com.willbigas.algafood.api.model.response;
 
 import br.com.willbigas.algafood.core.validation.Groups;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 
 @Setter
 @Getter
-public class EstadoModel {
+public class EstadoResponseDTO {
 
     @NotNull(groups = Groups.EstadoId.class)
     private Long id;

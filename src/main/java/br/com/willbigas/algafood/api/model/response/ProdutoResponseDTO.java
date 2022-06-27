@@ -1,4 +1,4 @@
-package br.com.willbigas.algafood.api.dto.response;
+package br.com.willbigas.algafood.api.model.response;
 
 import lombok.Getter;
 import lombok.Setter;

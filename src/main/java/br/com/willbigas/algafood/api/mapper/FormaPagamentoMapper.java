@@ -1,6 +1,6 @@
 package br.com.willbigas.algafood.api.mapper;
 
-import br.com.willbigas.algafood.api.model.FormaPagamentoModel;
+import br.com.willbigas.algafood.api.model.response.FormaPagamentoResponseDTO;
 import br.com.willbigas.algafood.domain.model.FormaPagamento;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -18,11 +18,11 @@ public class FormaPagamentoMapper {
         this.modelMapper = modelMapper;
     }
 
-    public FormaPagamentoModel toModel(FormaPagamento formaPagamento) {
-        return modelMapper.map(formaPagamento , FormaPagamentoModel.class);
+    public FormaPagamentoResponseDTO toModel(FormaPagamento formaPagamento) {
+        return modelMapper.map(formaPagamento , FormaPagamentoResponseDTO.class);
     }
 
-    public List<FormaPagamentoModel> toList(Collection<FormaPagamento> formaPagamentos) {
+    public List<FormaPagamentoResponseDTO> toList(Collection<FormaPagamento> formaPagamentos) {
         return formaPagamentos.stream().map(this::toModel)
                 .collect(Collectors.toList());
     }

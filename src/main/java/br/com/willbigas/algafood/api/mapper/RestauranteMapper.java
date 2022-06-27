@@ -1,7 +1,7 @@
 package br.com.willbigas.algafood.api.mapper;
 
-import br.com.willbigas.algafood.api.model.RestauranteModel;
-import br.com.willbigas.algafood.api.model.input.RestauranteInput;
+import br.com.willbigas.algafood.api.model.response.RestauranteResponseDTO;
+import br.com.willbigas.algafood.api.model.request.RestauranteRequestDTO;
 import br.com.willbigas.algafood.domain.model.Cidade;
 import br.com.willbigas.algafood.domain.model.Restaurante;
 import org.modelmapper.ModelMapper;
@@ -20,25 +20,25 @@ public class RestauranteMapper {
         this.modelMapper = modelMapper;
     }
 
-    public RestauranteModel toModel(Restaurante restaurante) {
-        return modelMapper.map(restaurante , RestauranteModel.class);
+    public RestauranteResponseDTO toModel(Restaurante restaurante) {
+        return modelMapper.map(restaurante , RestauranteResponseDTO.class);
     }
 
-    public List<RestauranteModel> toCollectionModel(List<Restaurante> restaurantes) {
+    public List<RestauranteResponseDTO> toCollectionModel(List<Restaurante> restaurantes) {
         return restaurantes.stream().map(this::toModel)
                 .collect(Collectors.toList());
     }
 
-    public Restaurante toRestaurante(RestauranteInput restauranteInput) {
-        return modelMapper.map(restauranteInput, Restaurante.class);
+    public Restaurante toRestaurante(RestauranteRequestDTO restauranteRequestDTO) {
+        return modelMapper.map(restauranteRequestDTO, Restaurante.class);
     }
 
-    public void copy(RestauranteInput restauranteInput , Restaurante restaurante) {
+    public void copy(RestauranteRequestDTO restauranteRequestDTO, Restaurante restaurante) {
 
         if (restaurante.getEndereco() != null) {
             restaurante.getEndereco().setCidade(new Cidade());
         }
 
-        modelMapper.map(restauranteInput , restaurante);
+        modelMapper.map(restauranteRequestDTO, restaurante);
     }
 }

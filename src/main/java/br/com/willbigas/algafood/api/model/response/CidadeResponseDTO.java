@@ -1,4 +1,4 @@
-package br.com.willbigas.algafood.api.model;
+package br.com.willbigas.algafood.api.model.response;
 
 import br.com.willbigas.algafood.core.validation.Groups;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import javax.validation.groups.Default;
 
 @Getter
 @Setter
-public class CidadeModel {
+public class CidadeResponseDTO {
 
     private Long id;
 
@@ -22,5 +22,5 @@ public class CidadeModel {
     @Valid
     @ConvertGroup(from = Default.class, to = Groups.EstadoId.class)
     @NotNull
-    private EstadoModel estado;
+    private EstadoResponseDTO estado;
 }

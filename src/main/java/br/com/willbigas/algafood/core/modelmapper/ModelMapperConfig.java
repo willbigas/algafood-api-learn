@@ -1,7 +1,7 @@
 package br.com.willbigas.algafood.core.modelmapper;
 
-import br.com.willbigas.algafood.api.model.EnderecoModel;
-import br.com.willbigas.algafood.api.model.RestauranteModel;
+import br.com.willbigas.algafood.api.model.response.EnderecoResponseDTO;
+import br.com.willbigas.algafood.api.model.response.RestauranteResponseDTO;
 import br.com.willbigas.algafood.domain.model.Endereco;
 import br.com.willbigas.algafood.domain.model.Restaurante;
 import org.modelmapper.ModelMapper;
@@ -15,11 +15,11 @@ public class ModelMapperConfig {
     public ModelMapper modelMapper() {
         var modelMapper = new ModelMapper();
 
-        modelMapper.createTypeMap(Restaurante.class, RestauranteModel.class)
-                .addMapping(Restaurante::getTaxaFrete, RestauranteModel::setPrecoFrete);
+        modelMapper.createTypeMap(Restaurante.class, RestauranteResponseDTO.class)
+                .addMapping(Restaurante::getTaxaFrete, RestauranteResponseDTO::setPrecoFrete);
 
-        modelMapper.createTypeMap(Endereco.class, EnderecoModel.class).
-                addMapping(Endereco::getNomeEstadoDaCidade, EnderecoModel::setNomeEstadoDaCidade);
+        modelMapper.createTypeMap(Endereco.class, EnderecoResponseDTO.class).
+                addMapping(Endereco::getNomeEstadoDaCidade, EnderecoResponseDTO::setNomeEstadoDaCidade);
 
         return modelMapper;
     }
