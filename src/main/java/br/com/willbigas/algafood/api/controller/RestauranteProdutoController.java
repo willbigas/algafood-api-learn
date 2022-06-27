@@ -1,7 +1,7 @@
 package br.com.willbigas.algafood.api.controller;
 
 import br.com.willbigas.algafood.api.mapper.ProdutoMapper;
-import br.com.willbigas.algafood.api.model.response.ProdutoResponseDTO;
+import br.com.willbigas.algafood.api.model.response.ProdutoResumidoResponseDTO;
 import br.com.willbigas.algafood.domain.model.Restaurante;
 import br.com.willbigas.algafood.domain.service.RestauranteService;
 import org.springframework.http.HttpStatus;
@@ -22,9 +22,9 @@ public class RestauranteProdutoController {
     }
 
     @GetMapping
-    public List<ProdutoResponseDTO> listar(@PathVariable Long idRestaurante) {
+    public List<ProdutoResumidoResponseDTO> listar(@PathVariable Long idRestaurante) {
         Restaurante restaurante = restauranteService.buscarOuFalhar(idRestaurante);
-        return produtoMapper.toList(restaurante.getProdutos());
+        return produtoMapper.toListProdutoResumido(restaurante.getProdutos());
     }
 
     @PutMapping("/{idProduto}")

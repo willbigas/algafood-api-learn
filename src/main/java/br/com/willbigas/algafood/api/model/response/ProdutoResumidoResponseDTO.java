@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 @Setter
 @Getter
-public class ProdutoResponseDTO {
+public class ProdutoResumidoResponseDTO {
 
     private Long id;
 
@@ -19,5 +19,4 @@ public class ProdutoResponseDTO {
 
     private Boolean ativo;
 
-    private RestauranteIDResponseDTO restaurante;
 }

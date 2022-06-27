@@ -1,6 +1,7 @@
 package br.com.willbigas.algafood.api.mapper;
 
 import br.com.willbigas.algafood.api.model.response.ProdutoResponseDTO;
+import br.com.willbigas.algafood.api.model.response.ProdutoResumidoResponseDTO;
 import br.com.willbigas.algafood.domain.model.Produto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,16 @@ public class ProdutoMapper {
 
     public List<ProdutoResponseDTO> toList(Collection<Produto> formaPagamentos) {
         return formaPagamentos.stream().map(this::toModel)
+                .collect(Collectors.toList());
+    }
+
+
+    public ProdutoResumidoResponseDTO toProdutoResumido(Produto produto) {
+        return modelMapper.map(produto , ProdutoResumidoResponseDTO.class);
+    }
+
+    public List<ProdutoResumidoResponseDTO> toListProdutoResumido(Collection<Produto> produtos) {
+        return produtos.stream().map(this::toProdutoResumido)
                 .collect(Collectors.toList());
     }
 
