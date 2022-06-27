@@ -1,6 +1,6 @@
 package br.com.willbigas.algafood;
 
-import br.com.willbigas.algafood.infrastructure.repository.CustomJPARepositoryImpl;
+import br.com.willbigas.algafood.domain.repository.impl.CustomJPARepositoryImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;

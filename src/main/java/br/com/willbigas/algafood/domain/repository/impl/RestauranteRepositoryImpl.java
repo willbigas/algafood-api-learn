@@ -1,9 +1,9 @@
-package br.com.willbigas.algafood.infrastructure.repository;
+package br.com.willbigas.algafood.domain.repository.impl;
 
 import br.com.willbigas.algafood.domain.model.Restaurante;
 import br.com.willbigas.algafood.domain.repository.RestauranteRepository;
 import br.com.willbigas.algafood.domain.repository.RestauranteRepositoryQueries;
-import br.com.willbigas.algafood.infrastructure.repository.spec.RestauranteSpecs;
+import br.com.willbigas.algafood.domain.repository.spec.RestauranteSpecs;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;

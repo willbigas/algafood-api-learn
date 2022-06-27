@@ -1,6 +1,6 @@
 package br.com.willbigas.algafood.api.controller;
 
-import br.com.willbigas.algafood.api.converter.FormaPagamentoConverter;
+import br.com.willbigas.algafood.api.mapper.FormaPagamentoMapper;
 import br.com.willbigas.algafood.api.model.FormaPagamentoModel;
 import br.com.willbigas.algafood.domain.model.Restaurante;
 import br.com.willbigas.algafood.domain.service.RestauranteService;
@@ -14,17 +14,17 @@ import java.util.List;
 public class RestauranteFormaPagamentoController {
 
     private final RestauranteService restauranteService;
-    private final FormaPagamentoConverter formaPagamentoConverter;
+    private final FormaPagamentoMapper formaPagamentoMapper;
 
-    public RestauranteFormaPagamentoController(RestauranteService restauranteService, FormaPagamentoConverter formaPagamentoConverter) {
+    public RestauranteFormaPagamentoController(RestauranteService restauranteService, FormaPagamentoMapper formaPagamentoMapper) {
         this.restauranteService = restauranteService;
-        this.formaPagamentoConverter = formaPagamentoConverter;
+        this.formaPagamentoMapper = formaPagamentoMapper;
     }
 
     @GetMapping
     public List<FormaPagamentoModel> listar(@PathVariable Long idRestaurante) {
         Restaurante restaurante = restauranteService.buscarOuFalhar(idRestaurante);
-        return formaPagamentoConverter.toList(restaurante.getFormasPagamento());
+        return formaPagamentoMapper.toList(restaurante.getFormasPagamento());
     }
 
     @PutMapping("/{idFormaPagamento}")

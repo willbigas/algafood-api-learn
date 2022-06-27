@@ -1,4 +1,4 @@
-package br.com.willbigas.algafood.infrastructure.repository;
+package br.com.willbigas.algafood.domain.repository.impl;
 
 import br.com.willbigas.algafood.domain.repository.CustomJPARepository;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;

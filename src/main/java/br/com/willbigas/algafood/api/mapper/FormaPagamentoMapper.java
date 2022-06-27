@@ -1,4 +1,4 @@
-package br.com.willbigas.algafood.api.converter;
+package br.com.willbigas.algafood.api.mapper;
 
 import br.com.willbigas.algafood.api.model.FormaPagamentoModel;
 import br.com.willbigas.algafood.domain.model.FormaPagamento;
@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class FormaPagamentoConverter {
+public class FormaPagamentoMapper {
 
     private final ModelMapper modelMapper;
 
-    public FormaPagamentoConverter(ModelMapper modelMapper) {
+    public FormaPagamentoMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
 

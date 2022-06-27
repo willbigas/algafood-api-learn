@@ -1,4 +1,4 @@
-package br.com.willbigas.algafood.infrastructure.repository.spec;
+package br.com.willbigas.algafood.domain.repository.spec;
 
 import br.com.willbigas.algafood.domain.model.Restaurante;
 import org.springframework.data.jpa.domain.Specification;

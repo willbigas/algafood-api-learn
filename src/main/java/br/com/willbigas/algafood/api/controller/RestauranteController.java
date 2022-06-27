@@ -1,7 +1,6 @@
 package br.com.willbigas.algafood.api.controller;
 
-import br.com.willbigas.algafood.api.converter.RestauranteInputConverter;
-import br.com.willbigas.algafood.api.converter.RestauranteModelConverter;
+import br.com.willbigas.algafood.api.mapper.RestauranteMapper;
 import br.com.willbigas.algafood.api.model.RestauranteModel;
 import br.com.willbigas.algafood.api.model.input.CozinhaIdInput;
 import br.com.willbigas.algafood.api.model.input.RestauranteInput;
@@ -36,27 +35,25 @@ public class RestauranteController {
     private final RestauranteRepository restauranteRepository;
     private final RestauranteService restauranteService;
     private final SmartValidator validator;
-    private final RestauranteModelConverter restauranteModelConverter;
-    private final RestauranteInputConverter restauranteInputConverter;
+    private final RestauranteMapper restauranteMapper;
 
     @Autowired
-    public RestauranteController(RestauranteRepository restauranteRepository, RestauranteService restauranteService, SmartValidator validator, RestauranteModelConverter assembler , RestauranteInputConverter disassembler) {
+    public RestauranteController(RestauranteRepository restauranteRepository, RestauranteService restauranteService, SmartValidator validator, RestauranteMapper mapper) {
         this.restauranteRepository = restauranteRepository;
         this.restauranteService = restauranteService;
         this.validator = validator;
-        this.restauranteModelConverter = assembler;
-        this.restauranteInputConverter = disassembler;
+        this.restauranteMapper = mapper;
     }
 
     @GetMapping
     public List<RestauranteModel> listar() {
-        return restauranteModelConverter.toCollectionModel(restauranteRepository.findAll());
+        return restauranteMapper.toCollectionModel(restauranteRepository.findAll());
     }
 
     @GetMapping("/{id}")
     public RestauranteModel buscar(@PathVariable Long id) {
         Restaurante restaurante = restauranteService.buscarOuFalhar(id);
-        return restauranteModelConverter.toModel(restaurante);
+        return restauranteMapper.toModel(restaurante);
     }
 
     @PostMapping
@@ -64,8 +61,8 @@ public class RestauranteController {
     public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
         try {
 
-            Restaurante restaurante = restauranteInputConverter.toDomainObject(restauranteInput);
-            return restauranteModelConverter.toModel(restauranteService.salvar(restaurante));
+            Restaurante restaurante = restauranteMapper.toRestaurante(restauranteInput);
+            return restauranteMapper.toModel(restauranteService.salvar(restaurante));
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }
@@ -76,9 +73,9 @@ public class RestauranteController {
 
         try {
             Restaurante restauranteAtual = restauranteService.buscarOuFalhar(id);
-            restauranteInputConverter.copyToDomainObject(restauranteInput , restauranteAtual);
+            restauranteMapper.copy(restauranteInput , restauranteAtual);
 
-            return restauranteModelConverter.toModel(restauranteService.salvar(restauranteAtual));
+            return restauranteMapper.toModel(restauranteService.salvar(restauranteAtual));
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }
