@@ -1,6 +1,6 @@
 package br.com.willbigas.algafood.domain.service;
 
-import br.com.willbigas.algafood.domain.exception.CidadeNaoEncontradoException;
+import br.com.willbigas.algafood.domain.exception.CidadeNaoEncontradaException;
 import br.com.willbigas.algafood.domain.exception.EntidadeEmUsoException;
 import br.com.willbigas.algafood.domain.model.Cidade;
 import br.com.willbigas.algafood.domain.model.Estado;
@@ -41,7 +41,7 @@ public class CidadeService {
             cidadeRepository.deleteById(cidadeID);
             cidadeRepository.flush();
         } catch (EmptyResultDataAccessException e) {
-            throw new CidadeNaoEncontradoException(String.format(MSG_CIDADE_NAO_ENCONTRADA, cidadeID));
+            throw new CidadeNaoEncontradaException(String.format(MSG_CIDADE_NAO_ENCONTRADA, cidadeID));
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(String.format(MSG_CIDADE_EM_USO, cidadeID));
         }
@@ -49,7 +49,7 @@ public class CidadeService {
 
     public Cidade buscarOuFalhar(Long cidadeId) {
         return cidadeRepository.findById(cidadeId)
-                .orElseThrow(() -> new CidadeNaoEncontradoException(
+                .orElseThrow(() -> new CidadeNaoEncontradaException(
                         String.format(MSG_CIDADE_NAO_ENCONTRADA, cidadeId)));
     }
 }
