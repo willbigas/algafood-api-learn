@@ -6,6 +6,7 @@ import br.com.willbigas.algafood.domain.model.Usuario;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +23,7 @@ public class UsuarioMapper {
         return modelMapper.map(usuario , UsuarioResponseDTO.class);
     }
 
-    public List<UsuarioResponseDTO> toList(List<Usuario> usuarios) {
+    public List<UsuarioResponseDTO> toList(Collection<Usuario> usuarios) {
         return usuarios.stream().map(this::toResponseDTO)
                 .collect(Collectors.toList());
     }

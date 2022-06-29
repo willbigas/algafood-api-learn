@@ -20,16 +20,18 @@ public class RestauranteService {
     private final CidadeService cidadeService;
     private final FormaPagamentoService formaPagamentoService;
     private final ProdutoService produtoService;
+    private final UsuarioService usuarioService;
 
     private static final String MSG_RESTAURANTE_NAO_ENCONTRADO
             = "Não existe um cadastro de restaurante com código %d";
 
-    public RestauranteService(RestauranteRepository restauranteRepository, CozinhaRepository cozinhaRepository, CidadeService cidadeService, FormaPagamentoService formaPagamentoService, ProdutoService produtoService) {
+    public RestauranteService(RestauranteRepository restauranteRepository, CozinhaRepository cozinhaRepository, CidadeService cidadeService, FormaPagamentoService formaPagamentoService, ProdutoService produtoService, UsuarioService usuarioService) {
         this.restauranteRepository = restauranteRepository;
         this.cozinhaRepository = cozinhaRepository;
         this.cidadeService = cidadeService;
         this.formaPagamentoService = formaPagamentoService;
         this.produtoService = produtoService;
+        this.usuarioService = usuarioService;
     }
 
 
@@ -116,6 +118,24 @@ public class RestauranteService {
         restaurante.removerFormaPagamento(formaPagamento);
         salvar(restaurante);
     }
+
+    @Transactional
+    public void associarResponsavel(Long idRestaurante, Long idUsuario) {
+        Restaurante restaurante = buscarOuFalhar(idRestaurante);
+        Usuario usuario = usuarioService.buscarOuFalhar(idUsuario);
+        restaurante.adicionarResponsavel(usuario);
+        salvar(restaurante);
+    }
+
+    @Transactional
+    public void desassociarResponsavel(Long idRestaurante, Long idUsuario) {
+        Restaurante restaurante = buscarOuFalhar(idRestaurante);
+        Usuario usuario = usuarioService.buscarOuFalhar(idUsuario);
+        restaurante.removerResponsavel(usuario);
+        salvar(restaurante);
+    }
+
+
 
     @Transactional
     public void associarProduto(Long idRestaurante, Long idProduto) {
