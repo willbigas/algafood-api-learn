@@ -37,8 +37,6 @@ public class Restaurante implements Serializable {
     @Embedded
     private Endereco endereco;
 
-    private Boolean ativo = Boolean.TRUE;
-
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
     private OffsetDateTime dataCadastro;
@@ -55,6 +53,10 @@ public class Restaurante implements Serializable {
             joinColumns = @JoinColumn(name = "restaurante_id"),
             inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
     private Set<FormaPagamento> formasPagamento = new HashSet<>();
+
+    private Boolean ativo = Boolean.TRUE;
+
+    private Boolean aberto = Boolean.TRUE;
 
     public void ativar() {
         setAtivo(true);
@@ -79,4 +81,13 @@ public class Restaurante implements Serializable {
     public void removerProduto(Produto produto) {
         this.getProdutos().remove(produto);
     }
+
+    public void abrir() {
+       setAberto(true);
+    }
+
+    public void fechar() {
+        setAberto(false);
+    }
+
 }
