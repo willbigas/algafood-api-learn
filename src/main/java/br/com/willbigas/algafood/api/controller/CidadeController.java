@@ -1,9 +1,8 @@
 package br.com.willbigas.algafood.api.controller;
 
-import br.com.willbigas.algafood.domain.exception.EstadoNaoEncontradoException;
+import br.com.willbigas.algafood.domain.exception.CidadeNaoEncontradaException;
 import br.com.willbigas.algafood.domain.exception.NegocioException;
 import br.com.willbigas.algafood.domain.model.Cidade;
-import br.com.willbigas.algafood.domain.repository.CidadeRepository;
 import br.com.willbigas.algafood.domain.service.CidadeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
@@ -16,17 +15,15 @@ import java.util.List;
 @RequestMapping(value = "/cidades")
 public class CidadeController {
 
-    private final CidadeRepository cidadeRepository;
     private final CidadeService cidadeService;
 
-    public CidadeController(CidadeRepository cidadeRepository, CidadeService cidadeService) {
-        this.cidadeRepository = cidadeRepository;
+    public CidadeController(CidadeService cidadeService) {
         this.cidadeService = cidadeService;
     }
 
     @GetMapping
     public List<Cidade> listar() {
-        return cidadeRepository.findAll();
+        return cidadeService.findAll();
     }
 
     @GetMapping("/{id}")
@@ -39,7 +36,7 @@ public class CidadeController {
     public Cidade adicionar(@RequestBody @Valid Cidade cidade) {
         try {
             return cidadeService.salvar(cidade);
-        } catch (EstadoNaoEncontradoException e) {
+        } catch (CidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage() , e);
         }
     }
@@ -50,7 +47,7 @@ public class CidadeController {
         BeanUtils.copyProperties(cidade, cidadeAtual, "id");
         try {
             return cidadeService.salvar(cidadeAtual);
-        } catch (EstadoNaoEncontradoException e) {
+        } catch (CidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage() , e);
         }
     }

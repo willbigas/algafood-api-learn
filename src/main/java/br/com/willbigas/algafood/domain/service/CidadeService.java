@@ -10,6 +10,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class CidadeService {
 
@@ -33,6 +35,10 @@ public class CidadeService {
         Estado estado = estadoService.buscarOuFalhar(estadoId);
         cidade.setEstado(estado);
         return cidadeRepository.save(cidade);
+    }
+
+    public List<Cidade> findAll() {
+        return cidadeRepository.findAll();
     }
 
     @Transactional
