@@ -8,6 +8,7 @@ import java.time.OffsetDateTime;
 
 @Getter
 @Setter
+//@JsonFilter("pedidoFilter")
 public class PedidoResumidoResponseDTO {
 
     private String codigo;
