@@ -32,9 +32,9 @@ public class PedidoController {
         return pedidoMapper.toPedidoResumidoList(pedidoService.findAll());
     }
 
-    @GetMapping("/{idPedido}")
-    public PedidoResponseDTO buscar(@PathVariable Long idPedido) {
-        return pedidoMapper.toResponseDTO(pedidoService.buscarOuFalhar(idPedido));
+    @GetMapping("/{codigoPedido}")
+    public PedidoResponseDTO buscar(@PathVariable String codigoPedido) {
+        return pedidoMapper.toResponseDTO(pedidoService.buscarOuFalhar(codigoPedido));
     }
 
     @PostMapping
