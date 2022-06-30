@@ -1,14 +1,18 @@
 package br.com.willbigas.algafood.api.controller;
 
 import br.com.willbigas.algafood.api.mapper.PedidoMapper;
+import br.com.willbigas.algafood.api.model.request.PedidoRequestDTO;
 import br.com.willbigas.algafood.api.model.response.PedidoResponseDTO;
 import br.com.willbigas.algafood.api.model.response.PedidoResumidoResponseDTO;
+import br.com.willbigas.algafood.domain.exception.EntidadeNaoEncontradaException;
+import br.com.willbigas.algafood.domain.exception.NegocioException;
+import br.com.willbigas.algafood.domain.model.Pedido;
+import br.com.willbigas.algafood.domain.model.Usuario;
 import br.com.willbigas.algafood.domain.service.PedidoService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -31,6 +35,24 @@ public class PedidoController {
     @GetMapping("/{idPedido}")
     public PedidoResponseDTO buscar(@PathVariable Long idPedido) {
         return pedidoMapper.toResponseDTO(pedidoService.buscarOuFalhar(idPedido));
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public PedidoResponseDTO adicionar(@Valid @RequestBody PedidoRequestDTO pedidoRequestDTO) {
+        try {
+            Pedido novoPedido = pedidoMapper.toPedido(pedidoRequestDTO);
+
+            // TODO pegar usuário autenticado
+            novoPedido.setCliente(new Usuario());
+            novoPedido.getCliente().setId(1L);
+
+            novoPedido = pedidoService.emitir(novoPedido);
+            return pedidoMapper.toResponseDTO(novoPedido);
+
+        } catch (EntidadeNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
 }

@@ -60,4 +60,5 @@ public class ProdutoService {
                 .orElseThrow(() -> new ProdutoNaoEncontradoException(
                         String.format(MSG_PRODUTO_NAO_ENCONTRADO, idProduto)));
     }
+
 }

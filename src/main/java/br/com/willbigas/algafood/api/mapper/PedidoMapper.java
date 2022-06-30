@@ -1,5 +1,6 @@
 package br.com.willbigas.algafood.api.mapper;
 
+import br.com.willbigas.algafood.api.model.request.PedidoRequestDTO;
 import br.com.willbigas.algafood.api.model.response.PedidoResponseDTO;
 import br.com.willbigas.algafood.api.model.response.PedidoResumidoResponseDTO;
 import br.com.willbigas.algafood.domain.model.Pedido;
@@ -37,5 +38,13 @@ public class PedidoMapper {
         return pedidos.stream()
                 .map(this::toPedidoResumidoResponseDTO)
                 .collect(Collectors.toList());
+    }
+
+    public Pedido toPedido(PedidoRequestDTO pedidoRequestDTO) {
+        return modelMapper.map(pedidoRequestDTO, Pedido.class);
+    }
+
+    public void copy(PedidoRequestDTO pedidoRequestDTO, Pedido pedido) {
+        modelMapper.map(pedidoRequestDTO, pedido);
     }
 }
