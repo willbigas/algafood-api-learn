@@ -1,6 +1,7 @@
 package br.com.willbigas.algafood.api.mapper;
 
 import br.com.willbigas.algafood.api.model.response.PedidoResponseDTO;
+import br.com.willbigas.algafood.api.model.response.PedidoResumidoResponseDTO;
 import br.com.willbigas.algafood.domain.model.Pedido;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,16 @@ public class PedidoMapper {
     public List<PedidoResponseDTO> toList(Collection<Pedido> pedidos) {
         return pedidos.stream()
                 .map(this::toResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    public PedidoResumidoResponseDTO toPedidoResumidoResponseDTO(Pedido pedido) {
+        return modelMapper.map(pedido, PedidoResumidoResponseDTO.class);
+    }
+
+    public List<PedidoResumidoResponseDTO> toPedidoResumidoList(Collection<Pedido> pedidos) {
+        return pedidos.stream()
+                .map(this::toPedidoResumidoResponseDTO)
                 .collect(Collectors.toList());
     }
 }
