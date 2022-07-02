@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface RestauranteRepository extends CustomJPARepository<Restaurante, Long> , RestauranteRepositoryQueries, JpaSpecificationExecutor<Restaurante> {
+public interface RestauranteRepositoryCustomized extends CustomJPARepository<Restaurante, Long> , RestauranteRepositoryCustomizedQueries, JpaSpecificationExecutor<Restaurante> {
 
 
     @Query("from Restaurante r join r.cozinha c")

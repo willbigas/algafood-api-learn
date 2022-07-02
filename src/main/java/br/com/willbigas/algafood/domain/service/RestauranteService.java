@@ -6,7 +6,7 @@ import br.com.willbigas.algafood.domain.exception.ProdutoNaoEncontradoException;
 import br.com.willbigas.algafood.domain.exception.RestauranteNaoEncontradoException;
 import br.com.willbigas.algafood.domain.model.*;
 import br.com.willbigas.algafood.domain.repository.CozinhaRepository;
-import br.com.willbigas.algafood.domain.repository.RestauranteRepository;
+import br.com.willbigas.algafood.domain.repository.RestauranteRepositoryCustomized;
 import br.com.willbigas.algafood.domain.repository.filter.RestauranteFilter;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 public class RestauranteService {
 
-    private final RestauranteRepository restauranteRepository;
+    private final RestauranteRepositoryCustomized restauranteRepository;
     private final CozinhaRepository cozinhaRepository;
     private final CidadeService cidadeService;
     private final FormaPagamentoService formaPagamentoService;
@@ -30,7 +30,7 @@ public class RestauranteService {
     private static final String MSG_RESTAURANTE_NAO_ENCONTRADO
             = "Não existe um cadastro de restaurante com código %d";
 
-    public RestauranteService(RestauranteRepository restauranteRepository, CozinhaRepository cozinhaRepository, CidadeService cidadeService, FormaPagamentoService formaPagamentoService, ProdutoService produtoService, UsuarioService usuarioService) {
+    public RestauranteService(RestauranteRepositoryCustomized restauranteRepository, CozinhaRepository cozinhaRepository, CidadeService cidadeService, FormaPagamentoService formaPagamentoService, ProdutoService produtoService, UsuarioService usuarioService) {
         this.restauranteRepository = restauranteRepository;
         this.cozinhaRepository = cozinhaRepository;
         this.cidadeService = cidadeService;

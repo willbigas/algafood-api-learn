@@ -8,7 +8,7 @@ import br.com.willbigas.algafood.core.validation.ValidacaoException;
 import br.com.willbigas.algafood.domain.exception.EntidadeNaoEncontradaException;
 import br.com.willbigas.algafood.domain.exception.NegocioException;
 import br.com.willbigas.algafood.domain.model.Restaurante;
-import br.com.willbigas.algafood.domain.repository.RestauranteRepository;
+import br.com.willbigas.algafood.domain.repository.RestauranteRepositoryCustomized;
 import br.com.willbigas.algafood.domain.repository.filter.RestauranteFilter;
 import br.com.willbigas.algafood.domain.service.RestauranteService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -35,13 +35,13 @@ import java.util.Map;
 @RequestMapping(value = "/restaurantes")
 public class RestauranteController {
 
-    private final RestauranteRepository restauranteRepository;
+    private final RestauranteRepositoryCustomized restauranteRepository;
     private final RestauranteService restauranteService;
     private final SmartValidator validator;
     private final RestauranteMapper restauranteMapper;
 
     @Autowired
-    public RestauranteController(RestauranteRepository restauranteRepository, RestauranteService restauranteService, SmartValidator validator, RestauranteMapper mapper) {
+    public RestauranteController(RestauranteRepositoryCustomized restauranteRepository, RestauranteService restauranteService, SmartValidator validator, RestauranteMapper mapper) {
         this.restauranteRepository = restauranteRepository;
         this.restauranteService = restauranteService;
         this.validator = validator;
@@ -61,8 +61,8 @@ public class RestauranteController {
 
 
     /**
-     * Implementação extremamente Genérica Utilizando Criteria e FilterDTO e Pageable (Paginação e Ordenação)
-     * URL -> /restaurantes/customizado?page=0&size=3&sort=nome,desc&nome=Tuk
+     * Implementação extremamente Genérica Utilizando Criteria e FilterDTO e Pageable (Paginação e Multi Ordenação)
+     * URL -> /restaurantes/customizado?page=0&size=3&sort=nome,desc&sort=ativo,desc&nome=Tuk
      * @param filter
      * @param pageable
      * @return

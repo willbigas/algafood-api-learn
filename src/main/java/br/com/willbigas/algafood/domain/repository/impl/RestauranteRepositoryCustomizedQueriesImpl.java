@@ -1,8 +1,8 @@
 package br.com.willbigas.algafood.domain.repository.impl;
 
 import br.com.willbigas.algafood.domain.model.Restaurante;
-import br.com.willbigas.algafood.domain.repository.RestauranteRepository;
-import br.com.willbigas.algafood.domain.repository.RestauranteRepositoryQueries;
+import br.com.willbigas.algafood.domain.repository.RestauranteRepositoryCustomized;
+import br.com.willbigas.algafood.domain.repository.RestauranteRepositoryCustomizedQueries;
 import br.com.willbigas.algafood.domain.repository.filter.RestauranteFilter;
 import br.com.willbigas.algafood.domain.repository.spec.RestauranteSpecification;
 import org.springframework.context.annotation.Lazy;
@@ -26,15 +26,15 @@ import java.util.HashMap;
 import java.util.List;
 
 @Repository
-public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
+public class RestauranteRepositoryCustomizedQueriesImpl implements RestauranteRepositoryCustomizedQueries {
 
     @PersistenceContext
     private EntityManager manager;
 
-    private final RestauranteRepository restauranteRepository;
+    private final RestauranteRepositoryCustomized restauranteRepository;
 
     @Lazy
-    public RestauranteRepositoryImpl(RestauranteRepository restauranteRepository) {
+    public RestauranteRepositoryCustomizedQueriesImpl(RestauranteRepositoryCustomized restauranteRepository) {
         this.restauranteRepository = restauranteRepository;
     }
 
