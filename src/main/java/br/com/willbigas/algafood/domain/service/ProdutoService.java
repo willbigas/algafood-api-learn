@@ -55,6 +55,14 @@ public class ProdutoService {
         return produto;
     }
 
+    public List<Produto> findByRestaurante(Restaurante restaurante) {
+        return produtoRepository.findByRestaurante(restaurante);
+    }
+
+    public List<Produto> findByRestauranteAndAtivoIsTrue(Restaurante restaurante) {
+        return produtoRepository.findByRestauranteAndAtivoIsTrue(restaurante);
+    }
+
     public Produto buscarOuFalhar(Long idProduto) {
         return produtoRepository.findById(idProduto)
                 .orElseThrow(() -> new ProdutoNaoEncontradoException(

@@ -135,7 +135,7 @@ values (1, 1),
        (6, 3);
 
 insert into produto (nome, descricao, preco, ativo, restaurante_id)
-values ('Porco com molho agridoce', 'Deliciosa carne suína ao molho especial', 78.90, 1, 1);
+values ('Porco com molho agridoce', 'Deliciosa carne suína ao molho especial', 78.90, 0, 1);
 insert into produto (nome, descricao, preco, ativo, restaurante_id)
 values ('Camarão tailandês', '16 camarões grandes ao molho picante', 110, 1, 1);
 
