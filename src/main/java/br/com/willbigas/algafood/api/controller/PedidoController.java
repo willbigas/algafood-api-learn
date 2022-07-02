@@ -8,7 +8,10 @@ import br.com.willbigas.algafood.domain.exception.EntidadeNaoEncontradaException
 import br.com.willbigas.algafood.domain.exception.NegocioException;
 import br.com.willbigas.algafood.domain.model.Pedido;
 import br.com.willbigas.algafood.domain.model.Usuario;
+import br.com.willbigas.algafood.domain.repository.filter.PedidoFilter;
+import br.com.willbigas.algafood.domain.repository.spec.PedidoSpecification;
 import br.com.willbigas.algafood.domain.service.PedidoService;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,8 +31,11 @@ public class PedidoController {
     }
 
     @GetMapping
-    public List<PedidoResumidoResponseDTO> listar() {
-        return pedidoMapper.toPedidoResumidoList(pedidoService.findAll());
+    public List<PedidoResumidoResponseDTO> pesquisar(PedidoFilter pedidoFilter) {
+
+        Specification<Pedido> pedidoSpecification = PedidoSpecification.usandoFiltro(pedidoFilter);
+        List<Pedido> pedidos = pedidoService.findAll(pedidoSpecification);
+        return pedidoMapper.toPedidoResumidoList(pedidos);
     }
 
 //    @GetMapping

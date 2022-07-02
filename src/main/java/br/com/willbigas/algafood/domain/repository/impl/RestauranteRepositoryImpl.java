@@ -3,7 +3,7 @@ package br.com.willbigas.algafood.domain.repository.impl;
 import br.com.willbigas.algafood.domain.model.Restaurante;
 import br.com.willbigas.algafood.domain.repository.RestauranteRepository;
 import br.com.willbigas.algafood.domain.repository.RestauranteRepositoryQueries;
-import br.com.willbigas.algafood.domain.repository.spec.RestauranteSpecs;
+import br.com.willbigas.algafood.domain.repository.spec.RestauranteSpecification;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -65,7 +65,7 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
 
     @Override
     public List<Restaurante> findComSpecification(String nome) {
-        return restauranteRepository.findAll(RestauranteSpecs.comFreteGratis().and(RestauranteSpecs.comNomeSemelhante(nome)));
+        return restauranteRepository.findAll(RestauranteSpecification.comFreteGratis().and(RestauranteSpecification.comNomeSemelhante(nome)));
     }
 
     public List<Restaurante> findComJPQL(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {

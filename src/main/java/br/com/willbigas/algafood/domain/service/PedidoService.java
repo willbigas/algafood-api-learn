@@ -4,6 +4,7 @@ import br.com.willbigas.algafood.domain.exception.NegocioException;
 import br.com.willbigas.algafood.domain.exception.PedidoNaoEncontradoException;
 import br.com.willbigas.algafood.domain.model.*;
 import br.com.willbigas.algafood.domain.repository.PedidoRepository;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,8 +27,8 @@ public class PedidoService {
         this.formaPagamentoService = formaPagamentoService;
     }
 
-    public List<Pedido> findAll() {
-        return pedidoRepository.findAll();
+    public List<Pedido> findAll(Specification<Pedido> pedidoSpecification) {
+        return pedidoRepository.findAll(pedidoSpecification);
     }
 
     public Pedido buscarOuFalhar(String codigoPedido) {
