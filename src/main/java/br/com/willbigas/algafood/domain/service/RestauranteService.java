@@ -7,8 +7,11 @@ import br.com.willbigas.algafood.domain.exception.RestauranteNaoEncontradoExcept
 import br.com.willbigas.algafood.domain.model.*;
 import br.com.willbigas.algafood.domain.repository.CozinhaRepository;
 import br.com.willbigas.algafood.domain.repository.RestauranteRepository;
+import br.com.willbigas.algafood.domain.repository.filter.RestauranteFilter;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,6 +65,10 @@ public class RestauranteService {
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(String.format("Restaurante de código %d não pode ser removido, pois está em uso", idRestaurante));
         }
+    }
+
+    public Page<Restaurante> findAll(RestauranteFilter filter , Pageable pageable) {
+        return restauranteRepository.findWithPageAndSortCustomize(filter, pageable);
     }
 
     public Restaurante buscarOuFalhar(Long idRestaurante) {

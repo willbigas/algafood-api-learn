@@ -1,10 +1,12 @@
 package br.com.willbigas.algafood.api.mapper;
 
-import br.com.willbigas.algafood.api.model.response.RestauranteResponseDTO;
 import br.com.willbigas.algafood.api.model.request.RestauranteRequestDTO;
+import br.com.willbigas.algafood.api.model.response.RestauranteResponseDTO;
 import br.com.willbigas.algafood.domain.model.Cidade;
 import br.com.willbigas.algafood.domain.model.Restaurante;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -20,8 +22,13 @@ public class RestauranteMapper {
         this.modelMapper = modelMapper;
     }
 
+    public Page<RestauranteResponseDTO> toPageDTO(Page<Restaurante> restaurantePage) {
+        List<RestauranteResponseDTO> dtos = toCollectionModel(restaurantePage.getContent());
+        return new PageImpl<>(dtos, restaurantePage.getPageable(), restaurantePage.getTotalElements());
+    }
+
     public RestauranteResponseDTO toModel(Restaurante restaurante) {
-        return modelMapper.map(restaurante , RestauranteResponseDTO.class);
+        return modelMapper.map(restaurante, RestauranteResponseDTO.class);
     }
 
     public List<RestauranteResponseDTO> toCollectionModel(List<Restaurante> restaurantes) {
@@ -41,4 +48,6 @@ public class RestauranteMapper {
 
         modelMapper.map(restauranteRequestDTO, restaurante);
     }
+
+
 }

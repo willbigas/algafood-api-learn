@@ -9,11 +9,14 @@ import br.com.willbigas.algafood.domain.exception.EntidadeNaoEncontradaException
 import br.com.willbigas.algafood.domain.exception.NegocioException;
 import br.com.willbigas.algafood.domain.model.Restaurante;
 import br.com.willbigas.algafood.domain.repository.RestauranteRepository;
+import br.com.willbigas.algafood.domain.repository.filter.RestauranteFilter;
 import br.com.willbigas.algafood.domain.service.RestauranteService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -54,6 +57,19 @@ public class RestauranteController {
     public RestauranteResponseDTO buscar(@PathVariable Long id) {
         Restaurante restaurante = restauranteService.buscarOuFalhar(id);
         return restauranteMapper.toModel(restaurante);
+    }
+
+
+    /**
+     * Implementação extremamente Genérica Utilizando Criteria e FilterDTO e Pageable (Paginação e Ordenação)
+     * URL -> /restaurantes/customizado?page=0&size=3&sort=nome,desc&nome=Tuk
+     * @param filter
+     * @param pageable
+     * @return
+     */
+    @GetMapping("/customizado")
+    public Page<RestauranteResponseDTO> buscarCustomizado(RestauranteFilter filter, Pageable pageable) {
+        return restauranteMapper.toPageDTO(restauranteRepository.findWithPageAndSortCustomize(filter, pageable));
     }
 
     @PostMapping
