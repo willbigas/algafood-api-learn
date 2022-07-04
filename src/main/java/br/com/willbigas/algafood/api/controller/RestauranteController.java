@@ -53,6 +53,11 @@ public class RestauranteController {
         return restauranteMapper.toCollectionModel(restauranteRepository.findAll());
     }
 
+    @GetMapping("/page")
+    public Page<RestauranteResponseDTO> listar(Pageable pageable) {
+        return restauranteMapper.toPageDTO(restauranteRepository.findAll(pageable));
+    }
+
     @GetMapping("/{id}")
     public RestauranteResponseDTO buscar(@PathVariable Long id) {
         Restaurante restaurante = restauranteService.buscarOuFalhar(id);
