@@ -4,6 +4,7 @@ import br.com.willbigas.algafood.api.mapper.PedidoMapper;
 import br.com.willbigas.algafood.api.model.request.PedidoRequestDTO;
 import br.com.willbigas.algafood.api.model.response.PedidoResponseDTO;
 import br.com.willbigas.algafood.api.model.response.PedidoResumidoResponseDTO;
+import br.com.willbigas.algafood.core.data.PageableTranslator;
 import br.com.willbigas.algafood.domain.exception.EntidadeNaoEncontradaException;
 import br.com.willbigas.algafood.domain.exception.NegocioException;
 import br.com.willbigas.algafood.domain.model.Pedido;
@@ -11,12 +12,15 @@ import br.com.willbigas.algafood.domain.model.Usuario;
 import br.com.willbigas.algafood.domain.repository.filter.PedidoFilter;
 import br.com.willbigas.algafood.domain.repository.spec.PedidoSpecification;
 import br.com.willbigas.algafood.domain.service.PedidoService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/pedidos")
@@ -36,6 +40,13 @@ public class PedidoController {
         Specification<Pedido> pedidoSpecification = PedidoSpecification.usandoFiltro(pedidoFilter);
         List<Pedido> pedidos = pedidoService.findAll(pedidoSpecification);
         return pedidoMapper.toPedidoResumidoList(pedidos);
+    }
+
+    @GetMapping("/page")
+    public Page<PedidoResumidoResponseDTO> pesquisar(PedidoFilter pedidoFilter , Pageable pageable) {
+        pageable = traduzirPageable(pageable);
+        Specification<Pedido> pedidoSpecification = PedidoSpecification.usandoFiltro(pedidoFilter);
+        return pedidoMapper.toPageDTO(pedidoService.findAll(pedidoSpecification , pageable));
     }
 
 //    @GetMapping
@@ -78,6 +89,21 @@ public class PedidoController {
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
         }
+    }
+
+    /**
+     * Metodo para traduzir os campos de DTO para Entity para que a ordenação default do spring funcione corretamente.
+     * @param pageable
+     * @return
+     */
+    private Pageable traduzirPageable(Pageable pageable) {
+        var propriedades = Map.of(
+                "codigo", "codigo",
+                "restaurante.nome", "restaurante.nome",
+                "nomeCliente", "cliente.nome",
+                "valorTotal", "valorTotal"
+        );
+        return PageableTranslator.translate(pageable, propriedades);
     }
 
 }

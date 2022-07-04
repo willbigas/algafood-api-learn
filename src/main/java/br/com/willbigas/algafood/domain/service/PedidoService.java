@@ -4,6 +4,8 @@ import br.com.willbigas.algafood.domain.exception.NegocioException;
 import br.com.willbigas.algafood.domain.exception.PedidoNaoEncontradoException;
 import br.com.willbigas.algafood.domain.model.*;
 import br.com.willbigas.algafood.domain.repository.PedidoRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +31,10 @@ public class PedidoService {
 
     public List<Pedido> findAll(Specification<Pedido> pedidoSpecification) {
         return pedidoRepository.findAll(pedidoSpecification);
+    }
+
+    public Page<Pedido> findAll(Specification<Pedido> pedidoSpecification , Pageable pageable) {
+        return pedidoRepository.findAll(pedidoSpecification , pageable);
     }
 
     public Pedido buscarOuFalhar(String codigoPedido) {
