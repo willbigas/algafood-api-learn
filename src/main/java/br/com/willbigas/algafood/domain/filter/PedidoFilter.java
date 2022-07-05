@@ -1,4 +1,4 @@
-package br.com.willbigas.algafood.domain.repository.filter;
+package br.com.willbigas.algafood.domain.filter;
 
 import lombok.Getter;
 import lombok.Setter;

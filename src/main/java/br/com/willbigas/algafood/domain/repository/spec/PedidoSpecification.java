@@ -1,7 +1,7 @@
 package br.com.willbigas.algafood.domain.repository.spec;
 
 import br.com.willbigas.algafood.domain.model.Pedido;
-import br.com.willbigas.algafood.domain.repository.filter.PedidoFilter;
+import br.com.willbigas.algafood.domain.filter.PedidoFilter;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Predicate;

@@ -7,7 +7,7 @@ import br.com.willbigas.algafood.domain.exception.RestauranteNaoEncontradoExcept
 import br.com.willbigas.algafood.domain.model.*;
 import br.com.willbigas.algafood.domain.repository.CozinhaRepository;
 import br.com.willbigas.algafood.domain.repository.RestauranteRepositoryCustomized;
-import br.com.willbigas.algafood.domain.repository.filter.RestauranteFilter;
+import br.com.willbigas.algafood.domain.filter.RestauranteFilter;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;

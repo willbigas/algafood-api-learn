@@ -9,7 +9,7 @@ import br.com.willbigas.algafood.domain.exception.EntidadeNaoEncontradaException
 import br.com.willbigas.algafood.domain.exception.NegocioException;
 import br.com.willbigas.algafood.domain.model.Pedido;
 import br.com.willbigas.algafood.domain.model.Usuario;
-import br.com.willbigas.algafood.domain.repository.filter.PedidoFilter;
+import br.com.willbigas.algafood.domain.filter.PedidoFilter;
 import br.com.willbigas.algafood.domain.repository.spec.PedidoSpecification;
 import br.com.willbigas.algafood.domain.service.PedidoService;
 import org.springframework.data.domain.Page;

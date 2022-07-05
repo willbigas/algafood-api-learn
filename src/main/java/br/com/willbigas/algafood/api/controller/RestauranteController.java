@@ -9,7 +9,7 @@ import br.com.willbigas.algafood.domain.exception.EntidadeNaoEncontradaException
 import br.com.willbigas.algafood.domain.exception.NegocioException;
 import br.com.willbigas.algafood.domain.model.Restaurante;
 import br.com.willbigas.algafood.domain.repository.RestauranteRepositoryCustomized;
-import br.com.willbigas.algafood.domain.repository.filter.RestauranteFilter;
+import br.com.willbigas.algafood.domain.filter.RestauranteFilter;
 import br.com.willbigas.algafood.domain.service.RestauranteService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
