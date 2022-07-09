@@ -31,6 +31,7 @@ public class CidadeService {
 
     @Transactional
     public Cidade salvar(Cidade cidade) {
+
         Long estadoId = cidade.getEstado().getId();
         Estado estado = estadoService.buscarOuFalhar(estadoId);
         cidade.setEstado(estado);
