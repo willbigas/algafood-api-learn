@@ -15,6 +15,7 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -24,6 +25,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class RestauranteRepositoryCustomizedQueriesImpl implements RestauranteRepositoryCustomizedQueries {
@@ -46,7 +48,7 @@ public class RestauranteRepositoryCustomizedQueriesImpl implements RestauranteRe
         CriteriaQuery<Restaurante> criteria = builder.createQuery(Restaurante.class);
         Root<Restaurante> root = criteria.from(Restaurante.class);
 
-        var predicates = new ArrayList<>();
+        List<Predicate> predicates = new ArrayList<>();
 
         if (StringUtils.hasText(nome)) {
             predicates.add(builder.like(root.get("nome"), "%" + nome + "%"));
@@ -75,10 +77,10 @@ public class RestauranteRepositoryCustomizedQueriesImpl implements RestauranteRe
 
     public List<Restaurante> findComJPQL(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
 
-        var jpql = new StringBuilder();
+        StringBuilder jpql = new StringBuilder();
         jpql.append("from Restaurante where 1=1 ");
 
-        var parametros = new HashMap<String, Object>();
+        Map<String, Object> parametros = new HashMap<>();
 
         if (StringUtils.hasLength(nome)) {
             jpql.append("and nome like :nome ");
@@ -113,12 +115,13 @@ public class RestauranteRepositoryCustomizedQueriesImpl implements RestauranteRe
     @Override
     public Page<Restaurante> findWithPageAndSortCustomize(RestauranteFilter filter, Pageable pageable) {
 
-        var builder = manager.getCriteriaBuilder();
+        CriteriaBuilder builder = manager.getCriteriaBuilder();
 
-        var criteria = builder.createQuery(Restaurante.class);
-        var root = criteria.from(Restaurante.class);
+        CriteriaQuery<Restaurante> criteria = builder.createQuery(Restaurante.class);
 
-        var predicates = new ArrayList<Predicate>();
+        Root<Restaurante> root = criteria.from(Restaurante.class);
+
+        List<Predicate> predicates = new ArrayList<>();
 
         if (StringUtils.hasText(filter.getNome())) {
             predicates.add(builder.like(root.get("nome"), "%" + filter.getNome() + "%"));
@@ -135,7 +138,7 @@ public class RestauranteRepositoryCustomizedQueriesImpl implements RestauranteRe
         criteria.orderBy(QueryUtils.toOrders(pageable.getSort(), root, builder));
         criteria.where(predicates.toArray(new Predicate[0]));
 
-        var query = manager.createQuery(criteria);
+        Query query = manager.createQuery(criteria);
         query.setFirstResult(pageable.getPageNumber() * pageable.getPageSize());
         query.setMaxResults(pageable.getPageSize());
 

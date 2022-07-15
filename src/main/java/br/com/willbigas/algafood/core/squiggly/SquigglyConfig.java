@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 public class SquigglyConfig {
@@ -23,9 +24,9 @@ public class SquigglyConfig {
     public FilterRegistrationBean<SquigglyRequestFilter> squigglyRequestFilterFilterRegistrationBean(ObjectMapper objectMapper) {
         Squiggly.init(objectMapper, new RequestSquigglyContextProvider("campos" , null));
 
-        var urlPatterns = Arrays.asList("/pedidos/*" , "/restaurantes/*"); // somente habilitar se quiser limitar em endpoints especificos.
+        List<String> urlPatterns = Arrays.asList("/pedidos/*", "/restaurantes/*");// somente habilitar se quiser limitar em endpoints especificos.
 
-        var filterRegistration = new FilterRegistrationBean<SquigglyRequestFilter>();
+        FilterRegistrationBean<SquigglyRequestFilter> filterRegistration = new FilterRegistrationBean<>();
         filterRegistration.setFilter(new SquigglyRequestFilter());
         filterRegistration.setOrder(1);
         filterRegistration.setUrlPatterns(urlPatterns);

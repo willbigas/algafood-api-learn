@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,10 +44,10 @@ public class PedidoController {
     }
 
     @GetMapping("/page")
-    public Page<PedidoResumidoResponseDTO> pesquisar(PedidoFilter pedidoFilter , Pageable pageable) {
+    public Page<PedidoResumidoResponseDTO> pesquisar(PedidoFilter pedidoFilter, Pageable pageable) {
         pageable = traduzirPageable(pageable);
         Specification<Pedido> pedidoSpecification = PedidoSpecification.usandoFiltro(pedidoFilter);
-        return pedidoMapper.toPageDTO(pedidoService.findAll(pedidoSpecification , pageable));
+        return pedidoMapper.toPageDTO(pedidoService.findAll(pedidoSpecification, pageable));
     }
 
 //    @GetMapping
@@ -93,16 +94,16 @@ public class PedidoController {
 
     /**
      * Metodo para traduzir os campos de DTO para Entity para que a ordenação default do spring funcione corretamente.
+     *
      * @param pageable
      * @return
      */
     private Pageable traduzirPageable(Pageable pageable) {
-        var propriedades = Map.of(
-                "codigo", "codigo",
-                "restaurante.nome", "restaurante.nome",
-                "nomeCliente", "cliente.nome",
-                "valorTotal", "valorTotal"
-        );
+        Map<String, String> propriedades = new HashMap<>();
+        propriedades.put("codigo", "codigo");
+        propriedades.put("restaurante.nome", "restaurante.nome");
+        propriedades.put("nomeCliente", "cliente.nome");
+        propriedades.put("valorTotal", "valorTotal");
         return PageableTranslator.translate(pageable, propriedades);
     }
 

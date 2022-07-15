@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PedidoSpecification {
 
@@ -18,7 +19,7 @@ public class PedidoSpecification {
                 root.fetch("formaPagamento");
             }
 
-            var predicates = new ArrayList<Predicate>();
+            List<Predicate> predicates = new ArrayList<Predicate>();
 
             if (filtro.getIdCliente() != null) {
                 predicates.add(builder.equal(root.get("cliente"), filtro.getIdCliente()));

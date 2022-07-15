@@ -18,9 +18,9 @@ public class MultiploValidator implements ConstraintValidator<Multiplo, Number> 
         boolean valido = true;
 
         if (value != null) {
-            var valorDecimal = BigDecimal.valueOf(value.doubleValue());
-            var multiploDecimal = BigDecimal.valueOf(this.numeroMultiplo);
-            var resto = valorDecimal.remainder(multiploDecimal);
+            BigDecimal valorDecimal = BigDecimal.valueOf(value.doubleValue());
+            BigDecimal multiploDecimal = BigDecimal.valueOf(this.numeroMultiplo);
+            BigDecimal resto = valorDecimal.remainder(multiploDecimal);
 
             valido = BigDecimal.ZERO.compareTo(resto) == 0;
         }

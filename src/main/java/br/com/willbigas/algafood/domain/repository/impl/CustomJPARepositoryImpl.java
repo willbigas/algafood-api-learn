@@ -18,7 +18,7 @@ public class CustomJPARepositoryImpl<T , ID> extends SimpleJpaRepository<T , ID>
 
     @Override
     public Optional<T> buscarPrimeiro() {
-        var jpql = "from " + getDomainClass().getName();
+        String jpql = "from " + getDomainClass().getName();
 
        T entity =  manager.createQuery(jpql, getDomainClass())
                 .setMaxResults(1)

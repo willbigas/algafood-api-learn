@@ -15,7 +15,7 @@ public class ModelMapperConfig {
 
     @Bean
     public ModelMapper modelMapper() {
-        var modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();
 
         modelMapper.createTypeMap(Restaurante.class, RestauranteResponseDTO.class)
                 .addMapping(Restaurante::getTaxaFrete, RestauranteResponseDTO::setPrecoFrete);
