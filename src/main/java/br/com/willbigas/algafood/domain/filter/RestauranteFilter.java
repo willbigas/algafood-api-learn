@@ -14,4 +14,5 @@ public class RestauranteFilter implements Serializable {
     private String nome;
     private BigDecimal taxaFreteInicial;
     private BigDecimal taxaFreteFinal;
+
 }

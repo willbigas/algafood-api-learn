@@ -19,7 +19,7 @@ public class PedidoSpecification {
                 root.fetch("formaPagamento");
             }
 
-            List<Predicate> predicates = new ArrayList<Predicate>();
+            List<Predicate> predicates = new ArrayList<>();
 
             if (filtro.getIdCliente() != null) {
                 predicates.add(builder.equal(root.get("cliente"), filtro.getIdCliente()));

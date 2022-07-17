@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Immutable;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Date;
 
 
 /**
@@ -31,7 +32,7 @@ public class VendaDiariaViewDTO {
     private Long id;
 
     @Column(name = "data_criacao")
-    private LocalDate dataCriacao;
+    private Date dataCriacao;
 
     @Column(name = "total_venda")
     private Long totalVenda;
