@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="VendasDiarias" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0e8d8293-01f3-492a-8a50-55508c5725e0">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Random Records"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="id" class="java.lang.Long"/>
+	<field name="dataCriacao" class="java.util.Date"/>
+	<field name="totalVenda" class="java.lang.Long"/>
+	<field name="totalFaturado" class="java.math.BigDecimal"/>
+	<field name="idRestaurante" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="104" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="50" forecolor="#FFFFFF" backcolor="#636363" uuid="a98865e4-4ef5-4410-9176-41b616dd6873"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[Vendas Diárias]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="410" y="60" width="90" height="19" uuid="7d15b9b3-c39a-4078-bffa-d3f729a862e8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH:mm">
+				<reportElement x="519" y="60" width="35" height="19" uuid="01139eb7-eb3e-46a0-9896-7b7f7820e490"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="500" y="60" width="19" height="19" uuid="b48eecc7-baa9-4c87-a31f-fd90bd97004e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[as]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="24" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="110" height="24" uuid="7d84e054-5234-4bf4-a66b-9d29a2f092c9"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Código do Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="110" y="0" width="90" height="24" uuid="d2a8fe06-879a-46ef-97a3-907cb51381dd"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Data de Criação]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="0" width="110" height="24" uuid="6bf940b4-7b9b-48a0-a636-aa143e5af36d"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Total de Vendas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="0" width="110" height="24" uuid="6afb0696-caee-421a-8c96-032e3ca1bc9f"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Total Faturado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="420" y="0" width="134" height="24" uuid="ecab30d4-10c3-4605-9939-726b4a5e2e81"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Código do Restaurante]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="110" height="17" uuid="1d6e96a4-6f16-418d-bed1-afa97b5968a6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="110" y="0" width="90" height="17" uuid="de7162a3-4d92-4fa4-ae14-385695385a6e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[DATEFORMAT($F{dataCriacao} , "dd/MM/YYYY")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="200" y="0" width="110" height="17" uuid="e51b4b98-722f-4b69-8007-e1ef4cb0f536"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{totalVenda}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00">
+				<reportElement x="310" y="0" width="110" height="17" uuid="d8a8ffe9-98de-4441-af16-05a89ab2a385"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{totalFaturado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="420" y="0" width="134" height="17" uuid="24732eb2-2686-4b7a-a270-05691cc8f7bc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{idRestaurante}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="18">
+			<textField>
+				<reportElement x="480" y="0" width="30" height="18" uuid="e4e70ced-b306-4c21-89be-2a72a8b3c129"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="510" y="0" width="19" height="18" uuid="e87ffae6-c0cd-4af7-bae2-af9289298356"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[de]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="530" y="0" width="24" height="18" uuid="1f054734-9b9d-4bb9-866e-c259514dea90"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="440" y="0" width="40" height="18" uuid="3548f42f-2b34-49d0-ad6b-d175997ec24b"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Página]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+</jasperReport>
