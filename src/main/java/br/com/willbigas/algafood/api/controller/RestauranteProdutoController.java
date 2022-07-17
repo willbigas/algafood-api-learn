@@ -67,4 +67,6 @@ public class RestauranteProdutoController {
     public void desassociar(@PathVariable Long idRestaurante, @PathVariable Long idProduto) {
         restauranteService.desassociarProduto(idRestaurante, idProduto);
     }
+
+
 }
