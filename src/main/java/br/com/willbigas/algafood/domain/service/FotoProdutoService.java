@@ -10,10 +10,10 @@ import java.util.Optional;
 @Service
 public class FotoProdutoService {
 
-    private final FotoProdutoRepository fotoProdutoRepository;
+    private final FotoProdutoRepository repository;
 
-    public FotoProdutoService(FotoProdutoRepository fotoProdutoRepository) {
-        this.fotoProdutoRepository = fotoProdutoRepository;
+    public FotoProdutoService(FotoProdutoRepository repository) {
+        this.repository = repository;
     }
 
     @Transactional
@@ -21,13 +21,13 @@ public class FotoProdutoService {
         Long idRestaurante = foto.getProduto().getRestaurante().getId();
         Long idProduto = foto.getProduto().getId();
 
-        Optional<FotoProduto> fotoPersistida = fotoProdutoRepository.findById(idRestaurante , idProduto);
+        Optional<FotoProduto> fotoPersistida = repository.findById(idRestaurante , idProduto);
 
         if (fotoPersistida.isPresent()) {
-            fotoProdutoRepository.delete(fotoPersistida.get());
+            repository.delete(fotoPersistida.get());
         }
 
-        return fotoProdutoRepository.save(foto);
+        return repository.save(foto);
     }
 
 
