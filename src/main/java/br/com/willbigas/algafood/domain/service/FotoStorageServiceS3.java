@@ -7,4 +7,9 @@ public class FotoStorageServiceS3 implements FotoStorageService {
     public void armazenar(NovaFoto novaFoto) {
 
     }
+
+    @Override
+    public void remover(String nomeArquivo) {
+
+    }
 }
