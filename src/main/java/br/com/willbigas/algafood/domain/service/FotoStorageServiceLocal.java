@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Service
-public class FotoStorageLocal implements FotoStorage {
+public class FotoStorageServiceLocal implements FotoStorageService {
 
     @Value("${algafood.storage.local.diretorio-fotos}")
     private Path diretorioDeFotos;
