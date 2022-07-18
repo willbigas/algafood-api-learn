@@ -10,6 +10,7 @@ import br.com.willbigas.algafood.domain.service.FotoProdutoService;
 import br.com.willbigas.algafood.domain.service.FotoStorageService;
 import br.com.willbigas.algafood.domain.service.RestauranteService;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
@@ -44,7 +45,7 @@ public class RestauranteProdutoFotoController {
     }
 
     @GetMapping
-    public ResponseEntity<InputStreamResource> buscarFoto(@PathVariable Long idRestaurante, @PathVariable Long idProduto , @RequestHeader(name = "accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
+    public ResponseEntity<InputStreamResource> buscarFoto(@PathVariable Long idRestaurante, @PathVariable Long idProduto, @RequestHeader(name = "accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
 
         try {
             FotoProduto fotoProduto = fotoProdutoService.buscarOuFalhar(idRestaurante, idProduto);
@@ -52,7 +53,7 @@ public class RestauranteProdutoFotoController {
             MediaType mediaTypeFoto = MediaType.parseMediaType(fotoProduto.getContentType());
             List<MediaType> mediaTypesAceitas = MediaType.parseMediaTypes(acceptHeader);
 
-            verificarCompatibilidadeMediaType(mediaTypeFoto , mediaTypesAceitas);
+            verificarCompatibilidadeMediaType(mediaTypeFoto, mediaTypesAceitas);
 
             InputStream inputStream = fotoStorageService.recuperar(fotoProduto.getNomeArquivo());
 
@@ -82,6 +83,12 @@ public class RestauranteProdutoFotoController {
         foto = fotoProdutoService.salvar(foto, arquivo.getInputStream());
 
         return fotoProdutoMapper.toResponseDTO(foto);
+    }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void excluir(@PathVariable Long idRestaurante, @PathVariable Long idProduto) {
+        fotoProdutoService.excluir(idRestaurante, idProduto);
     }
 
     private void verificarCompatibilidadeMediaType(MediaType mediaTypeFoto, List<MediaType> mediaTypesAceitas) throws HttpMediaTypeNotAcceptableException {
