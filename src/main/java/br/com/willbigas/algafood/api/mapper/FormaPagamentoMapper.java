@@ -18,12 +18,12 @@ public class FormaPagamentoMapper {
         this.modelMapper = modelMapper;
     }
 
-    public FormaPagamentoResponseDTO toModel(FormaPagamento formaPagamento) {
+    public FormaPagamentoResponseDTO toResponseDTO(FormaPagamento formaPagamento) {
         return modelMapper.map(formaPagamento , FormaPagamentoResponseDTO.class);
     }
 
     public List<FormaPagamentoResponseDTO> toList(Collection<FormaPagamento> formaPagamentos) {
-        return formaPagamentos.stream().map(this::toModel)
+        return formaPagamentos.stream().map(this::toResponseDTO)
                 .collect(Collectors.toList());
     }
 

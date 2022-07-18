@@ -77,7 +77,9 @@ public class RestauranteService {
                         String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, idRestaurante)));
     }
 
-    public Produto buscarProduto(Restaurante restaurante, Long idProduto) {
+    public Produto buscarOuFalhar(Long idRestaurante, Long idProduto) {
+        Restaurante restaurante = buscarOuFalhar(idRestaurante);
+
         return restaurante.getProdutos().stream()
                 .filter(p -> p.getId().equals(idProduto))
                 .findFirst()

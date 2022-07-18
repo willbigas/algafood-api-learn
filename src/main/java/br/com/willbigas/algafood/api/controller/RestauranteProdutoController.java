@@ -52,7 +52,7 @@ public class RestauranteProdutoController {
     @GetMapping("/{idProduto}")
     public ProdutoResumidoResponseDTO buscarProduto(@PathVariable Long idRestaurante, @PathVariable Long idProduto) {
         Restaurante restaurante = restauranteService.buscarOuFalhar(idRestaurante);
-        return produtoMapper.toProdutoResumido(restauranteService.buscarProduto(restaurante, idProduto));
+        return produtoMapper.toProdutoResumido(restauranteService.buscarOuFalhar(restaurante.getId(), idProduto));
     }
 
 

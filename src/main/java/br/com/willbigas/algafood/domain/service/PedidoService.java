@@ -72,7 +72,7 @@ public class PedidoService {
 
     private void validarItens(Pedido pedido) {
         pedido.getItens().forEach(item -> {
-            Produto produto = restauranteService.buscarProduto(pedido.getRestaurante(), item.getProduto().getId());
+            Produto produto = restauranteService.buscarOuFalhar(pedido.getRestaurante().getId(), item.getProduto().getId());
 
             item.setPedido(pedido);
             item.setProduto(produto);

@@ -1,8 +1,7 @@
 package br.com.willbigas.algafood.domain.model;
 
 import br.com.willbigas.algafood.core.validation.Groups;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
