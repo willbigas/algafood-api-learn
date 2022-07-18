@@ -28,6 +28,11 @@ public class RestauranteProdutoFotoController {
         this.fotoProdutoMapper = fotoProdutoMapper;
     }
 
+    @GetMapping
+    public FotoProdutoResponseDTO buscar(@PathVariable Long idRestaurante, @PathVariable Long idProduto) {
+        FotoProduto fotoProduto = fotoProdutoService.buscarOuFalhar(idRestaurante, idProduto);
+        return fotoProdutoMapper.toResponseDTO(fotoProduto);
+    }
 
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public FotoProdutoResponseDTO atualizarFoto(@PathVariable Long idRestaurante, @PathVariable Long idProduto, @Valid FotoProdutoRequest request) throws IOException {
@@ -42,8 +47,10 @@ public class RestauranteProdutoFotoController {
         foto.setTamanho(arquivo.getSize());
         foto.setNomeArquivo(arquivo.getOriginalFilename());
         foto.setDescricao(descricao);
-        foto = fotoProdutoService.salvar(foto , arquivo.getInputStream());
+        foto = fotoProdutoService.salvar(foto, arquivo.getInputStream());
 
         return fotoProdutoMapper.toResponseDTO(foto);
     }
+
+
 }

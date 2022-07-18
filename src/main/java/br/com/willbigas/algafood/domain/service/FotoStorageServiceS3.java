@@ -1,5 +1,7 @@
 package br.com.willbigas.algafood.domain.service;
 
+import java.io.InputStream;
+
 public class FotoStorageServiceS3 implements FotoStorageService {
 
 
@@ -9,7 +11,14 @@ public class FotoStorageServiceS3 implements FotoStorageService {
     }
 
     @Override
+    public InputStream recuperar(String nomeArquivo) {
+        return null;
+    }
+
+    @Override
     public void remover(String nomeArquivo) {
 
     }
+
+
 }

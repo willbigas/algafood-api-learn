@@ -1,5 +1,6 @@
 package br.com.willbigas.algafood.domain.service;
 
+import br.com.willbigas.algafood.domain.exception.FotoProdutoNaoEncontradaException;
 import br.com.willbigas.algafood.domain.model.FotoProduto;
 import br.com.willbigas.algafood.domain.repository.FotoProdutoRepository;
 import org.springframework.stereotype.Service;
@@ -48,6 +49,13 @@ public class FotoProdutoService {
 
         return foto;
     }
+
+    public FotoProduto buscarOuFalhar(Long idRestaurante, Long idProduto) {
+        return repository.findById(idRestaurante, idProduto)
+                .orElseThrow(() -> new FotoProdutoNaoEncontradaException(idRestaurante, idProduto));
+    }
+
+
 
 
 }
