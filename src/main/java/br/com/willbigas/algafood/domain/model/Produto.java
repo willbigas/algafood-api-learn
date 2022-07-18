@@ -33,4 +33,7 @@ public class Produto implements Serializable {
     @JoinColumn(nullable = false)
     private Restaurante restaurante;
 
+    @OneToOne(mappedBy = "produto" , fetch = FetchType.LAZY , optional = false)
+    private FotoProduto foto;
+
 }
