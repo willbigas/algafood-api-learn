@@ -1,5 +1,8 @@
 package br.com.willbigas.algafood.core.storage;
 
+import br.com.willbigas.algafood.domain.service.FotoStorageService;
+import br.com.willbigas.algafood.domain.service.FotoStorageServiceLocal;
+import br.com.willbigas.algafood.domain.service.FotoStorageServiceS3;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
@@ -8,11 +11,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class AmazonS3Config {
+public class StorageConfig {
 
     private final StorageProperties properties;
 
-    public AmazonS3Config(StorageProperties properties) {
+    public StorageConfig(StorageProperties properties) {
         this.properties = properties;
     }
 
@@ -26,5 +29,17 @@ public class AmazonS3Config {
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(properties.getS3().getRegiao())
                 .build();
+    }
+
+    @Bean
+    public FotoStorageService fotoStorageService() {
+        if (StorageProperties.TipoStorage.S3.equals(properties.getTipo())) {
+            return new FotoStorageServiceS3();
+        }
+
+        if (StorageProperties.TipoStorage.LOCAL.equals(properties.getTipo())) {
+            return new FotoStorageServiceLocal();
+        }
+        return null;
     }
 }
