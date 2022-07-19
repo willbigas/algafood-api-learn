@@ -3,13 +3,14 @@ package br.com.willbigas.algafood.domain.service;
 import br.com.willbigas.algafood.domain.exception.FotoProdutoNaoEncontradaException;
 import br.com.willbigas.algafood.domain.model.FotoProduto;
 import br.com.willbigas.algafood.domain.repository.FotoProdutoRepository;
+import br.com.willbigas.algafood.domain.service.interfaces.FotoStorageService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
 import java.util.Optional;
 
-import static br.com.willbigas.algafood.domain.service.FotoStorageService.*;
+import static br.com.willbigas.algafood.domain.service.interfaces.FotoStorageService.*;
 
 @Service
 public class FotoProdutoService {

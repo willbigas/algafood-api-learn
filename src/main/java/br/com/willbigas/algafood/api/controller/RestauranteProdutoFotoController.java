@@ -7,8 +7,8 @@ import br.com.willbigas.algafood.domain.exception.EntidadeNaoEncontradaException
 import br.com.willbigas.algafood.domain.model.FotoProduto;
 import br.com.willbigas.algafood.domain.model.Produto;
 import br.com.willbigas.algafood.domain.service.FotoProdutoService;
-import br.com.willbigas.algafood.domain.service.FotoStorageService;
-import br.com.willbigas.algafood.domain.service.FotoStorageService.FotoRecuperada;
+import br.com.willbigas.algafood.domain.service.interfaces.FotoStorageService;
+import br.com.willbigas.algafood.domain.service.interfaces.FotoStorageService.FotoRecuperada;
 import br.com.willbigas.algafood.domain.service.RestauranteService;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -18,11 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.function.ServerRequest;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 @RestController

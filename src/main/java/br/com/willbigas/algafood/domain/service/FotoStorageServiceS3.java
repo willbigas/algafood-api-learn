@@ -2,6 +2,7 @@ package br.com.willbigas.algafood.domain.service;
 
 import br.com.willbigas.algafood.core.storage.StorageProperties;
 import br.com.willbigas.algafood.domain.exception.StorageException;
+import br.com.willbigas.algafood.domain.service.interfaces.FotoStorageService;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;

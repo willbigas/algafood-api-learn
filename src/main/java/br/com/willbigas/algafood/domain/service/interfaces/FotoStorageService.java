@@ -1,4 +1,4 @@
-package br.com.willbigas.algafood.domain.service;
+package br.com.willbigas.algafood.domain.service.interfaces;
 
 import lombok.Builder;
 import lombok.Getter;

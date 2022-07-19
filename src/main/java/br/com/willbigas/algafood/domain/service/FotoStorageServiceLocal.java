@@ -2,6 +2,7 @@ package br.com.willbigas.algafood.domain.service;
 
 import br.com.willbigas.algafood.core.storage.StorageProperties;
 import br.com.willbigas.algafood.domain.exception.StorageException;
+import br.com.willbigas.algafood.domain.service.interfaces.FotoStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.FileCopyUtils;
 

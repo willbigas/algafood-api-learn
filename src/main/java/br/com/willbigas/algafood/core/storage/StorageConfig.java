@@ -1,6 +1,6 @@
 package br.com.willbigas.algafood.core.storage;
 
-import br.com.willbigas.algafood.domain.service.FotoStorageService;
+import br.com.willbigas.algafood.domain.service.interfaces.FotoStorageService;
 import br.com.willbigas.algafood.domain.service.FotoStorageServiceLocal;
 import br.com.willbigas.algafood.domain.service.FotoStorageServiceS3;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
