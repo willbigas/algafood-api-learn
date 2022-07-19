@@ -10,6 +10,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
+import java.net.URL;
 
 @Service
 public class FotoStorageServiceS3 implements FotoStorageService {
@@ -36,7 +37,7 @@ public class FotoStorageServiceS3 implements FotoStorageService {
                     caminhoArquivo,
                     novaFoto.getInputStream(),
                     objectMetadata
-            );
+            ).withCannedAcl(CannedAccessControlList.PublicRead);
 
             amazonS3.putObject(putObjectRequest);
         } catch (Exception e) {
@@ -46,8 +47,14 @@ public class FotoStorageServiceS3 implements FotoStorageService {
     }
 
     @Override
-    public InputStream recuperar(String nomeArquivo) {
-        return null;
+    public FotoRecuperada recuperar(String nomeArquivo) {
+        String caminhoArquivo = getCaminhoArquivo(nomeArquivo);
+
+        URL url = amazonS3.getUrl(storageProperties.getS3().getBucket() , caminhoArquivo);
+
+        return FotoRecuperada.builder()
+                .url(url.toString())
+                .build();
     }
 
     @Override
