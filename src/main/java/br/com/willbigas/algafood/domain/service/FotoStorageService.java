@@ -35,6 +35,7 @@ public interface FotoStorageService {
         private String nomeArquivo;
         private String contentType;
         private InputStream inputStream;
+        private Long size;
 
     }
 }
