@@ -2,6 +2,7 @@ package br.com.willbigas.algafood.domain.service;
 
 import br.com.willbigas.algafood.domain.model.Mensagem;
 import br.com.willbigas.algafood.domain.model.Pedido;
+import br.com.willbigas.algafood.domain.service.interfaces.EmailService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

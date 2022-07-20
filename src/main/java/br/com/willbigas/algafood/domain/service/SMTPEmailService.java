@@ -2,38 +2,33 @@ package br.com.willbigas.algafood.domain.service;
 
 import br.com.willbigas.algafood.domain.exception.EmailException;
 import br.com.willbigas.algafood.domain.model.Mensagem;
+import br.com.willbigas.algafood.domain.service.interfaces.EmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.model.*;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Collections;
-import java.util.Locale;
 
-@Service
 @Log4j2
-public class EmailService {
+public class SMTPEmailService implements EmailService {
 
     private final AmazonSimpleEmailService amazonSimpleEmailService;
 
-    private final Configuration freeMarkerConfig;
-
+    private final TemplateProcessorService templateProcessorService;
 
     @Value("${algafood.aws.ses.remetente-default}")
     private String remetentePadrao;
 
-    public EmailService(AmazonSimpleEmailService amazonSimpleEmailService, Configuration freeMarkerConfig) {
+    public SMTPEmailService(AmazonSimpleEmailService amazonSimpleEmailService, TemplateProcessorService templateProcessorService) {
         this.amazonSimpleEmailService = amazonSimpleEmailService;
-        this.freeMarkerConfig = freeMarkerConfig;
+        this.templateProcessorService = templateProcessorService;
     }
 
+
+    @Override
     @Async
     public void enviarEmail(Mensagem mensagem, Charset charset) {
 
@@ -42,7 +37,7 @@ public class EmailService {
             String corpo = null;
 
             if (mensagem.getCorpo().endsWith(".html")) {
-                corpo = processarTemplate(mensagem);
+                corpo = templateProcessorService.processarTemplate(mensagem);
             }
 
             Destination destination = null;
@@ -72,14 +67,5 @@ public class EmailService {
         }
     }
 
-    private String processarTemplate(Mensagem mensagem) {
-        try {
-            freeMarkerConfig.setLocale(Locale.getDefault());
-            Template template = freeMarkerConfig.getTemplate(mensagem.getCorpo());
-            return FreeMarkerTemplateUtils.processTemplateIntoString(template , mensagem.getVariaveis());
-        } catch (Exception e) {
-            throw new EmailException("Não foi possível montar o template do e-mail", e);
-        }
-    }
 
 }

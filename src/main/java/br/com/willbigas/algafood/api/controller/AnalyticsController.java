@@ -1,11 +1,9 @@
 package br.com.willbigas.algafood.api.controller;
 
 import br.com.willbigas.algafood.domain.filter.VendaDiariaFilter;
-import br.com.willbigas.algafood.domain.model.Mensagem;
 import br.com.willbigas.algafood.domain.model.view.PeriodoFilter;
 import br.com.willbigas.algafood.domain.model.view.VendaDiariaViewDTO;
 import br.com.willbigas.algafood.domain.service.AnalyticsService;
-import br.com.willbigas.algafood.domain.service.EmailService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
