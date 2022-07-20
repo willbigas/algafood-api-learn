@@ -23,12 +23,9 @@ import java.util.List;
 public class AnalyticsController {
 
     private final AnalyticsService analyticsService;
-    private final EmailService emailService;
 
-
-    public AnalyticsController(AnalyticsService analyticsService, EmailService emailService) {
+    public AnalyticsController(AnalyticsService analyticsService) {
         this.analyticsService = analyticsService;
-        this.emailService = emailService;
     }
 
     @GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -50,19 +47,6 @@ public class AnalyticsController {
     @GetMapping("/vendas-diarias/data-criacao")
     public List<VendaDiariaViewDTO> listarPorData(@RequestBody PeriodoFilter periodoFilter) {
         return analyticsService.findByDataCriacaoBetween(periodoFilter.getDataCriacaoInicial(), periodoFilter.getDataCriacaoFinal());
-    }
-
-    @GetMapping("/enviar-email")
-    public void enviarEmail() {
-
-        Mensagem mensagem = Mensagem.builder()
-                .remetente("will.bigas@gmail.com")
-                .destinatario("will.bigas@gmail.com")
-                .assunto("Teste de Assunto enviado por e-mail")
-                .corpo("<strong>Corpo</strong> do e-mail de <i>teste</i>")
-                .build();
-
-        emailService.enviarEmail(mensagem, StandardCharsets.UTF_8);
     }
 
 }

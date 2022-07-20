@@ -1,8 +1,12 @@
 package br.com.willbigas.algafood.api.controller;
 
+import br.com.willbigas.algafood.domain.model.Mensagem;
+import br.com.willbigas.algafood.domain.service.EmailService;
 import br.com.willbigas.algafood.domain.service.FluxoPedidoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequestMapping(value = "/pedidos/{codigoPedido}")
