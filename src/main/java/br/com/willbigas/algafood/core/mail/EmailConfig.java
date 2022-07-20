@@ -3,6 +3,7 @@ package br.com.willbigas.algafood.core.mail;
 
 import br.com.willbigas.algafood.domain.service.FakeEmailService;
 import br.com.willbigas.algafood.domain.service.SMTPEmailService;
+import br.com.willbigas.algafood.domain.service.SandBoxEmailService;
 import br.com.willbigas.algafood.domain.service.TemplateProcessorService;
 import br.com.willbigas.algafood.domain.service.interfaces.EmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
@@ -29,6 +30,8 @@ public class EmailConfig {
                 return new FakeEmailService(templateProcessorService);
             case SMTP:
                 return new SMTPEmailService(amazonSimpleEmailService, templateProcessorService);
+            case SANDBOX:
+                return new SandBoxEmailService(amazonSimpleEmailService, templateProcessorService, emailProperties);
             default:
                 return null;
         }

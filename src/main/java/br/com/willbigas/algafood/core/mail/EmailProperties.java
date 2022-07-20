@@ -13,9 +13,10 @@ import org.springframework.stereotype.Component;
 public class EmailProperties {
 
     private Implementacao impl = Implementacao.FAKE;
+    private String destinatarioPadrao;
 
     public enum Implementacao {
-        SMTP, FAKE
+        SMTP, FAKE , SANDBOX
     }
 
 }
