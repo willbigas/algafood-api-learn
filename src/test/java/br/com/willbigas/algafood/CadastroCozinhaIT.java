@@ -19,6 +19,7 @@ import org.springframework.util.StreamUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 
 import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
@@ -42,7 +43,7 @@ class CadastroCozinhaIT {
     private static final Cozinha cozinhaAmericana = new Cozinha("Americana");
     private static final Cozinha cozinhaTailandesa = new Cozinha("Tailandesa");
 
-    private static final List<Cozinha> cozinhas = List.of(cozinhaAmericana, cozinhaTailandesa);
+    private static final List<Cozinha> cozinhas = Arrays.asList(cozinhaAmericana, cozinhaTailandesa);
 
     public static final String PATH_COZINHAS = "/cozinhas";
 

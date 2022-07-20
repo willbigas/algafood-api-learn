@@ -4,6 +4,9 @@ import br.com.willbigas.algafood.domain.model.Pedido;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
+
 @Service
 public class FluxoPedidoService {
 
@@ -30,4 +33,6 @@ public class FluxoPedidoService {
         Pedido pedido = pedidoService.buscarOuFalhar(codigoPedido);
         pedido.cancelar();
     }
+
+
 }
