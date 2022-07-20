@@ -3,7 +3,6 @@ package br.com.willbigas.algafood.domain.service;
 import br.com.willbigas.algafood.core.storage.StorageProperties;
 import br.com.willbigas.algafood.domain.exception.StorageException;
 import br.com.willbigas.algafood.domain.service.interfaces.FotoStorageService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.FileCopyUtils;
 
 import java.nio.file.Files;
@@ -15,8 +14,11 @@ public class FotoStorageServiceLocal implements FotoStorageService {
 //    @Value("${algafood.storage.local.diretorio-fotos}")
 //    private Path diretorioDeFotos;
 
-    @Autowired
-    private StorageProperties storageProperties;
+    private final StorageProperties storageProperties;
+
+    public FotoStorageServiceLocal(StorageProperties storageProperties) {
+        this.storageProperties = storageProperties;
+    }
 
     @Override
     public void armazenar(NovaFoto novaFoto) {

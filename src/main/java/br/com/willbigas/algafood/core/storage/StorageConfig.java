@@ -3,10 +3,7 @@ package br.com.willbigas.algafood.core.storage;
 import br.com.willbigas.algafood.domain.service.interfaces.FotoStorageService;
 import br.com.willbigas.algafood.domain.service.FotoStorageServiceLocal;
 import br.com.willbigas.algafood.domain.service.FotoStorageServiceS3;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,29 +11,21 @@ import org.springframework.context.annotation.Configuration;
 public class StorageConfig {
 
     private final StorageProperties properties;
+    private final AmazonS3 amazonS3;
 
-    public StorageConfig(StorageProperties properties) {
+
+    public StorageConfig(StorageProperties properties, AmazonS3 amazonS3) {
         this.properties = properties;
-    }
-
-    @Bean
-    public AmazonS3 amazonS3() {
-        BasicAWSCredentials credentials = new BasicAWSCredentials(
-                properties.getS3().getIdChaveAcesso(), properties.getS3().getChaveAcessoSecreta());
-
-        return AmazonS3ClientBuilder.standard()
-                .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                .withRegion(properties.getS3().getRegiao())
-                .build();
+        this.amazonS3 = amazonS3;
     }
 
     @Bean
     public FotoStorageService fotoStorageService() {
         switch (properties.getTipo()) {
             case S3:
-                return new FotoStorageServiceS3();
+                return new FotoStorageServiceS3(amazonS3, properties);
             case LOCAL:
-                return new FotoStorageServiceLocal();
+                return new FotoStorageServiceLocal(properties);
             default:
                 return null;
         }
