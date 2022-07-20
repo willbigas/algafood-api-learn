@@ -30,13 +30,11 @@ public class RestauranteProdutoFotoController {
     private final FotoProdutoService fotoProdutoService;
     private final RestauranteService restauranteService;
     private final FotoProdutoMapper fotoProdutoMapper;
-    private final FotoStorageService fotoStorageService;
 
-    public RestauranteProdutoFotoController(FotoProdutoService fotoProdutoService, RestauranteService restauranteService, FotoProdutoMapper fotoProdutoMapper, FotoStorageService fotoStorageService) {
+    public RestauranteProdutoFotoController(FotoProdutoService fotoProdutoService, RestauranteService restauranteService, FotoProdutoMapper fotoProdutoMapper) {
         this.fotoProdutoService = fotoProdutoService;
         this.restauranteService = restauranteService;
         this.fotoProdutoMapper = fotoProdutoMapper;
-        this.fotoStorageService = fotoStorageService;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -56,7 +54,7 @@ public class RestauranteProdutoFotoController {
 
             verificarCompatibilidadeMediaType(mediaTypeFoto, mediaTypesAceitas);
 
-            FotoRecuperada fotoRecuperada = fotoStorageService.recuperar(fotoProduto.getNomeArquivo());
+            FotoRecuperada fotoRecuperada = fotoProdutoService.recuperar(fotoProduto.getNomeArquivo());
 
             if (fotoRecuperada.temUrl()) {
                 return ResponseEntity

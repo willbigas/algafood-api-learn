@@ -24,7 +24,6 @@ public class StorageConfig {
         BasicAWSCredentials credentials = new BasicAWSCredentials(
                 properties.getS3().getIdChaveAcesso(), properties.getS3().getChaveAcessoSecreta());
 
-
         return AmazonS3ClientBuilder.standard()
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(properties.getS3().getRegiao())
@@ -33,13 +32,13 @@ public class StorageConfig {
 
     @Bean
     public FotoStorageService fotoStorageService() {
-        if (StorageProperties.TipoStorage.S3.equals(properties.getTipo())) {
-            return new FotoStorageServiceS3();
+        switch (properties.getTipo()) {
+            case S3:
+                return new FotoStorageServiceS3();
+            case LOCAL:
+                return new FotoStorageServiceLocal();
+            default:
+                return null;
         }
-
-        if (StorageProperties.TipoStorage.LOCAL.equals(properties.getTipo())) {
-            return new FotoStorageServiceLocal();
-        }
-        return null;
     }
 }

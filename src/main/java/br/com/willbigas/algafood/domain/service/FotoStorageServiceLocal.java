@@ -16,7 +16,7 @@ public class FotoStorageServiceLocal implements FotoStorageService {
 //    private Path diretorioDeFotos;
 
     @Autowired
-    private  StorageProperties storageProperties;
+    private StorageProperties storageProperties;
 
     @Override
     public void armazenar(NovaFoto novaFoto) {

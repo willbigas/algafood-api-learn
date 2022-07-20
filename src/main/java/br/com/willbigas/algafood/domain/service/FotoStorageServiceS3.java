@@ -47,7 +47,7 @@ public class FotoStorageServiceS3 implements FotoStorageService {
     public FotoRecuperada recuperar(String nomeArquivo) {
         String caminhoArquivo = getCaminhoArquivo(nomeArquivo);
 
-        URL url = amazonS3.getUrl(storageProperties.getS3().getBucket() , caminhoArquivo);
+        URL url = amazonS3.getUrl(storageProperties.getS3().getBucket(), caminhoArquivo);
 
         return FotoRecuperada.builder()
                 .url(url.toString())

@@ -48,9 +48,13 @@ public class FotoProdutoService {
                 .inputStream(dadosArquivos)
                 .build();
 
-        fotoStorage.substituir(nomeFotoPersistida , novaFoto);
+        fotoStorage.substituir(nomeFotoPersistida, novaFoto);
 
         return foto;
+    }
+
+    public FotoRecuperada recuperar(String nomeArquivo) {
+        return fotoStorage.recuperar(nomeArquivo);
     }
 
     @Transactional
@@ -67,8 +71,6 @@ public class FotoProdutoService {
         return repository.findById(idRestaurante, idProduto)
                 .orElseThrow(() -> new FotoProdutoNaoEncontradaException(idRestaurante, idProduto));
     }
-
-
 
 
 }
