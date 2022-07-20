@@ -15,6 +15,7 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Collections;
+import java.util.Locale;
 
 @Service
 @Log4j2
@@ -73,6 +74,7 @@ public class EmailService {
 
     private String processarTemplate(Mensagem mensagem) {
         try {
+            freeMarkerConfig.setLocale(Locale.getDefault());
             Template template = freeMarkerConfig.getTemplate(mensagem.getCorpo());
             return FreeMarkerTemplateUtils.processTemplateIntoString(template , mensagem.getVariaveis());
         } catch (Exception e) {

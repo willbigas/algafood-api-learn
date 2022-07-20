@@ -28,7 +28,7 @@ public class FluxoPedidoService {
         Mensagem mensagem = Mensagem.builder()
                 .remetente("will.bigas@gmail.com")
                 .destinatario("will.bigas@gmail.com")
-                .assunto("Pedido Confirmado -> " + pedido.getCodigo())
+                .assunto("AlgaFood - Pedido Confirmado")
                 .variavel("pedido" , pedido)
                 .corpo("pedido-confirmado.html")
                 .build();
