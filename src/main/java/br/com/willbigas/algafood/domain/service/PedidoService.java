@@ -43,6 +43,11 @@ public class PedidoService {
     }
 
     @Transactional
+    public Pedido salvar(Pedido pedido) {
+        return pedidoRepository.save(pedido);
+    }
+
+    @Transactional
     public Pedido emitir(Pedido pedido) {
         validarPedido(pedido);
         validarItens(pedido);

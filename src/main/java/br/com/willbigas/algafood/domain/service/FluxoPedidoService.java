@@ -1,40 +1,30 @@
 package br.com.willbigas.algafood.domain.service;
 
-import br.com.willbigas.algafood.domain.model.Mensagem;
+import br.com.willbigas.algafood.domain.event.PedidoCanceladoApplicationEvent;
 import br.com.willbigas.algafood.domain.model.Pedido;
-import br.com.willbigas.algafood.domain.service.interfaces.EmailService;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
+
 
 @Service
 public class FluxoPedidoService {
 
     private final PedidoService pedidoService;
+    private final ApplicationEventPublisher publisher;
 
-    private final EmailService emailService;
-
-    public FluxoPedidoService(PedidoService pedidoService, EmailService emailService) {
+    public FluxoPedidoService(PedidoService pedidoService, ApplicationEventPublisher publisher) {
         this.pedidoService = pedidoService;
-        this.emailService = emailService;
+        this.publisher = publisher;
     }
 
     @Transactional
     public void confirmar(String codigoPedido) {
         Pedido pedido = pedidoService.buscarOuFalhar(codigoPedido);
         pedido.confirmar();
-
-
-        Mensagem mensagem = Mensagem.builder()
-                .remetente("will.bigas@gmail.com")
-                .destinatario("will.bigas@gmail.com")
-                .assunto("AlgaFood - Pedido Confirmado")
-                .variavel("pedido" , pedido)
-                .corpo("pedido-confirmado.html")
-                .build();
-
-        emailService.enviarEmail(mensagem, StandardCharsets.UTF_8);
+        pedidoService.salvar(pedido);
     }
 
     @Transactional
@@ -47,6 +37,7 @@ public class FluxoPedidoService {
     public void cancelar(String codigoPedido) {
         Pedido pedido = pedidoService.buscarOuFalhar(codigoPedido);
         pedido.cancelar();
+        publisher.publishEvent(new PedidoCanceladoApplicationEvent(this, pedido, OffsetDateTime.now()));
     }
 
 
