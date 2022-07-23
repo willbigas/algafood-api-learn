@@ -4,6 +4,8 @@ import br.com.willbigas.algafood.domain.exception.CidadeNaoEncontradaException;
 import br.com.willbigas.algafood.domain.exception.NegocioException;
 import br.com.willbigas.algafood.domain.model.Cidade;
 import br.com.willbigas.algafood.domain.service.CidadeService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping(value = "/cidades")
+@Tag(name = "Cidade", description = "Gerencia as cidades")
 public class CidadeController {
 
     private final CidadeService cidadeService;
@@ -26,6 +29,7 @@ public class CidadeController {
     }
 
     @GetMapping
+    @Operation(summary = "Lista as cidades" , tags = {"Cidade"})
     public ResponseEntity<List<Cidade>> listar() {
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -38,12 +42,14 @@ public class CidadeController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Busca uma cidade por ID" , tags = {"Cidade"})
     public Cidade buscar(@PathVariable Long id) {
         return cidadeService.buscarOuFalhar(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Cadastra uma cidade" , tags = {"Cidade"})
     public Cidade adicionar(@RequestBody @Valid Cidade cidade) {
         try {
             return cidadeService.salvar(cidade);
@@ -53,6 +59,7 @@ public class CidadeController {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Atualiza uma cidade por ID" , tags = {"Cidade"})
     public Cidade atualizar(@PathVariable Long id, @RequestBody @Valid Cidade cidade) {
         Cidade cidadeAtual = cidadeService.buscarOuFalhar(id);
         BeanUtils.copyProperties(cidade, cidadeAtual, "id");
@@ -65,6 +72,7 @@ public class CidadeController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Exclui uma cidade por ID" , tags = {"Cidade"})
     public void remover(@PathVariable Long id) {
         cidadeService.excluir(id);
     }

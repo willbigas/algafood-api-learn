@@ -3,7 +3,6 @@ package br.com.willbigas.algafood.api.controller;
 import br.com.willbigas.algafood.domain.exception.CidadeNaoEncontradaException;
 import br.com.willbigas.algafood.domain.exception.FormaPagamentoNaoEncontradaException;
 import br.com.willbigas.algafood.domain.exception.NegocioException;
-import br.com.willbigas.algafood.domain.model.Cidade;
 import br.com.willbigas.algafood.domain.model.FormaPagamento;
 import br.com.willbigas.algafood.domain.service.FormaPagamentoService;
 import org.springframework.beans.BeanUtils;
