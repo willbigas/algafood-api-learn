@@ -5,6 +5,7 @@ import br.com.willbigas.algafood.domain.exception.NegocioException;
 import br.com.willbigas.algafood.domain.model.Cidade;
 import br.com.willbigas.algafood.domain.service.CidadeService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.CacheControl;
@@ -29,11 +30,9 @@ public class CidadeController {
     }
 
     @GetMapping
-    @Operation(summary = "Lista as cidades" , tags = {"Cidade"})
+    @Operation(summary = "Lista as cidades", tags = {"Cidade"})
     public ResponseEntity<List<Cidade>> listar() {
-        return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
 //                .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic()) // caches locais e compartilhados
 //                .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePrivate()) // cache somente local
 //                .cacheControl(CacheControl.noCache()) // Sempre armazena o cache em stale e sempre precisa ser revalidado.
@@ -42,15 +41,15 @@ public class CidadeController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Busca uma cidade por ID" , tags = {"Cidade"})
-    public Cidade buscar(@PathVariable Long id) {
+    @Operation(summary = "Busca uma cidade por ID", tags = {"Cidade"})
+    public Cidade buscar(@Parameter(description = "ID de uma cidade", example = "123") @PathVariable Long id) {
         return cidadeService.buscarOuFalhar(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Cadastra uma cidade" , tags = {"Cidade"})
-    public Cidade adicionar(@RequestBody @Valid Cidade cidade) {
+    @Operation(summary = "Cadastra uma cidade", tags = {"Cidade"})
+    public Cidade adicionar(@Parameter(name = "Corpo", description = "Representação de uma nova cidade") @RequestBody @Valid Cidade cidade) {
         try {
             return cidadeService.salvar(cidade);
         } catch (CidadeNaoEncontradaException e) {
@@ -59,8 +58,10 @@ public class CidadeController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Atualiza uma cidade por ID" , tags = {"Cidade"})
-    public Cidade atualizar(@PathVariable Long id, @RequestBody @Valid Cidade cidade) {
+    @Operation(summary = "Atualiza uma cidade por ID", tags = {"Cidade"})
+    public Cidade atualizar(@Parameter(description = "ID de uma cidade", example = "123") @PathVariable Long id,
+                            @Parameter(name = "Corpo", description = "Representação de uma nova cidade") @RequestBody @Valid Cidade cidade) {
+
         Cidade cidadeAtual = cidadeService.buscarOuFalhar(id);
         BeanUtils.copyProperties(cidade, cidadeAtual, "id");
         try {
@@ -72,8 +73,8 @@ public class CidadeController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Operation(summary = "Exclui uma cidade por ID" , tags = {"Cidade"})
-    public void remover(@PathVariable Long id) {
+    @Operation(summary = "Exclui uma cidade por ID", tags = {"Cidade"})
+    public void remover(@Parameter(description = "ID de uma cidade", example = "123") @PathVariable Long id) {
         cidadeService.excluir(id);
     }
 
