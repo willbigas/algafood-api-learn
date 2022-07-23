@@ -9,6 +9,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class FormaPagamentoService {
 
@@ -22,6 +24,10 @@ public class FormaPagamentoService {
 
     public FormaPagamentoService(FormaPagamentoRepository formaPagamentoRepository) {
         this.formaPagamentoRepository = formaPagamentoRepository;
+    }
+
+    public List<FormaPagamento> findAll() {
+        return formaPagamentoRepository.findAll();
     }
 
     @Transactional

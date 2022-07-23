@@ -32,7 +32,7 @@ delete
 from item_pedido;
 
 delete
-    from foto_produto;
+from foto_produto;
 
 
 set foreign_key_checks = 1;
@@ -112,12 +112,12 @@ insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_a
 values (6, 'Bar da Maria', 6, 4, utc_timestamp, utc_timestamp, true, true, 1, '38400-999', 'Rua João Pinheiro', '1000',
         'Centro');
 
-insert into forma_pagamento (id, descricao)
-values (1, 'Cartão de crédito');
-insert into forma_pagamento (id, descricao)
-values (2, 'Cartão de débito');
-insert into forma_pagamento (id, descricao)
-values (3, 'Dinheiro');
+insert into forma_pagamento (id, descricao, data_atualizacao)
+values (1, 'Cartão de crédito', utc_timestamp);
+insert into forma_pagamento (id, descricao, data_atualizacao)
+values (2, 'Cartão de débito', utc_timestamp);
+insert into forma_pagamento (id, descricao, data_atualizacao)
+values (3, 'Dinheiro', utc_timestamp);
 
 insert into permissao (id, nome, descricao)
 values (1, 'CONSULTAR_COZINHAS', 'Permite consultar cozinhas');
