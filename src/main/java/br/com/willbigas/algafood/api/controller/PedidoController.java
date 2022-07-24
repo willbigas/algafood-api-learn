@@ -12,6 +12,9 @@ import br.com.willbigas.algafood.domain.model.Usuario;
 import br.com.willbigas.algafood.domain.filter.PedidoFilter;
 import br.com.willbigas.algafood.domain.repository.spec.PedidoSpecification;
 import br.com.willbigas.algafood.domain.service.PedidoService;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -43,6 +46,7 @@ public class PedidoController {
         return pedidoMapper.toPedidoResumidoList(pedidos);
     }
 
+    @Parameter(name = "campos" , description = "Campos de filtro personalizado de todas as colunas" , example = "nomeDaColuna,nomeDaColuna2,objeto[nomeDaColuna]")
     @GetMapping("/page")
     public Page<PedidoResumidoResponseDTO> pesquisar(PedidoFilter pedidoFilter, Pageable pageable) {
         pageable = traduzirPageable(pageable);

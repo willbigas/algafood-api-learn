@@ -1,6 +1,9 @@
 package br.com.willbigas.algafood.domain.model;
 
 import br.com.willbigas.algafood.core.validation.Groups;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.SchemaProperties;
+import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
