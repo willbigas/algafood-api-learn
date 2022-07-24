@@ -1,5 +1,6 @@
 package br.com.willbigas.algafood.api.controller;
 
+import br.com.willbigas.algafood.api.controller.openapi.CidadeControllerOpenAPI;
 import br.com.willbigas.algafood.api.exceptionhandler.Problem;
 import br.com.willbigas.algafood.domain.exception.CidadeNaoEncontradaException;
 import br.com.willbigas.algafood.domain.exception.NegocioException;
@@ -25,8 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping(value = "/cidades")
-@Tag(name = "Cidade", description = "Gerencia as cidades")
-public class CidadeController {
+public class CidadeController implements CidadeControllerOpenAPI {
 
     private final CidadeService cidadeService;
 
@@ -35,13 +35,6 @@ public class CidadeController {
     }
 
     @GetMapping
-    @Operation(summary = "Lista as cidades", tags = {"Cidade"})
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Consulta realizada"),
-            @ApiResponse(responseCode = "400", description = "Requisição inválida, verifique o corpo ou path da requisição",
-                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))}),
-            @ApiResponse(responseCode = "500", description = "Erro inesperado no servidor"),
-    })
     public ResponseEntity<List<Cidade>> listar() {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
 //                .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic()) // caches locais e compartilhados
@@ -52,24 +45,13 @@ public class CidadeController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Busca uma cidade por ID", tags = {"Cidade"})
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Consulta realizada", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Cidade.class))}),
-            @ApiResponse(responseCode = "400", description = "ID da cidade inválida", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))}),
-            @ApiResponse(responseCode = "404", description = "Cidade não encontrada", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))}),
-            @ApiResponse(responseCode = "500", description = "Erro inesperado no servidor", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))}),
-    })
-    public Cidade buscar(@Parameter(description = "ID de uma cidade", example = "123") @PathVariable Long id) {
+    public Cidade buscar(@PathVariable Long id) {
         return cidadeService.buscarOuFalhar(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Cadastra uma cidade", tags = {"Cidade"})
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Cidade cadastrada", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Cidade.class))}),
-    })
-    public Cidade adicionar(@Parameter(name = "Corpo", description = "Representação de uma nova cidade") @RequestBody @Valid Cidade cidade) {
+    public Cidade adicionar(@RequestBody @Valid Cidade cidade) {
         try {
             return cidadeService.salvar(cidade);
         } catch (CidadeNaoEncontradaException e) {
@@ -78,13 +60,7 @@ public class CidadeController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Atualiza uma cidade por ID", tags = {"Cidade"})
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Cidade atualizada", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Cidade.class))}),
-            @ApiResponse(responseCode = "404", description = "Cidade não encontrada", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))}),
-    })
-    public Cidade atualizar(@Parameter(description = "ID de uma cidade", example = "123") @PathVariable Long id, @Parameter(name = "Corpo", description = "Representação de uma nova cidade") @RequestBody @Valid Cidade cidade) {
-
+    public Cidade atualizar(@PathVariable Long id, @RequestBody @Valid Cidade cidade) {
         Cidade cidadeAtual = cidadeService.buscarOuFalhar(id);
         BeanUtils.copyProperties(cidade, cidadeAtual, "id");
         try {
@@ -96,12 +72,7 @@ public class CidadeController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Operation(summary = "Exclui uma cidade por ID", tags = {"Cidade"})
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Cidade excluida"),
-            @ApiResponse(responseCode = "404", description = "Cidade não encontrada", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))}),
-    })
-    public void remover(@Parameter(description = "ID de uma cidade", example = "123") @PathVariable Long id) {
+    public void remover(@PathVariable Long id) {
         cidadeService.excluir(id);
     }
 
