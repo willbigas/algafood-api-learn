@@ -1,11 +1,16 @@
 package br.com.willbigas.algafood.api.controller;
 
+import br.com.willbigas.algafood.api.exceptionhandler.Problem;
 import br.com.willbigas.algafood.domain.exception.CidadeNaoEncontradaException;
 import br.com.willbigas.algafood.domain.exception.NegocioException;
 import br.com.willbigas.algafood.domain.model.Cidade;
 import br.com.willbigas.algafood.domain.service.CidadeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.CacheControl;
@@ -31,6 +36,11 @@ public class CidadeController {
 
     @GetMapping
     @Operation(summary = "Lista as cidades", tags = {"Cidade"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Consulta realizada"),
+            @ApiResponse(responseCode = "400", description = "Requisição inválida, verifique o corpo ou path da requisição",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))}),
+            @ApiResponse(responseCode = "500", description = "Erro inesperado no servidor"),})
     public ResponseEntity<List<Cidade>> listar() {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
 //                .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic()) // caches locais e compartilhados
@@ -59,8 +69,7 @@ public class CidadeController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Atualiza uma cidade por ID", tags = {"Cidade"})
-    public Cidade atualizar(@Parameter(description = "ID de uma cidade", example = "123") @PathVariable Long id,
-                            @Parameter(name = "Corpo", description = "Representação de uma nova cidade") @RequestBody @Valid Cidade cidade) {
+    public Cidade atualizar(@Parameter(description = "ID de uma cidade", example = "123") @PathVariable Long id, @Parameter(name = "Corpo", description = "Representação de uma nova cidade") @RequestBody @Valid Cidade cidade) {
 
         Cidade cidadeAtual = cidadeService.buscarOuFalhar(id);
         BeanUtils.copyProperties(cidade, cidadeAtual, "id");

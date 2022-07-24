@@ -1,5 +1,9 @@
 package br.com.willbigas.algafood.core.openapi;
 
+import br.com.willbigas.algafood.api.exceptionhandler.Problem;
+import io.swagger.v3.core.converter.AnnotatedType;
+import io.swagger.v3.core.converter.ModelConverters;
+import io.swagger.v3.core.converter.ResolvedSchema;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
@@ -31,6 +35,14 @@ public class OpenApiConfig {
     }
 
     @Bean
+    public OpenApiCustomiser addProblemClass() {
+        ResolvedSchema resolvedSchema = ModelConverters.getInstance()
+                .readAllAsResolvedSchema(new AnnotatedType(Problem.class));
+        return openApi -> openApi.schema(resolvedSchema.schema.getName(), resolvedSchema.schema);
+    }
+
+
+    @Bean
     public OpenApiCustomiser createDefaultResponseCodes() {
 
         return openApi -> openApi
@@ -38,11 +50,9 @@ public class OpenApiConfig {
                 .values()
                 .forEach(pathItem -> pathItem.readOperations().forEach(operation -> {
                     ApiResponses apiResponses = operation.getResponses();
-                    ApiResponse apiResponse500 = getAPIResponse("Erro Interno do servidor");
-                    ApiResponse apiResponse406 = getAPIResponse("Recurso não possui representação que poderia ser aceita pelo servidor");
 
+                    ApiResponse apiResponse500 = getAPIResponse("Erro Inesperado interno do servidor");
                     apiResponses.addApiResponse("500", apiResponse500);
-                    apiResponses.addApiResponse("406", apiResponse406);
                 }));
     }
 
