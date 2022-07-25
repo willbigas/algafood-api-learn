@@ -2,6 +2,7 @@ package br.com.willbigas.algafood.api.controller;
 
 import br.com.willbigas.algafood.api.controller.openapi.CidadeControllerOpenAPI;
 import br.com.willbigas.algafood.api.exceptionhandler.Problem;
+import br.com.willbigas.algafood.api.helper.ResourceUriHelper;
 import br.com.willbigas.algafood.domain.exception.CidadeNaoEncontradaException;
 import br.com.willbigas.algafood.domain.exception.NegocioException;
 import br.com.willbigas.algafood.domain.model.Cidade;
@@ -14,19 +15,21 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.BeanUtils;
-import org.springframework.http.CacheControl;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.print.attribute.standard.Media;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping(path = "/cidades" , produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CidadeController implements CidadeControllerOpenAPI {
 
     private final CidadeService cidadeService;
@@ -54,7 +57,9 @@ public class CidadeController implements CidadeControllerOpenAPI {
     @ResponseStatus(HttpStatus.CREATED)
     public Cidade adicionar(@RequestBody @Valid Cidade cidade) {
         try {
-            return cidadeService.salvar(cidade);
+            Cidade cidadeSalva = cidadeService.salvar(cidade);
+            ResourceUriHelper.addUriInResponseHeader(cidadeSalva.getId());
+            return cidadeSalva;
         } catch (CidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
         }
