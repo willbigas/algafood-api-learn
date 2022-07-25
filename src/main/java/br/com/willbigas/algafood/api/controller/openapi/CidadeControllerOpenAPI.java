@@ -24,7 +24,7 @@ public interface CidadeControllerOpenAPI {
                     content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))}),
             @ApiResponse(responseCode = "500", description = "Erro inesperado no servidor"),
     })
-    ResponseEntity<List<Cidade>> listar();
+    ResponseEntity<List<CidadeResponseDTO>> listar();
 
     @Operation(summary = "Busca uma cidade por ID", tags = {"Cidade"})
     @ApiResponses(value = {
