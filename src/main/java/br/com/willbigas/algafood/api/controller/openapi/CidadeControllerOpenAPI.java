@@ -1,6 +1,7 @@
 package br.com.willbigas.algafood.api.controller.openapi;
 
 import br.com.willbigas.algafood.api.exceptionhandler.Problem;
+import br.com.willbigas.algafood.api.model.response.CidadeResponseDTO;
 import br.com.willbigas.algafood.domain.model.Cidade;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -32,13 +33,13 @@ public interface CidadeControllerOpenAPI {
             @ApiResponse(responseCode = "404", description = "Cidade não encontrada", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))}),
             @ApiResponse(responseCode = "500", description = "Erro inesperado no servidor", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))}),
     })
-    Cidade buscar(@Parameter(description = "ID de uma cidade", example = "123") Long id);
+    CidadeResponseDTO buscar(@Parameter(description = "ID de uma cidade", example = "123") Long id);
 
     @Operation(summary = "Cadastra uma cidade", tags = {"Cidade"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Cidade cadastrada", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Cidade.class))}),
     })
-    Cidade adicionar(@Parameter(name = "Corpo", description = "Representação de uma nova cidade") Cidade cidade);
+    CidadeResponseDTO adicionar(@Parameter(name = "Corpo", description = "Representação de uma nova cidade") Cidade cidade);
 
     @Operation(summary = "Atualiza uma cidade por ID", tags = {"Cidade"})
     @ApiResponses(value = {

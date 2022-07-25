@@ -1,32 +1,22 @@
 package br.com.willbigas.algafood.api.controller;
 
 import br.com.willbigas.algafood.api.controller.openapi.CidadeControllerOpenAPI;
-import br.com.willbigas.algafood.api.exceptionhandler.Problem;
 import br.com.willbigas.algafood.api.helper.ResourceUriHelper;
+import br.com.willbigas.algafood.api.mapper.CidadeMapper;
+import br.com.willbigas.algafood.api.model.response.CidadeResponseDTO;
 import br.com.willbigas.algafood.domain.exception.CidadeNaoEncontradaException;
 import br.com.willbigas.algafood.domain.exception.NegocioException;
 import br.com.willbigas.algafood.domain.model.Cidade;
 import br.com.willbigas.algafood.domain.service.CidadeService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.print.attribute.standard.Media;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping(path = "/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -34,8 +24,11 @@ public class CidadeController implements CidadeControllerOpenAPI {
 
     private final CidadeService cidadeService;
 
-    public CidadeController(CidadeService cidadeService) {
+    private final CidadeMapper cidadeMapper;
+
+    public CidadeController(CidadeService cidadeService, CidadeMapper cidadeMapper) {
         this.cidadeService = cidadeService;
+        this.cidadeMapper = cidadeMapper;
     }
 
     @GetMapping
@@ -49,17 +42,41 @@ public class CidadeController implements CidadeControllerOpenAPI {
     }
 
     @GetMapping("/{id}")
-    public Cidade buscar(@PathVariable Long id) {
-        return cidadeService.buscarOuFalhar(id);
+    public CidadeResponseDTO buscar(@PathVariable Long id) {
+        Cidade cidade = cidadeService.buscarOuFalhar(id);
+        CidadeResponseDTO cidadeResponseDTO = cidadeMapper.toResponseDTO(cidadeService.buscarOuFalhar(id));
+
+        cidadeResponseDTO.add(linkTo(CidadeController.class)
+                .slash(cidadeResponseDTO.getId())
+                .withSelfRel());
+
+        cidadeResponseDTO.add(linkTo(CidadeController.class)
+                .withRel("cidades"));
+
+        cidadeResponseDTO.getEstado().add(linkTo(EstadoController.class)
+                .slash(cidadeResponseDTO.getEstado().getId())
+                .withSelfRel());
+
+
+//        cidadeResponseDTO.add(Link.of("http://localhost:8080/cidades/1" , IanaLinkRelations.SELF));
+//        cidadeResponseDTO.add(Link.of("http://localhost:8080/cidades", IanaLinkRelations.COLLECTION));
+//
+//        cidadeResponseDTO.add(Link.of("http://localhost:8080/cidades/1"));
+//        cidadeResponseDTO.add(Link.of("http://localhost:8080/cidades", "cidades"));
+//
+//        cidadeResponseDTO.getEstado().add(Link.of("http://localhost:8080/estados/1"));
+
+
+        return cidadeResponseDTO;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Cidade adicionar(@RequestBody @Valid Cidade cidade) {
+    public CidadeResponseDTO adicionar(@RequestBody @Valid Cidade cidade) {
         try {
             Cidade cidadeSalva = cidadeService.salvar(cidade);
             ResourceUriHelper.addUriInResponseHeader(cidadeSalva.getId());
-            return cidadeSalva;
+            return cidadeMapper.toResponseDTO(cidadeSalva);
         } catch (CidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
         }
