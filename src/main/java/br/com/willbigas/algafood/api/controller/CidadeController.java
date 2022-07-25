@@ -3,6 +3,7 @@ package br.com.willbigas.algafood.api.controller;
 import br.com.willbigas.algafood.api.controller.openapi.CidadeControllerOpenAPI;
 import br.com.willbigas.algafood.api.helper.ResourceUriHelper;
 import br.com.willbigas.algafood.api.mapper.CidadeMapper;
+import br.com.willbigas.algafood.api.mapper.CidadeMapperWithHateOAS;
 import br.com.willbigas.algafood.api.model.response.CidadeResponseDTO;
 import br.com.willbigas.algafood.domain.exception.CidadeNaoEncontradaException;
 import br.com.willbigas.algafood.domain.exception.NegocioException;
@@ -26,10 +27,12 @@ public class CidadeController implements CidadeControllerOpenAPI {
     private final CidadeService cidadeService;
 
     private final CidadeMapper cidadeMapper;
+    private final CidadeMapperWithHateOAS cidadeMapperWithHateOAS;
 
-    public CidadeController(CidadeService cidadeService, CidadeMapper cidadeMapper) {
+    public CidadeController(CidadeService cidadeService, CidadeMapper cidadeMapper, CidadeMapperWithHateOAS cidadeMapperWithHateOAS) {
         this.cidadeService = cidadeService;
         this.cidadeMapper = cidadeMapper;
+        this.cidadeMapperWithHateOAS = cidadeMapperWithHateOAS;
     }
 
     @GetMapping
@@ -50,17 +53,8 @@ public class CidadeController implements CidadeControllerOpenAPI {
 
     @GetMapping("/listar-com-hateoas")
     public CollectionModel<CidadeResponseDTO> listarHateOAS() {
-
         List<Cidade> cidades = cidadeService.findAll();
-        List<CidadeResponseDTO> responseDTOS = cidadeMapper.toList(cidades);
-
-        responseDTOS.forEach(this::createLinkFindByIDHateOAS);
-
-        CollectionModel<CidadeResponseDTO> collectionModel = CollectionModel.of(responseDTOS);
-
-        collectionModel.add(linkTo(CidadeController.class).withSelfRel());
-
-        return collectionModel;
+        return cidadeMapperWithHateOAS.toCollectionModel(cidades);
     }
 
 
@@ -68,8 +62,7 @@ public class CidadeController implements CidadeControllerOpenAPI {
     @GetMapping("/{id}")
     public CidadeResponseDTO buscar(@PathVariable Long id) {
         Cidade cidade = cidadeService.buscarOuFalhar(id);
-        CidadeResponseDTO cidadeResponseDTO = cidadeMapper.toResponseDTO(cidade);
-        createLinkFindByIDHateOAS(cidadeResponseDTO);
+        CidadeResponseDTO cidadeResponseDTO = cidadeMapperWithHateOAS.toModel(cidade);
         return cidadeResponseDTO;
     }
 
@@ -100,47 +93,6 @@ public class CidadeController implements CidadeControllerOpenAPI {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long id) {
         cidadeService.excluir(id);
-    }
-
-
-    private void createLinkFindByIDHateOAS(CidadeResponseDTO cidadeResponseDTO) {
-
-        cidadeResponseDTO.add(linkTo(methodOn(CidadeController.class)
-                .buscar(cidadeResponseDTO.getId()))
-                .withSelfRel());
-
-        //        cidadeResponseDTO.add(linkTo(CidadeController.class)
-        //                .slash(cidadeResponseDTO.getId())
-        //                .withSelfRel());
-
-        //        cidadeResponseDTO.add(Link.of("http://localhost:8080/cidades/1" , IanaLinkRelations.SELF));
-
-        //        cidadeResponseDTO.add(Link.of("http://localhost:8080/cidades/1"));
-
-
-        cidadeResponseDTO.add(linkTo(methodOn(CidadeController.class)
-                .listar())
-                .withRel("cidades"));
-
-
-        //
-        //        cidadeResponseDTO.add(linkTo(CidadeController.class)
-        //                .withRel("cidades"));
-
-        //        cidadeResponseDTO.add(Link.of("http://localhost:8080/cidades", IanaLinkRelations.COLLECTION));
-
-        //        cidadeResponseDTO.add(Link.of("http://localhost:8080/cidades", "cidades"));
-
-        cidadeResponseDTO.getEstado().add(linkTo(methodOn(EstadoController.class)
-                .buscar(cidadeResponseDTO.getEstado().getId()))
-                .withSelfRel());
-
-        //
-        //        cidadeResponseDTO.getEstado().add(linkTo(EstadoController.class)
-        //                .slash(cidadeResponseDTO.getEstado().getId())
-        //                .withSelfRel());
-
-        //        cidadeResponseDTO.getEstado().add(Link.of("http://localhost:8080/estados/1"));
     }
 
 }
