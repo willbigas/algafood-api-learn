@@ -13,6 +13,7 @@ import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
+import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +34,43 @@ public class OpenApiConfig {
                         .description("Código Fonte - GitHub")
                         .url("https://github.com/willbigas/algafood-api-learn"));
     }
+
+    /**
+     * Versionar paths
+     * @return
+     */
+    @Bean
+    public GroupedOpenApi v1() {
+        return GroupedOpenApi.builder()
+                .group("v1")
+                .pathsToMatch("/v1/**" , "/**")
+                .pathsToExclude("/v2/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi v2() {
+        return GroupedOpenApi.builder()
+                .group("v2")
+                .pathsToMatch("/v2/**")
+                .build();
+    }
+
+//    @Bean
+//    public GroupedOpenApi publicApi() {
+//        return GroupedOpenApi.builder()
+//                .group("springshop-public")
+//                .pathsToMatch("/public/**")
+//                .build();
+//    }
+//    @Bean
+//    public GroupedOpenApi adminApi() {
+//        return GroupedOpenApi.builder()
+//                .group("springshop-admin")
+//                .pathsToMatch("/admin/**")
+//                .addOpenApiMethodFilter(method -> method.isAnnotationPresent(Admin.class))
+//                .build();
+//    }
 
     @Bean
     public OpenApiCustomiser addProblemClass() {
