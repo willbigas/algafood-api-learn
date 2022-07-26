@@ -27,7 +27,7 @@ public class OpenApiConfig {
                 .info(new Info()
                         .title("AlgaFood API")
                         .description("API aberta para clientes e restaurantes")
-                        .version("v1")
+                        .version("v1/v2")
                         .contact(new Contact().name("WBM").email("contato@wbm.com").url("http://google.com"))
                         .license(new License().name("Link da Licença -> Apache 2.0").url("http://springdoc.org")))
                 .externalDocs(new ExternalDocumentation()
