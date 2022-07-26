@@ -1,17 +1,17 @@
-package br.com.willbigas.algafood.api.v1.controller;
+package br.com.willbigas.algafood.api.v2.controller;
 
-import br.com.willbigas.algafood.api.v1.controller.openapi.CidadeControllerOpenAPI;
 import br.com.willbigas.algafood.api.v1.helper.ResourceUriHelper;
-import br.com.willbigas.algafood.api.v1.mapper.CidadeMapper;
-import br.com.willbigas.algafood.api.v1.mapper.CidadeMapperWithHateOAS;
-import br.com.willbigas.algafood.api.v1.model.response.CidadeResponseDTO;
+import br.com.willbigas.algafood.api.v2.mapper.CidadeMapperV2;
+import br.com.willbigas.algafood.api.v2.model.response.CidadeResponseDTOV2;
 import br.com.willbigas.algafood.domain.exception.CidadeNaoEncontradaException;
 import br.com.willbigas.algafood.domain.exception.NegocioException;
 import br.com.willbigas.algafood.domain.model.Cidade;
 import br.com.willbigas.algafood.domain.service.CidadeService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.http.*;
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,54 +19,39 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping(path = "/v1/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
-public class CidadeController implements CidadeControllerOpenAPI {
+@RequestMapping(path = "/v2/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
+public class CidadeControllerV2 {
 
     private final CidadeService cidadeService;
 
-    private final CidadeMapper cidadeMapper;
-    private final CidadeMapperWithHateOAS cidadeMapperWithHateOAS;
+    private final CidadeMapperV2 cidadeMapper;
 
-    public CidadeController(CidadeService cidadeService, CidadeMapper cidadeMapper, CidadeMapperWithHateOAS cidadeMapperWithHateOAS) {
+    public CidadeControllerV2(CidadeService cidadeService, CidadeMapperV2 cidadeMapper) {
         this.cidadeService = cidadeService;
         this.cidadeMapper = cidadeMapper;
-        this.cidadeMapperWithHateOAS = cidadeMapperWithHateOAS;
     }
 
     @GetMapping
-    public ResponseEntity<List<CidadeResponseDTO>> listar() {
+    public ResponseEntity<List<CidadeResponseDTOV2>> listar() {
 
         List<Cidade> cidades = cidadeService.findAll();
-        List<CidadeResponseDTO> responseDTOS = cidadeMapper.toList(cidades);
+        List<CidadeResponseDTOV2> responseDTOS = cidadeMapper.toList(cidades);
 
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
-//                .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic()) // caches locais e compartilhados
-//                .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePrivate()) // cache somente local
-//                .cacheControl(CacheControl.noCache()) // Sempre armazena o cache em stale e sempre precisa ser revalidado.
-//                .cacheControl(CacheControl.noStore()) // Não cacheavel
                 .body(responseDTOS);
     }
 
-    @GetMapping("/listar-com-hateoas")
-    public CollectionModel<CidadeResponseDTO> listarHateOAS() {
-        List<Cidade> cidades = cidadeService.findAll();
-        return cidadeMapperWithHateOAS.toCollectionModel(cidades);
-    }
-
-
-
     @GetMapping("/{id}")
-    public CidadeResponseDTO buscar(@PathVariable Long id) {
+    public CidadeResponseDTOV2 buscar(@PathVariable Long id) {
         Cidade cidade = cidadeService.buscarOuFalhar(id);
-        CidadeResponseDTO cidadeResponseDTO = cidadeMapperWithHateOAS.toModel(cidade);
-        return cidadeResponseDTO;
+        return cidadeMapper.toResponseDTO(cidade);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CidadeResponseDTO adicionar(@RequestBody @Valid Cidade cidade) {
+    public CidadeResponseDTOV2 adicionar(@RequestBody @Valid Cidade cidade) {
         try {
             Cidade cidadeSalva = cidadeService.salvar(cidade);
             ResourceUriHelper.addUriInResponseHeader(cidadeSalva.getId());
