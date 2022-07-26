@@ -42,7 +42,7 @@ public class OpenApiConfig {
     @Bean
     public GroupedOpenApi v1() {
         return GroupedOpenApi.builder()
-                .group("v1")
+                .group("v1 (depreciada)")
                 .pathsToMatch("/v1/**" , "/**")
                 .pathsToExclude("/v2/**")
                 .build();

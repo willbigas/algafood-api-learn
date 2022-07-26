@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping(path = "/v1/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
+@Deprecated
 public class CidadeController implements CidadeControllerOpenAPI {
 
     private final CidadeService cidadeService;
@@ -34,6 +35,7 @@ public class CidadeController implements CidadeControllerOpenAPI {
     }
 
     @GetMapping
+//    @Deprecated // depreciar o metodo
     public ResponseEntity<List<CidadeResponseDTO>> listar() {
 
         List<Cidade> cidades = cidadeService.findAll();
