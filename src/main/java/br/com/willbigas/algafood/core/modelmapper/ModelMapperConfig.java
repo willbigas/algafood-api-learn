@@ -1,8 +1,8 @@
 package br.com.willbigas.algafood.core.modelmapper;
 
-import br.com.willbigas.algafood.api.model.request.ItemPedidoRequestDTO;
-import br.com.willbigas.algafood.api.model.response.EnderecoResponseDTO;
-import br.com.willbigas.algafood.api.model.response.RestauranteResponseDTO;
+import br.com.willbigas.algafood.api.v1.model.request.ItemPedidoRequestDTO;
+import br.com.willbigas.algafood.api.v1.model.response.EnderecoResponseDTO;
+import br.com.willbigas.algafood.api.v1.model.response.RestauranteResponseDTO;
 import br.com.willbigas.algafood.domain.model.Endereco;
 import br.com.willbigas.algafood.domain.model.ItemPedido;
 import br.com.willbigas.algafood.domain.model.Restaurante;
