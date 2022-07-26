@@ -1,9 +1,8 @@
 package br.com.willbigas.algafood.core.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.filter.ShallowEtagHeaderFilter;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.filter.ShallowEtagHeaderFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -17,8 +16,13 @@ import javax.servlet.Filter;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Autowired
-    private ApiDeprecationHandler apiDeprecationHandler;
+    private final ApiDeprecationHandler apiDeprecationHandler;
+    private final ApiRetirementHandler apiRetirementHandler;
+
+    public WebConfig(ApiDeprecationHandler apiDeprecationHandler, ApiRetirementHandler apiRetirementHandler) {
+        this.apiDeprecationHandler = apiDeprecationHandler;
+        this.apiRetirementHandler = apiRetirementHandler;
+    }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -45,5 +49,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(apiDeprecationHandler);
+//        registry.addInterceptor(apiRetirementHandler);
     }
+
 }
