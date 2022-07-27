@@ -1,19 +1,53 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
 
+    <!--
+    <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter">
+        <level value="DEBUG" />
+    </logger>
+    -->
+
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
-    <appender name="loggly" class="ch.qos.logback.ext.loggly.LogglyAppender">
-        <endpointUrl>https://logs-01.loggly.com/inputs/450191a8-3642-4661-908d-64634eb1fef5/tag/logback</endpointUrl>
-        <pattern>%d{"ISO8601", UTC} %p %t %c{0}.%M - %m%n</pattern>
-    </appender>
+    <springProfile name="dev">
+        <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>%d [%thread] %-5level  %logger{35} - %msg%n</pattern>
+            </encoder>
+        </appender>
 
-    <appender name="logglyAsync" class="ch.qos.logback.classic.AsyncAppender">
-        <appender-ref ref="loggly"/>
-    </appender>
 
-    <root level="info">
-        <appender-ref ref="logglyAsync" />
-    </root>
+        <appender name="fileAppender" class="ch.qos.logback.core.FileAppender">
+            <file>/Users/admin/testlogs/myLogFile.log</file>
+            <append>true</append>
+            <encoder>
+                <pattern>%d [%thread] %-5level  %logger{35} - %msg%n</pattern>
+            </encoder>
+        </appender>
+
+        <root level="TRACE">
+            <appender-ref ref="fileAppender" />
+            <appender-ref ref="STDOUT" />
+        </root>
+    </springProfile>
+
+
+    <springProfile name="production">
+
+        <appender name="loggly" class="ch.qos.logback.ext.loggly.LogglyAppender">
+            <endpointUrl>https://logs-01.loggly.com/inputs/450191a8-3642-4661-908d-64634eb1fef5/tag/logback
+            </endpointUrl>
+            <pattern>%d{"ISO8601", UTC} %p %t %c{0}.%M - %m%n</pattern>
+        </appender>
+
+        <appender name="logglyAsync" class="ch.qos.logback.classic.AsyncAppender">
+            <appender-ref ref="loggly"/>
+        </appender>
+
+        <root level="info">
+            <appender-ref ref="logglyAsync"/>
+        </root>
+
+    </springProfile>
 
 </configuration>
