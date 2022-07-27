@@ -3,6 +3,7 @@ package br.com.willbigas.algafood.api.v1.controller;
 import br.com.willbigas.algafood.domain.model.Cozinha;
 import br.com.willbigas.algafood.domain.repository.CozinhaRepository;
 import br.com.willbigas.algafood.domain.service.CozinhaService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -12,10 +13,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/cozinhas")
+@Slf4j
 public class CozinhaController {
 
     private final CozinhaRepository cozinhaRepository;
     private final CozinhaService cozinhaService;
+
 
     public CozinhaController(CozinhaRepository cozinhaRepository, CozinhaService cozinhaService) {
         this.cozinhaRepository = cozinhaRepository;
@@ -24,6 +27,7 @@ public class CozinhaController {
 
     @GetMapping
     public List<Cozinha> listar() {
+        log.info("Consultando cozinhas...");
         return cozinhaRepository.findAll();
     }
 
